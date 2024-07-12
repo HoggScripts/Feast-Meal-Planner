@@ -1,43 +1,33 @@
-import React, { useEffect, useState } from "react";
+// src/Profile.jsx
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import api from "./api";
-import { useAuth } from "./AuthProvider";
+
+const fetchCurrentUser = async () => {
+  const response = await api.get("/users/current-user");
+  return response.data;
+};
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const { token } = useAuth();
+  const {
+    data: user,
+    error,
+    isLoading,
+  } = useQuery(["currentUser"], fetchCurrentUser);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await api.get("/users/current-user");
-        setUser(response.data);
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-      }
-    };
-
-    if (token) {
-      fetchUserProfile();
-    }
-  }, [token]);
-
-  if (!user) {
+  if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading user data</div>;
   }
 
   return (
     <div>
       <h1>Profile Page</h1>
-      <div>
-        <strong>Name:</strong> {user.firstName} {user.lastName}
-      </div>
-      <div>
-        <strong>Username:</strong> {user.username}
-      </div>
-      <div>
-        <strong>Email:</strong> {user.email}
-      </div>
-      {/* Add more user details here as needed */}
+      <p>Name: {user.name}</p>
+      <p>Email: {user.email}</p>
     </div>
   );
 };

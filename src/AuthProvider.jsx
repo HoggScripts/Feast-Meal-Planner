@@ -1,39 +1,22 @@
-import {
-  createContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-  useContext,
-} from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import api from "./api";
 import { toast } from "react-toastify";
+import useAuthStore from "./authStore";
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "./queryClient";
 
-// Create a context for authentication
-const AuthContext = createContext(undefined);
-
-// Custom hook to use the AuthContext
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
-
-// AuthProvider component that provides authentication logic
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null); // State to hold the JWT token
-  const [isLoading, setIsLoading] = useState(true); // State to indicate if authentication is in progress
-  const [isRefreshing, setIsRefreshing] = useState(false); // State to track if token is being refreshed
-  const [refreshError, setRefreshError] = useState(false); // State to track if there is a refresh error
+  const { token, setToken } = useAuthStore();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Function to refresh the token
   const refreshToken = async () => {
     setIsRefreshing(true);
     try {
       console.log("Attempting to refresh token...");
-      const response = await api.post("/users/refresh-token");
-      setToken(response.data.accessToken);
+      const response = await api.post("/users/refresh-token", null, {
+        withCredentials: true, // Include credentials in the request
+      });
+      setToken(response.data.accessToken); // Step 6: Set the new access token
       console.log("Token refreshed successfully:", response.data.accessToken);
       setIsRefreshing(false);
       return true;
@@ -41,67 +24,10 @@ export const AuthProvider = ({ children }) => {
       console.log("Failed to refresh token:", error);
       setToken(null); // Clear token on refresh failure
       setIsRefreshing(false);
-      setRefreshError(true); // Set the refresh error state to true
       return false;
     }
   };
 
-  // Function to fetch the current user
-  const fetchCurrentUser = async () => {
-    try {
-      console.log("Fetching current user...");
-      const response = await api.get("/users/current-user");
-      console.log("Current user fetched:", response.data);
-      return response.data;
-    } catch (error) {
-      console.log("Error fetching current user:", error);
-      throw error;
-    }
-  };
-
-  // Initialize authentication on component mount
-  useEffect(() => {
-    const initializeAuth = async () => {
-      console.log("Initializing authentication...");
-      try {
-        const currentUser = await fetchCurrentUser();
-        console.log("Current user fetched:", currentUser);
-        setIsLoading(false);
-      } catch (error) {
-        if (error.response?.status === 401 && !refreshError) {
-          console.log("Token expired, attempting to refresh...");
-          const refreshed = await refreshToken();
-          if (refreshed) {
-            try {
-              const currentUser = await fetchCurrentUser();
-              console.log(
-                "Current user fetched after token refresh:",
-                currentUser
-              );
-              setIsLoading(false);
-            } catch (error) {
-              console.log(
-                "Failed to fetch current user after token refresh:",
-                error
-              );
-              setIsLoading(false);
-            }
-          } else {
-            console.log("Token refresh failed. User is not authenticated.");
-            setToken(null);
-            setIsLoading(false);
-          }
-        } else {
-          console.log("Error during authentication initialization:", error);
-          setIsLoading(false);
-        }
-      }
-    };
-
-    initializeAuth();
-  }, [refreshError]);
-
-  // Add token to the headers of every outgoing request
   useLayoutEffect(() => {
     const authInterceptor = api.interceptors.request.use((config) => {
       if (token && !config._retry) {
@@ -111,14 +37,12 @@ export const AuthProvider = ({ children }) => {
       return config;
     });
 
-    // Cleanup function to eject the interceptor when the component unmounts
     return () => {
       console.log("Ejecting auth interceptor");
       api.interceptors.request.eject(authInterceptor);
     };
   }, [token]);
 
-  // Handle response errors and refresh the token if needed
   useLayoutEffect(() => {
     const refreshInterceptor = api.interceptors.response.use(
       (response) => response,
@@ -129,38 +53,33 @@ export const AuthProvider = ({ children }) => {
           !originalRequest._retry &&
           !isRefreshing
         ) {
-          originalRequest._retry = true; // Mark the request as a retry
+          originalRequest._retry = true;
           console.log("Response error 401, attempting token refresh...");
-          const refreshed = await refreshToken();
-          if (refreshed) {
+
+          if (await refreshToken()) {
+            // Step 4 & 5: Wait for refresh token response
             console.log("Retrying original request with new token...");
             originalRequest.headers.Authorization = `Bearer ${token}`;
-            return api(originalRequest);
+            return api(originalRequest); // Step 7: Trigger the original request again
           } else {
             console.log("Token refresh failed during response handling.");
-            setToken(null); // Clear the token if the refresh token request fails
+            setToken(null);
             toast.error("Session expired. Please log in again.");
           }
-        } else if (error.response?.status === 401 && refreshError) {
-          setToken(null); // Clear the token if there's a refresh error
-          toast.error("Session expired. Please log in again.");
         }
         console.log("Response Interceptor: Error", error);
         return Promise.reject(error);
       }
     );
 
-    // Cleanup function to eject the interceptor when the component unmounts
     return () => {
       console.log("Ejecting refresh interceptor");
       api.interceptors.response.eject(refreshInterceptor);
     };
-  }, [token, isRefreshing, refreshError]);
+  }, [token, isRefreshing]);
 
   return (
-    <AuthContext.Provider value={{ token, setToken }}>
-      {!isLoading ? children : <div>Loading...</div>}
-    </AuthContext.Provider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 

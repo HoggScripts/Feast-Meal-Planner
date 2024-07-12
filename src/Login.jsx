@@ -1,50 +1,56 @@
-import { useState } from "react";
-import api from "./api";
-import { useAuth } from "./AuthProvider";
+// src/Login.jsx
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import useAuthStore from "./authStore";
+import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setToken } = useAuth();
+  const setToken = useAuthStore((state) => state.setToken);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/users/login", { username, password });
+      console.log("Login form submitted");
+      console.log("Sending login request to backend");
+      const response = await axios.post(
+        "http://localhost:5271/api/users/login",
+        { username, password },
+        { withCredentials: true } // Include this line to send cookies with the request
+      );
+      console.log("Login successful, response data:", response.data);
       setToken(response.data.accessToken);
-      toast.success("Login successful!");
-      navigate("/profile");
+
+      // Navigate to the user info page
+      navigate("/user-info");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      console.error("Login failed", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Username</label>
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          required
         />
-      </div>
-      <div>
-        <label>Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
         />
-      </div>
-      <button type="submit">Login</button>
-      <p>
-        Don&apos;t have an account? <a href="/register">Register here</a>
-      </p>
-    </form>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 
