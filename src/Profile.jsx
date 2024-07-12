@@ -1,22 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import api from "./api";
 import { useAuth } from "./AuthProvider";
 
 const Profile = () => {
+  const [user, setUser] = useState(null);
   const { token } = useAuth();
 
   useEffect(() => {
-    console.log("Profile page mounted. Token:", token);
+    const fetchUserProfile = async () => {
+      try {
+        const response = await api.get("/users/current-user");
+        setUser(response.data);
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+      }
+    };
+
+    if (token) {
+      fetchUserProfile();
+    }
   }, [token]);
 
-  if (!token) {
-    console.log("You are currently logged out.");
-    return <div>You are currently logged out.</div>;
+  if (!user) {
+    return <div>Loading...</div>;
   }
 
   return (
     <div>
       <h1>Profile Page</h1>
-      <p>Profile content here...</p>
+      <div>
+        <strong>Name:</strong> {user.firstName} {user.lastName}
+      </div>
+      <div>
+        <strong>Username:</strong> {user.username}
+      </div>
+      <div>
+        <strong>Email:</strong> {user.email}
+      </div>
+      {/* Add more user details here as needed */}
     </div>
   );
 };

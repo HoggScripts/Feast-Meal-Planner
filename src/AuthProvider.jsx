@@ -24,17 +24,24 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null); // State to hold the JWT token
   const [isLoading, setIsLoading] = useState(true); // State to indicate if authentication is in progress
+  const [isRefreshing, setIsRefreshing] = useState(false); // State to track if token is being refreshed
+  const [refreshError, setRefreshError] = useState(false); // State to track if there is a refresh error
 
   // Function to refresh the token
   const refreshToken = async () => {
+    setIsRefreshing(true);
     try {
       console.log("Attempting to refresh token...");
       const response = await api.post("/users/refresh-token");
       setToken(response.data.accessToken);
       console.log("Token refreshed successfully:", response.data.accessToken);
+      setIsRefreshing(false);
       return true;
     } catch (error) {
       console.log("Failed to refresh token:", error);
+      setToken(null); // Clear token on refresh failure
+      setIsRefreshing(false);
+      setRefreshError(true); // Set the refresh error state to true
       return false;
     }
   };
@@ -61,7 +68,8 @@ export const AuthProvider = ({ children }) => {
         console.log("Current user fetched:", currentUser);
         setIsLoading(false);
       } catch (error) {
-        if (error.response?.status === 401) {
+        if (error.response?.status === 401 && !refreshError) {
+          console.log("Token expired, attempting to refresh...");
           const refreshed = await refreshToken();
           if (refreshed) {
             try {
@@ -80,6 +88,7 @@ export const AuthProvider = ({ children }) => {
             }
           } else {
             console.log("Token refresh failed. User is not authenticated.");
+            setToken(null);
             setIsLoading(false);
           }
         } else {
@@ -90,7 +99,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     initializeAuth();
-  }, []);
+  }, [refreshError]);
 
   // Add token to the headers of every outgoing request
   useLayoutEffect(() => {
@@ -98,6 +107,7 @@ export const AuthProvider = ({ children }) => {
       if (token && !config._retry) {
         config.headers.Authorization = `Bearer ${token}`;
       }
+      console.log("Auth Interceptor: Config Headers", config.headers);
       return config;
     });
 
@@ -114,17 +124,28 @@ export const AuthProvider = ({ children }) => {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (
+          error.response?.status === 401 &&
+          !originalRequest._retry &&
+          !isRefreshing
+        ) {
           originalRequest._retry = true; // Mark the request as a retry
+          console.log("Response error 401, attempting token refresh...");
           const refreshed = await refreshToken();
           if (refreshed) {
+            console.log("Retrying original request with new token...");
             originalRequest.headers.Authorization = `Bearer ${token}`;
             return api(originalRequest);
           } else {
+            console.log("Token refresh failed during response handling.");
             setToken(null); // Clear the token if the refresh token request fails
             toast.error("Session expired. Please log in again.");
           }
+        } else if (error.response?.status === 401 && refreshError) {
+          setToken(null); // Clear the token if there's a refresh error
+          toast.error("Session expired. Please log in again.");
         }
+        console.log("Response Interceptor: Error", error);
         return Promise.reject(error);
       }
     );
@@ -134,7 +155,7 @@ export const AuthProvider = ({ children }) => {
       console.log("Ejecting refresh interceptor");
       api.interceptors.response.eject(refreshInterceptor);
     };
-  }, [token]);
+  }, [token, isRefreshing, refreshError]);
 
   return (
     <AuthContext.Provider value={{ token, setToken }}>
@@ -142,3 +163,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export default AuthProvider;
