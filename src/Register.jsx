@@ -1,7 +1,5 @@
 import { useState } from "react";
-import api from "./api";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useRegister } from "./useUserActions";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -9,25 +7,11 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const navigate = useNavigate();
+  const { mutate: register, isLoading, isError } = useRegister();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await api.post("/users/register", {
-        username,
-        email,
-        password,
-        firstName,
-        lastName,
-      });
-      toast.success(
-        "Registration successful! Please check your email to confirm your account."
-      );
-      navigate("/login");
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Registration failed");
-    }
+    register({ username, email, password, firstName, lastName });
   };
 
   return (
@@ -72,7 +56,10 @@ const Register = () => {
           onChange={(e) => setLastName(e.target.value)}
         />
       </div>
-      <button type="submit">Register</button>
+      <button type="submit" disabled={isLoading}>
+        Register
+      </button>
+      {isError && <p>Registration failed. Please try again.</p>}
       <p>
         Already have an account? <a href="/login">Login here</a>
       </p>

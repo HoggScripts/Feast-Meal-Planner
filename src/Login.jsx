@@ -1,33 +1,26 @@
-// src/Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useTokenStore from "./useTokenStore";
-import axios from "axios";
+import { useLogin } from "./useUserActions"; // Import the consolidated hook
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const setToken = useTokenStore((state) => state.setToken);
   const navigate = useNavigate();
+  const { mutate: login, isLoading, isError } = useLogin();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      console.log("Login form submitted");
-      console.log("Sending login request to backend");
-      const response = await axios.post(
-        "http://localhost:5271/api/users/login",
-        { username, password },
-        { withCredentials: true } // Include this line to send cookies with the request
-      );
-      console.log("Login successful, response data:", response.data);
-      setToken(response.data.accessToken);
-
-      // Navigate to the user info page
-      navigate("/user-info");
-    } catch (error) {
-      console.error("Login failed", error);
-    }
+    login(
+      { username, password },
+      {
+        onSuccess: () => {
+          // Navigate to the user info page
+          navigate("/user-info");
+          toast.success("Login successful");
+        },
+      }
+    );
   };
 
   return (
@@ -48,7 +41,10 @@ const Login = () => {
           placeholder="Password"
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit" disabled={isLoading}>
+          Login
+        </button>
+        {isError && <p>Login failed. Please try again.</p>}
       </form>
     </div>
   );

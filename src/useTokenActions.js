@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useTokenStore from "./useTokenStore";
-import api from "./api";
+import { refreshToken as refreshAuthToken } from "./tokenApi"; // Import the refreshToken function
 
-const useTokenManager = () => {
+const useTokenActions = () => {
   const { token, setToken } = useTokenStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -10,11 +10,9 @@ const useTokenManager = () => {
     setIsRefreshing(true);
     try {
       console.log("Attempting to refresh token...");
-      const response = await api.post("/users/refresh-token", null, {
-        withCredentials: true, // Include credentials in the request
-      });
-      setToken(response.data.accessToken); // Set the new access token
-      console.log("Token refreshed successfully:", response.data.accessToken);
+      const newToken = await refreshAuthToken(); // Use the imported refreshToken function
+      setToken(newToken); // Set the new access token
+      console.log("Token refreshed successfully:", newToken);
       setIsRefreshing(false);
       return true;
     } catch (error) {
@@ -28,4 +26,4 @@ const useTokenManager = () => {
   return { token, setToken, isRefreshing, refreshToken };
 };
 
-export default useTokenManager;
+export default useTokenActions;

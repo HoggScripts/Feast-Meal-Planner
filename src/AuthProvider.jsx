@@ -2,10 +2,10 @@ import { useLayoutEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./queryClient";
 import { setupInterceptors, ejectInterceptors } from "./apiInterceptors";
-import useTokenManager from "./useAuth";
+import useTokenActions from "./useTokenActions";
 
 export const AuthProvider = ({ children }) => {
-  const { token, setToken, isRefreshing, refreshToken } = useTokenManager();
+  const { token, setToken, isRefreshing, refreshToken } = useTokenActions();
 
   useLayoutEffect(() => {
     const { authInterceptor, refreshInterceptor } = setupInterceptors({

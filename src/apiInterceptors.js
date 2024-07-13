@@ -1,12 +1,8 @@
 import api from "./api";
 import { toast } from "react-toastify";
+import { refreshToken as refreshAuthToken } from "./tokenApi"; // Import the refreshToken function
 
-export const setupInterceptors = ({
-  token,
-  refreshToken,
-  setToken,
-  isRefreshing,
-}) => {
+export const setupInterceptors = ({ token, setToken, isRefreshing }) => {
   const authInterceptor = api.interceptors.request.use((config) => {
     if (token && !config._retry) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,12 +23,14 @@ export const setupInterceptors = ({
         originalRequest._retry = true;
         console.log("Response error 401, attempting token refresh...");
 
-        if (await refreshToken()) {
-          // Wait for refresh token response
-          console.log("Retrying original request with new token...");
-          originalRequest.headers.Authorization = `Bearer ${token}`;
+        try {
+          const newToken = await refreshAuthToken(); // Use the imported refreshToken function
+          console.log("Token refreshed successfully:", newToken);
+
+          setToken(newToken); // Set the new token
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return api(originalRequest); // Trigger the original request again
-        } else {
+        } catch (error) {
           console.log("Token refresh failed during response handling.");
           setToken(null);
           toast.error("Session expired. Please log in again.");
