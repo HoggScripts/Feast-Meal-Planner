@@ -1,13 +1,13 @@
 // src/Login.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "./authStore";
+import useTokenStore from "./useTokenStore";
 import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const setToken = useAuthStore((state) => state.setToken);
+  const setToken = useTokenStore((state) => state.setToken);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import useAuthStore from "./authStore";
+import useTokenStore from "./useTokenStore";
 import api from "./api";
 
-const useAuth = () => {
-  const { token, setToken } = useAuthStore();
+const useTokenManager = () => {
+  const { token, setToken } = useTokenStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const refreshToken = async () => {
@@ -28,4 +28,4 @@ const useAuth = () => {
   return { token, setToken, isRefreshing, refreshToken };
 };
 
-export default useAuth;
+export default useTokenManager;
