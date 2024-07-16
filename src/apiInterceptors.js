@@ -1,11 +1,24 @@
+/**
+ * apiInterceptors.js
+ *
+ * Purpose:
+ * - Configures and manages axios interceptors for API requests.
+ * - Handles attaching tokens to requests and refreshing tokens on 401 responses.
+ *
+ * Example:
+ * - setupInterceptors: Sets up request and response interceptors.
+ * - ejectInterceptors: Removes the interceptors when they are no longer needed.
+ */
+
 import api from "./api";
 import { toast } from "react-toastify";
-import { refreshToken as refreshAuthToken } from "./tokenApi"; // Import the refreshToken function
+import { refreshToken as refreshAuthToken } from "./tokenApi";
 
 export const setupInterceptors = ({ token, setToken, isRefreshing }) => {
   const authInterceptor = api.interceptors.request.use((config) => {
     if (token && !config._retry) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log("API request token:", token);
     }
     console.log("Auth Interceptor: Config Headers", config.headers);
     return config;
@@ -24,12 +37,12 @@ export const setupInterceptors = ({ token, setToken, isRefreshing }) => {
         console.log("Response error 401, attempting token refresh...");
 
         try {
-          const newToken = await refreshAuthToken(); // Use the imported refreshToken function
+          const newToken = await refreshAuthToken();
           console.log("Token refreshed successfully:", newToken);
 
-          setToken(newToken); // Set the new token
+          setToken(newToken);
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          return api(originalRequest); // Trigger the original request again
+          return api(originalRequest);
         } catch (error) {
           console.log("Token refresh failed during response handling.");
           setToken(null);

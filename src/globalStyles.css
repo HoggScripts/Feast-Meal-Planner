@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+  --primary-color: #28a745;
+  --secondary-color: #ffc43d;
+  --tertiary-color: #80a4ed;
+  --background-color: #f1fffa;
+  --text-color: #1a1f16;
+  --border-color: #d3d3d3;
+  --subtle-background-color: #e8e8e8;
+  --button-color: #17301c;
+  --link-color: #004777;
+  --highlight-color: #ff6b35;
+  --icon-color: #6b6b6b;
+  --font-family: "Poppins", sans-serif;
+}
+
+/* Ensure the background covers the full height and prevent scrolling */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevent scrolling */
+  font-family: var(--font-family); /* Ensure this is applied */
+}
+
+/* Other global styles */
+.button {
+  background-color: var(--button-color);
+  color: var(--background-color);
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button.primary {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+}
+
+.button.secondary {
+  background-color: var(--secondary-color);
+  color: var(--background-color);
+}
+
+.button.danger {
+  background-color: var(--highlight-color);
+  color: var(--background-color);
+}
+
+.button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+}
+
+.link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--highlight-color);
+}
+
+.text {
+  color: var(--text-color);
+}
+
+.background {
+  background-color: var(--background-color);
+}
+
+.icon {
+  color: var(--icon-color);
+}

@@ -1,3 +1,15 @@
+/**
+ * AuthProvider.js
+ *
+ * Purpose:
+ * - Provides authentication context to the application.
+ * - Manages token state and refresh logic using interceptors.
+ *
+ * Example:
+ * - Sets up axios interceptors to attach tokens to requests.
+ * - Handles token refresh logic and updates the token state.
+ */
+
 import { useLayoutEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./queryClient";

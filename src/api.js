@@ -1,4 +1,14 @@
-// src/api.js
+/**
+ * api.js
+ *
+ * Purpose:
+ * - Configures the axios instance used for making API requests.
+ *
+ * Example:
+ * - Sets the base URL and common headers for API requests.
+ * - Ensures cookies are included with each request for authentication purposes.
+ */
+
 import axios from "axios";
 
 const api = axios.create({
@@ -6,7 +16,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // This allows cookies to be sent with each request
+  withCredentials: true,
 });
 
 export default api;

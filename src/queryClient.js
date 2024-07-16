@@ -1,4 +1,13 @@
-// src/queryClient.js
+/**
+ * queryClient.js
+ *
+ * Purpose:
+ * - Configures the react-query client for managing server state.
+ *
+ * Example:
+ * - Sets default options for queries, such as staleTime and cacheTime.
+ */
+
 import { QueryClient } from "@tanstack/react-query";
 
 const queryClient = new QueryClient({
