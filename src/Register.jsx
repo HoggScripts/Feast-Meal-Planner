@@ -4,37 +4,44 @@ import { useRegister } from "./useUserActions";
 import { IoIosMail } from "react-icons/io";
 import { FaLock, FaUser, FaRegUserCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
 import styles from "./Register.module.css";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const { mutate: register, isLoading, isError } = useRegister();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { mutate: registerUser, isLoading } = useRegister();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    register(
-      { username, email, password, firstName, lastName },
-      {
-        onSuccess: () => {
-          navigate("/login");
-          toast.success(
-            "Registration successful! Please check your email to confirm your account."
-          );
-        },
-      }
-    );
+  const onSubmit = (data) => {
+    setErrorMessage(""); // Clear any previous error message
+
+    registerUser(data, {
+      onSuccess: () => {
+        navigate("/login");
+        toast.success(
+          "Registration successful! Please check your email to confirm your account."
+        );
+      },
+      onError: (error) => {
+        const message =
+          error.response?.data?.message ||
+          error.response?.data?.join(", ") ||
+          "Registration failed. Please try again.";
+        setErrorMessage(message);
+      },
+    });
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.loginContainer}>
         <h1 className={styles.header}>Register</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formGroup}>
             <label>
               Username
@@ -43,11 +50,12 @@ const Register = () => {
               </div>
               <input
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                {...register("username", { required: "Username is required" })}
                 className={styles.inputField}
-                required
               />
+              {errors.username && (
+                <p className={styles.error}>{errors.username.message}</p>
+              )}
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -58,11 +66,12 @@ const Register = () => {
               </div>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                {...register("email", { required: "Email is required" })}
                 className={styles.inputField}
-                required
               />
+              {errors.email && (
+                <p className={styles.error}>{errors.email.message}</p>
+              )}
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -73,11 +82,12 @@ const Register = () => {
               </div>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                {...register("password", { required: "Password is required" })}
                 className={styles.inputField}
-                required
               />
+              {errors.password && (
+                <p className={styles.error}>{errors.password.message}</p>
+              )}
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -88,11 +98,14 @@ const Register = () => {
               </div>
               <input
                 type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                {...register("firstName", {
+                  required: "First Name is required",
+                })}
                 className={styles.inputField}
-                required
               />
+              {errors.firstName && (
+                <p className={styles.error}>{errors.firstName.message}</p>
+              )}
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -103,17 +116,18 @@ const Register = () => {
               </div>
               <input
                 type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                {...register("lastName", { required: "Last Name is required" })}
                 className={styles.inputField}
-                required
               />
+              {errors.lastName && (
+                <p className={styles.error}>{errors.lastName.message}</p>
+              )}
             </label>
           </div>
           <button type="submit" className={styles.button} disabled={isLoading}>
             Register
           </button>
-          {isError && <p>Registration failed. Please try again.</p>}
+          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         </form>
         <div className={styles.footer}>
           Already have an account?{" "}

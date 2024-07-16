@@ -11,8 +11,8 @@ describe("Login Page", () => {
     cy.visit("/login");
 
     // Fill in the login form
-    cy.get('input[type="text"]').type(username);
-    cy.get('input[type="password"]').type(password);
+    cy.get('input[name="identifier"]').type(username);
+    cy.get('input[name="password"]').type(password);
     cy.get('button[type="submit"]').click();
 
     // Check that the user is redirected to the user info page
@@ -23,11 +23,20 @@ describe("Login Page", () => {
     cy.visit("/login");
 
     // Fill in the login form with invalid credentials
-    cy.get('input[type="text"]').type("invaliduser");
-    cy.get('input[type="password"]').type("invalidpassword");
+    cy.get('input[name="identifier"]').type("invaliduser");
+    cy.get('input[name="password"]').type("invalidpassword");
     cy.get('button[type="submit"]').click();
 
     // Check that an error message is displayed
     cy.contains("Login failed. Please try again.").should("be.visible");
+  });
+
+  it("should show validation error messages", () => {
+    cy.visit("/login");
+    cy.get('button[type="submit"]').click();
+
+    // Check that validation error messages are displayed
+    cy.contains("Identifier is required").should("be.visible");
+    cy.contains("Password is required").should("be.visible");
   });
 });
