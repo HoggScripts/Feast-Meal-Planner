@@ -1,8 +1,9 @@
-// ConfirmResetPassword.jsx
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useConfirmResetPassword } from "./useUserActions";
 import { toast } from "react-toastify";
+import { FaLock } from "react-icons/fa";
+import styles from "./ConfirmResetPassword.module.css";
 
 const ConfirmResetPassword = () => {
   const { token, email } = useParams();
@@ -23,20 +24,30 @@ const ConfirmResetPassword = () => {
   };
 
   return (
-    <div>
-      <h1>Reset Password</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>New Password</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Reset Password</button>
-      </form>
+    <div className={styles.container}>
+      <div className={styles.resetContainer}>
+        <h1 className={styles.header}>Reset Password</h1>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label>
+              New Password
+              <div className={styles.icon}>
+                <FaLock />
+              </div>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className={styles.inputField}
+                required
+              />
+            </label>
+          </div>
+          <button type="submit" className={styles.button}>
+            Reset Password
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

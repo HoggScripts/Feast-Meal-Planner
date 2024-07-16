@@ -1,5 +1,3 @@
-// Login.js
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin, useRedirectAuthenticatedUser } from "./useUserActions";
@@ -9,7 +7,7 @@ import { toast } from "react-toastify";
 import styles from "./Login.module.css";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [identifier, setIdentifier] = useState(""); // Renamed to identifier
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +18,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     login(
-      { username, password, rememberMe },
+      { identifier, password, rememberMe }, // Changed username to identifier
       {
         onSuccess: () => {
           navigate("/user-info");
@@ -37,14 +35,14 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <label>
-              Email
+              Username or Email
               <div className={styles.icon}>
                 <IoIosMail />
               </div>
               <input
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 className={styles.inputField}
                 required
               />
@@ -84,7 +82,7 @@ const Login = () => {
           {isError && <p>Login failed. Please try again.</p>}
         </form>
         <div className={styles.footer}>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link to="/register" className={styles.link}>
             Register
           </Link>

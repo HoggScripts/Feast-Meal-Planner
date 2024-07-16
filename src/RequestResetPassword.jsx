@@ -1,8 +1,9 @@
-// RequestResetPassword.jsx
-
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useRequestResetPassword } from "./useUserActions";
 import { toast } from "react-toastify";
+import { IoIosMail } from "react-icons/io";
+import styles from "./RequestResetPassword.module.css";
 
 const RequestResetPassword = () => {
   const [email, setEmail] = useState("");
@@ -21,20 +22,35 @@ const RequestResetPassword = () => {
   };
 
   return (
-    <div>
-      <h1>Request Password Reset</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <div className={styles.container}>
+      <div className={styles.requestContainer}>
+        <h1 className={styles.header}>Request Password Reset</h1>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label>
+              Email
+              <div className={styles.icon}>
+                <IoIosMail />
+              </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={styles.inputField}
+                required
+              />
+            </label>
+          </div>
+          <button type="submit" className={styles.button}>
+            Send Reset Link
+          </button>
+        </form>
+        <div className={styles.footer}>
+          <Link to="/login" className={styles.link}>
+            Back to Login
+          </Link>
         </div>
-        <button type="submit">Send Reset Link</button>
-      </form>
+      </div>
     </div>
   );
 };

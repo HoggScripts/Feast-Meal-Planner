@@ -1,6 +1,6 @@
 // Button.js
 import PropTypes from "prop-types";
-import React from "react";
+
 import "./globalStyles.css"; // Ensure global styles are imported
 
 const Button = ({

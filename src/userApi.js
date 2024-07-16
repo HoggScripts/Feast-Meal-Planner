@@ -17,11 +17,10 @@
  */
 
 import api from "./api";
-import useTokenStore from "./useTokenStore";
 
-export const loginUser = async ({ username, password, rememberMe }) => {
+export const loginUser = async ({ identifier, password, rememberMe }) => {
   const response = await api.post("/users/login", {
-    username,
+    identifier,
     password,
     rememberMe,
   });
@@ -46,14 +45,7 @@ export const registerUser = async ({
 };
 
 export const fetchUserInfo = async () => {
-  const token =
-    sessionStorage.getItem("token") || localStorage.getItem("token");
-  console.log("fetchUserInfo token:", token); // CHANGED HERE
-  const response = await api.get("/users/current-user", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await api.get("/users/current-user");
   return response.data;
 };
 
@@ -65,28 +57,12 @@ export const fetchProtectedData = async () => {
 };
 
 export const logoutUser = async () => {
-  try {
-    const { token } = useTokenStore.getState(); // CHANGED HERE: Access the token from the store
-    const requestConfig = {
-      method: "POST",
-      url: "/users/logout",
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${token}`, // CHANGED HERE: Include the token in the headers
-      },
-    };
-    console.log("Sending logout request with config:", requestConfig);
-
-    const response = await api(requestConfig);
-    console.log("Logout request sent:", response.config); // Log the request config
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Logout request failed:",
-      error.response?.data || error.message
-    ); // Log the error response or message
-    throw error;
-  }
+  const response = await api.post(
+    "/users/logout",
+    {},
+    { withCredentials: true }
+  );
+  return response.data;
 };
 
 export const requestResetPassword = async ({ email }) => {

@@ -1,6 +1,3 @@
-// App.js or your routes configuration file
-
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,12 +9,17 @@ import Register from "./Register";
 import RequestResetPassword from "./RequestResetPassword";
 import UserInfo from "./UserInfo";
 import ProtectedRoute from "./ProtectedRoute";
+import ConfirmResetPassword from "./ConfirmResetPassword";
 
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/confirm-reset-password/:token/:email"
+          element={<ConfirmResetPassword />}
+        />
         <Route path="/register" element={<Register />} />
         <Route
           path="/request-reset-password"
