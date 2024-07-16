@@ -10,6 +10,7 @@ const Login = () => {
   const [identifier, setIdentifier] = useState(""); // Renamed to identifier
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // Add error message state
   const navigate = useNavigate();
   const { mutate: login, isLoading, isError } = useLogin();
 
@@ -17,12 +18,18 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrorMessage(""); // Clear error message before new login attempt
     login(
       { identifier, password, rememberMe }, // Changed username to identifier
       {
         onSuccess: () => {
           navigate("/user-info");
           toast.success("Login successful");
+        },
+        onError: (error) => {
+          setErrorMessage(
+            error.response?.data?.message || "Login failed. Please try again."
+          );
         },
       }
     );
@@ -79,7 +86,7 @@ const Login = () => {
           <button type="submit" className={styles.button} disabled={isLoading}>
             Login
           </button>
-          {isError && <p>Login failed. Please try again.</p>}
+          {isError && <p className={styles.errorMessage}>{errorMessage}</p>}
         </form>
         <div className={styles.footer}>
           Don&apos;t have an account?{" "}
