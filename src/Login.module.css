@@ -11,7 +11,7 @@
 .loginContainer {
   position: relative;
   width: 360px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.4);
   border: 2px solid var(--border-color);
   backdrop-filter: blur(20px);
   border-radius: 20px;

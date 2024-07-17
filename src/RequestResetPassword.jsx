@@ -7,17 +7,21 @@ import styles from "./RequestResetPassword.module.css";
 
 const RequestResetPassword = () => {
   const [email, setEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const requestResetPassword = useRequestResetPassword();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); // Clear previous error message
     try {
       await requestResetPassword.mutateAsync({ email });
       toast.success(
         "If an account with that email exists, a reset link has been sent."
       );
     } catch (error) {
-      toast.error("Failed to send reset link.");
+      const message =
+        error.response?.data?.message || "Failed to send reset link.";
+      setErrorMessage(message); // Set error message
     }
   };
 
@@ -44,6 +48,7 @@ const RequestResetPassword = () => {
           <button type="submit" className={styles.button}>
             Send Reset Link
           </button>
+          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
         </form>
         <div className={styles.footer}>
           <Link to="/login" className={styles.link}>
