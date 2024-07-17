@@ -19,9 +19,16 @@ const RequestResetPassword = () => {
         "If an account with that email exists, a reset link has been sent."
       );
     } catch (error) {
-      const message =
-        error.response?.data?.message || "Failed to send reset link.";
-      setErrorMessage(message); // Set error message
+      const backendErrors = error.response?.data?.errors;
+      if (backendErrors) {
+        const formattedErrors = Object.values(backendErrors).flat().join(", ");
+        setErrorMessage(formattedErrors);
+      } else {
+        setErrorMessage(
+          error.response?.data?.message || "Failed to send reset link."
+        );
+      }
+      toast.error("Failed to send reset link.");
     }
   };
 

@@ -10,15 +10,26 @@ const ConfirmResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const confirmResetPassword = useConfirmResetPassword();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Sending token:", token);
+    setErrorMessage("");
+
     try {
       await confirmResetPassword.mutateAsync({ email, token, newPassword });
       toast.success("Password has been reset successfully.");
       navigate("/login");
     } catch (error) {
+      const backendErrors = error.response?.data?.errors;
+      if (backendErrors) {
+        const formattedErrors = Object.values(backendErrors).flat().join(", ");
+        setErrorMessage(formattedErrors);
+      } else {
+        setErrorMessage(
+          error.response?.data?.message || "Failed to reset password."
+        );
+      }
       toast.error("Failed to reset password.");
     }
   };
@@ -41,6 +52,7 @@ const ConfirmResetPassword = () => {
                 className={styles.inputField}
                 required
               />
+              {errorMessage && <p className={styles.error}>{errorMessage}</p>}
             </label>
           </div>
           <button type="submit" className={styles.button}>

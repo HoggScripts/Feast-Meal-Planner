@@ -28,9 +28,17 @@ const Login = () => {
         toast.success("Login successful");
       },
       onError: (error) => {
-        setErrorMessage(
-          error.response?.data?.message || "Login failed. Please try again."
-        );
+        const backendErrors = error.response?.data?.errors;
+        if (backendErrors) {
+          const formattedErrors = Object.values(backendErrors)
+            .flat()
+            .join(", ");
+          setErrorMessage(formattedErrors);
+        } else {
+          setErrorMessage(
+            error.response?.data?.message || "Login failed. Please try again."
+          );
+        }
       },
     });
   };

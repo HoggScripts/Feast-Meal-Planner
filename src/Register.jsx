@@ -28,11 +28,19 @@ const Register = () => {
         );
       },
       onError: (error) => {
-        const message =
-          error.response?.data?.message ||
-          error.response?.data?.join(", ") ||
-          "Registration failed. Please try again.";
-        setErrorMessage(message);
+        const backendErrors = error.response?.data?.errors;
+        if (backendErrors) {
+          const formattedErrors = Object.values(backendErrors)
+            .flat()
+            .join(", ");
+          setErrorMessage(formattedErrors);
+        } else {
+          setErrorMessage(
+            error.response?.data?.message ||
+              "Registration failed. Please try again."
+          );
+        }
+        toast.error("Registration failed. Please try again.");
       },
     });
   };
