@@ -33,8 +33,8 @@ export const useFetchUserInfo = () => {
   return useQuery({
     queryKey: ["userInfo"],
     queryFn: fetchUserInfo,
-    staleTime: 1,
-    cacheTime: 0,
+    staleTime: 100,
+    cacheTime: 1000,
   });
 };
 

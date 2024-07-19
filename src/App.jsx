@@ -29,10 +29,8 @@ const App = () => {
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/user-info" element={<UserInfo />} />
-          {/* Add other protected routes here */}
         </Route>
 
-        {/* Redirect to login by default */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>

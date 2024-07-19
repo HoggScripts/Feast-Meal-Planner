@@ -4,7 +4,7 @@ import {
   useFetchProtectedData,
   useLogout,
 } from "./useUserActions";
-import Button from "./Button"; // Import the reusable Button component
+import Button from "./Button";
 import { Link } from "react-router-dom";
 
 const UserInfo = () => {
