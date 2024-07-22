@@ -1,15 +1,14 @@
 import api from "./api";
 import { toast } from "react-toastify";
-import { refreshToken as refreshAuthToken } from "./tokenApi";
+import { refreshToken as refreshAuthToken } from "./lib/tokenApi";
 import { useNavigate } from "react-router-dom";
 
 export const setupInterceptors = ({ token, setToken, isRefreshing }) => {
   const authInterceptor = api.interceptors.request.use((config) => {
     if (token && !config._retry) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("API request token:", token);
     }
-    console.log("Auth Interceptor: Config Headers", config.headers);
+
     return config;
   });
 

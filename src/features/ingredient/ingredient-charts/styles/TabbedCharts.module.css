@@ -1,0 +1,55 @@
+/* TabbedCharts.module.css */
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.chartHeader {
+  text-align: center;
+  color: #f1f1f1;
+}
+
+.chartTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.chartDescription {
+  font-size: 1rem;
+  color: #a1a1a1;
+}
+
+.chart {
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.card {
+  background-color: #2e2e2e; /* Darker background for cards */
+  color: #f1f1f1;
+}
+
+.cardHeader,
+.cardFooter {
+  background-color: #3e3e3e;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.cardDescription {
+  font-size: 1rem;
+  color: #a1a1a1;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}

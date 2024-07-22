@@ -1,0 +1,13 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #eaeaea;
+  border-radius: 0.5rem;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+.selectedCard {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  background-color: #f9f9f9;
+}

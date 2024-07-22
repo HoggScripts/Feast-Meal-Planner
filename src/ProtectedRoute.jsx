@@ -1,12 +1,10 @@
 // ProtectedRoute.js
 
 import { Navigate, Outlet } from "react-router-dom";
-import useTokenStore from "./useTokenStore";
+import useTokenStore from "./features/auth/hooks/useTokenStore";
 
 const ProtectedRoute = () => {
   const { token } = useTokenStore();
-
-  console.log("ProtectedRoute token:", token);
 
   return token ? <Outlet /> : <Navigate to="/login" />;
 };

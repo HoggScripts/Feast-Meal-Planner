@@ -1,11 +1,11 @@
 // UserInfo.jsx
+import { Link } from "react-router-dom";
+import { Button } from "./components/ui/button";
 import {
   useFetchUserInfo,
   useFetchProtectedData,
   useLogout,
-} from "./useUserActions";
-import Button from "./Button";
-import { Link } from "react-router-dom";
+} from "./features/auth/hooks/useUserActions";
 
 const UserInfo = () => {
   const { data, error, isLoading } = useFetchUserInfo();
@@ -26,7 +26,7 @@ const UserInfo = () => {
       <Button onClick={() => logout.mutate()} variant="danger">
         Logout
       </Button>
-      <Link to="/request-reset-password">Forgot your password?</Link>
+      <Link to="/ingredientManager">Manage Ingredients</Link>
     </div>
   );
 };

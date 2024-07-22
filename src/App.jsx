@@ -4,12 +4,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "./Login";
-import Register from "./Register";
-import RequestResetPassword from "./RequestResetPassword";
+import Login from "./features/auth/components/Login";
+import Register from "./features/auth/components/Register";
+import RequestResetPassword from "./features/auth/components/RequestResetPassword";
 import UserInfo from "./UserInfo";
 import ProtectedRoute from "./ProtectedRoute";
-import ConfirmResetPassword from "./ConfirmResetPassword";
+import ConfirmResetPassword from "./features/auth/components/ConfirmResetPassword";
+
+import IngredientPageLayout from "./features/ingredient/ingredient-layout/components/IngredientPageLayout";
 
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/user-info" element={<UserInfo />} />
+          <Route path="/ingredientManager" element={<IngredientPageLayout />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" />} />

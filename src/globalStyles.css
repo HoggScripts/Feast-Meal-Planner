@@ -20,7 +20,7 @@ html,
 body {
   height: 100%;
   margin: 0;
-  overflow: hidden; /* Prevent scrolling */
+
   font-family: var(--font-family); /* Ensure this is applied */
 }
 
@@ -75,4 +75,24 @@ body {
 
 .icon {
   color: var(--icon-color);
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 16px;
+  margin: 8px;
+  height: calc(50vh - 32px);
+  overflow: hidden;
+}
+
+.card-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart {
+  max-width: 100%;
+  height: auto;
 }
