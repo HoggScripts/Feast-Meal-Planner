@@ -11,7 +11,7 @@ const CostContributionPieChart = ({ data }) => (
       nameKey="name"
       innerRadius={60}
       outerRadius={120}
-      fill="#8884d8"
+      fill="var(--primary)"
       label
     >
       {data.map((entry, index) => (

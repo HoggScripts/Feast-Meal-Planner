@@ -3,8 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useConfirmResetPassword } from "../hooks/useUserActions";
 import { toast } from "react-toastify";
 import { FaLock } from "react-icons/fa";
-import styles from "../styles/ConfirmResetPassword.module.css";
-
 const ConfirmResetPassword = () => {
   const { token, email } = useParams();
   const [newPassword, setNewPassword] = useState("");

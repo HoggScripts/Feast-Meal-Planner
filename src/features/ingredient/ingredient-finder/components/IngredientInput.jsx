@@ -10,7 +10,7 @@ function IngredientInput({ input, setInput, handleSearch }) {
   };
 
   return (
-    <div>
+    <div className="flex space-x-2">
       <Input
         placeholder="Search for an ingredient"
         value={input}

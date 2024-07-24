@@ -8,7 +8,7 @@ const MacronutrientBarChart = ({ data }) => (
     <YAxis />
     <Tooltip />
     <Legend />
-    <Bar dataKey="value" fill="#8884d8">
+    <Bar dataKey="value" fill="var(--primary)">
       {data.map((entry, index) => (
         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
       ))}

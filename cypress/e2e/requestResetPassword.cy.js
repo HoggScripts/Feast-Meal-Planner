@@ -10,7 +10,7 @@ describe("Request Password Reset Page", () => {
     cy.visit("/request-reset-password");
 
     // Fill in the email field
-    cy.get('input[type="email"]').type(email);
+    cy.get('input[name="email"]').type(email);
     cy.get('button[type="submit"]').click();
 
     // Check that a success message is displayed
@@ -23,7 +23,7 @@ describe("Request Password Reset Page", () => {
     cy.visit("/request-reset-password");
 
     // Fill in the email field with an invalid email
-    cy.get('input[type="email"]').type("invalidemail@example.com");
+    cy.get('input[name="email"]').type("invalidemail@example.com");
     cy.get('button[type="submit"]').click();
 
     // Check that the generic success message is displayed

@@ -4,12 +4,18 @@ function IngredientImage({ src, alt }) {
       <img
         src="http://localhost:5173/NoPicture.webp"
         alt={alt}
-        className="w-16 h-16 mt-2"
+        className="w-16 h-16 mt-2 border border-gray-200 rounded-md p-1"
       />
     );
   }
 
-  return <img src={src} alt={alt} className="w-16 h-16 mt-2" />;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="w-16 h-16 mt-2 border border-gray-200 rounded-md p-1"
+    />
+  );
 }
 
 export default IngredientImage;

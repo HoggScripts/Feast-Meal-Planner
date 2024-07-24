@@ -1,5 +1,4 @@
 import IngredientCard from "./IngredientCard";
-import styles from "../styles/IngredientResults.module.css";
 
 function IngredientResults({
   searchResults,
@@ -8,7 +7,7 @@ function IngredientResults({
   onSelect,
 }) {
   return (
-    <div className={styles.resultsSection}>
+    <div className="flex flex-wrap justify-center gap-4">
       {searchLoading && <div>Loading...</div>}
       {searchError && <div>Error: {searchError.message}</div>}
       {searchResults?.map((ingredient) => (

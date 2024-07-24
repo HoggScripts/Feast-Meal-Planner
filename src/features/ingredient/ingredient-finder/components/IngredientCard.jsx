@@ -1,10 +1,8 @@
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import useIngredientStore from "../../hooks/useIngredientStore";
 import AmountInput from "./AmountInput";
 import UnitSelect from "./UnitSelect";
-import styles from "../styles/IngredientCard.module.css";
 import { useIngredientDetails } from "../../hooks/useIngredientDetails";
 import { useEffect, useState } from "react";
 
@@ -13,7 +11,7 @@ function IngredientCard({ ingredient, onSelect }) {
     useIngredientStore();
   const { details, fetchIngredientDetails, detailsLoading } =
     useIngredientDetails();
-  const [shouldAdd, setShouldAdd] = useState(false); // Add this state
+  const [shouldAdd, setShouldAdd] = useState(false);
 
   const handleAddToRecipe = () => {
     if (!currentIngredient.amount || !currentIngredient.unit) {
@@ -26,7 +24,7 @@ function IngredientCard({ ingredient, onSelect }) {
       amount: currentIngredient.amount,
       unit: currentIngredient.unit,
     });
-    setShouldAdd(true); // Set this flag to true when the button is clicked
+    setShouldAdd(true);
   };
 
   useEffect(() => {
@@ -44,7 +42,7 @@ function IngredientCard({ ingredient, onSelect }) {
 
       addIngredient(ingredientWithDetails);
       clearCurrentIngredient();
-      setShouldAdd(false); // Reset the flag after adding the ingredient
+      setShouldAdd(false);
     }
   }, [
     details,
@@ -57,30 +55,34 @@ function IngredientCard({ ingredient, onSelect }) {
 
   return (
     <Card
-      className={cn(styles.cardContainer, "hover:shadow-lg hover:bg-gray-100")}
+      className="hover:shadow-lg w-72 h-auto p-4"
       onClick={() => onSelect(ingredient)}
     >
-      <div className="flex-shrink-0 mr-4">
-        <h3 className="text-lg font-semibold">{ingredient.name}</h3>
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold">
+          {ingredient.name}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col items-center space-y-4">
         <img
           src={ingredient.image}
           alt={ingredient.name}
-          className="w-16 h-16 mt-2"
+          className="w-20 h-20 border border-gray-200 rounded-md p-1"
         />
-      </div>
-      {ingredient.id === currentIngredient.id && (
-        <>
-          <AmountInput />
-          <UnitSelect />
-          <Button
-            onClick={handleAddToRecipe}
-            className="w-full"
-            disabled={detailsLoading}
-          >
-            {detailsLoading ? "Loading..." : "Add to Recipe"}
-          </Button>
-        </>
-      )}
+        {ingredient.id === currentIngredient.id && (
+          <div className="flex flex-col space-y-2 w-full">
+            <AmountInput />
+            <UnitSelect />
+            <Button
+              onClick={handleAddToRecipe}
+              className="w-full mt-2"
+              disabled={detailsLoading}
+            >
+              {detailsLoading ? "Loading..." : "Add to Recipe"}
+            </Button>
+          </div>
+        )}
+      </CardContent>
     </Card>
   );
 }

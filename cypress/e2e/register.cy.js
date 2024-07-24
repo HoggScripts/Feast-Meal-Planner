@@ -1,45 +1,46 @@
-describe("Register Page", () => {
+describe("Registration", () => {
   const timestamp = new Date().getTime();
   const newUser = {
-    username: `user${timestamp}`,
-    email: `user${timestamp}@example.com`,
-    password: "NewUserPassword123",
-    firstName: "New",
-    lastName: "User",
+    username: `testuser_${timestamp}`,
+    email: `testuser_${timestamp}@example.com`,
+    password: "Password123", // Updated to include an uppercase letter
+    firstName: "John",
+    lastName: "Doe",
   };
-
-  it("should load the register page", () => {
-    cy.visit("/register");
-    cy.contains("Register").should("be.visible");
-  });
 
   it("should allow a user to register successfully", () => {
     cy.visit("/register");
 
     // Fill in the registration form
-    cy.get('input[type="text"]').eq(0).type(newUser.username);
-    cy.get('input[type="email"]').type(newUser.email);
-    cy.get('input[type="password"]').type(newUser.password);
-    cy.get('input[type="text"]').eq(1).type(newUser.firstName);
-    cy.get('input[type="text"]').eq(2).type(newUser.lastName);
+    cy.get('input[name="username"]').type(newUser.username);
+    cy.get('input[name="email"]').type(newUser.email);
+    cy.get('input[name="password"]').type(newUser.password);
+    cy.get('input[name="firstName"]').type(newUser.firstName);
+    cy.get('input[name="lastName"]').type(newUser.lastName);
+
+    // Submit the form
     cy.get('button[type="submit"]').click();
 
-    // Check that the user is redirected to the login page
+    // Assert that the user is redirected to the login page
     cy.url().should("include", "/login");
+    cy.contains("Login").should("be.visible");
   });
 
   it("should show an error message for existing user", () => {
+    // Use the same newUser object as above to simulate an existing user scenario
     cy.visit("/register");
 
     // Fill in the registration form with existing user data
-    cy.get('input[type="text"]').eq(0).type(newUser.username);
-    cy.get('input[type="email"]').type(newUser.email);
-    cy.get('input[type="password"]').type(newUser.password);
-    cy.get('input[type="text"]').eq(1).type(newUser.firstName);
-    cy.get('input[type="text"]').eq(2).type(newUser.lastName);
+    cy.get('input[name="username"]').type(newUser.username);
+    cy.get('input[name="email"]').type(newUser.email);
+    cy.get('input[name="password"]').type(newUser.password);
+    cy.get('input[name="firstName"]').type(newUser.firstName);
+    cy.get('input[name="lastName"]').type(newUser.lastName);
+
+    // Submit the form
     cy.get('button[type="submit"]').click();
 
-    // Check that an error message is displayed
+    // Assert that an error message is shown
     cy.contains("User already exists.").should("be.visible");
   });
 
@@ -48,10 +49,10 @@ describe("Register Page", () => {
     cy.get('button[type="submit"]').click();
 
     // Check that validation error messages are displayed
-    cy.contains("Username is required").should("be.visible");
-    cy.contains("Email is required").should("be.visible");
-    cy.contains("Password is required").should("be.visible");
-    cy.contains("First Name is required").should("be.visible");
-    cy.contains("Last Name is required").should("be.visible");
+    cy.contains("Username must be at least 2 characters.").should("be.visible");
+    cy.contains("Invalid email address").should("be.visible");
+    cy.contains("Password must be at least 6 characters.").should("be.visible");
+    cy.contains("First Name is required.").should("be.visible");
+    cy.contains("Last Name is required.").should("be.visible");
   });
 });

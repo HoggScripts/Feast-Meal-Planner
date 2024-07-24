@@ -1,20 +1,47 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useRequestResetPassword } from "../hooks/useUserActions";
 import { toast } from "react-toastify";
-import { IoIosMail } from "react-icons/io";
-import styles from "../styles/RequestResetPassword.module.css";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import "@/index.css"; // Ensure your global styles are imported
+
+import { useRequestResetPassword } from "../hooks/useUserActions";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+// Define the form schema using zod
+const formSchema = z.object({
+  email: z
+    .string()
+    .email("Invalid email address.")
+    .nonempty("Email is required."),
+});
 
 const RequestResetPassword = () => {
-  const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const requestResetPassword = useRequestResetPassword();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Initialize the form with react-hook-form and zodResolver
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const handleSubmit = async (data) => {
     setErrorMessage(""); // Clear previous error message
     try {
-      await requestResetPassword.mutateAsync({ email });
+      await requestResetPassword.mutateAsync({ email: data.email });
       toast.success(
         "If an account with that email exists, a reset link has been sent."
       );
@@ -33,32 +60,35 @@ const RequestResetPassword = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.requestContainer}>
-        <h1 className={styles.header}>Request Password Reset</h1>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label>
-              Email
-              <div className={styles.icon}>
-                <IoIosMail />
-              </div>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.inputField}
-                required
-              />
-            </label>
-          </div>
-          <button type="submit" className={styles.button}>
-            Send Reset Link
-          </button>
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-        </form>
-        <div className={styles.footer}>
-          <Link to="/login" className={styles.link}>
+    <div className="container">
+      <div className="request-container">
+        <h1 className="header">Request Password Reset</h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="m@example.com"
+                      required
+                      {...field} // Ensure to spread the field props
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Send Reset Link</Button>
+            {errorMessage && <p className="error">{errorMessage}</p>}
+          </form>
+        </Form>
+        <div className="footer">
+          <Link to="/login" className="link">
             Back to Login
           </Link>
         </div>

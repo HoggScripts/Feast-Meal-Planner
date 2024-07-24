@@ -1,24 +1,63 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "../hooks/useUserActions";
-import { IoIosMail } from "react-icons/io";
-import { FaLock, FaUser, FaRegUserCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import styles from "../styles/Register.module.css";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import "@/index.css";
+
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+const formSchema = z.object({
+  username: z
+    .string()
+    .min(2, { message: "Username must be at least 2 characters." }),
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters." }),
+  firstName: z.string().min(1, { message: "First Name is required." }),
+  lastName: z.string().min(1, { message: "Last Name is required." }),
+});
 
 const Register = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
   const { mutate: registerUser, isLoading } = useRegister();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+    },
+  });
+
   const onSubmit = (data) => {
-    setErrorMessage(""); // Clear any previous error message
+    setErrorMessage("");
 
     registerUser(data, {
       onSuccess: () => {
@@ -28,6 +67,7 @@ const Register = () => {
         );
       },
       onError: (error) => {
+        console.error("Registration error:", error.response?.data); // Log the error response
         const backendErrors = error.response?.data?.errors;
         if (backendErrors) {
           const formattedErrors = Object.values(backendErrors)
@@ -46,104 +86,107 @@ const Register = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.loginContainer}>
-        <h1 className={styles.header}>Register</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.formGroup}>
-            <label>
-              Username
-              <div className={styles.icon}>
-                <FaUser />
-              </div>
-              <input
-                type="text"
-                {...register("username", { required: "Username is required" })}
-                className={styles.inputField}
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl">Register</CardTitle>
+          <CardDescription>
+            Fill in the form below to create an account.
+          </CardDescription>
+        </CardHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <CardContent>
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      This is your public display name.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {errors.username && (
-                <p className={styles.error}>{errors.username.message}</p>
-              )}
-            </label>
-          </div>
-          <div className={styles.formGroup}>
-            <label>
-              Email
-              <div className={styles.icon}>
-                <IoIosMail />
-              </div>
-              <input
-                type="email"
-                {...register("email", { required: "Email is required" })}
-                className={styles.inputField}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="user@example.com"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {errors.email && (
-                <p className={styles.error}>{errors.email.message}</p>
-              )}
-            </label>
-          </div>
-          <div className={styles.formGroup}>
-            <label>
-              Password
-              <div className={styles.icon}>
-                <FaLock />
-              </div>
-              <input
-                type="password"
-                {...register("password", { required: "Password is required" })}
-                className={styles.inputField}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {errors.password && (
-                <p className={styles.error}>{errors.password.message}</p>
-              )}
-            </label>
-          </div>
-          <div className={styles.formGroup}>
-            <label>
-              First Name
-              <div className={styles.icon}>
-                <FaRegUserCircle />
-              </div>
-              <input
-                type="text"
-                {...register("firstName", {
-                  required: "First Name is required",
-                })}
-                className={styles.inputField}
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {errors.firstName && (
-                <p className={styles.error}>{errors.firstName.message}</p>
-              )}
-            </label>
-          </div>
-          <div className={styles.formGroup}>
-            <label>
-              Last Name
-              <div className={styles.icon}>
-                <FaRegUserCircle />
-              </div>
-              <input
-                type="text"
-                {...register("lastName", { required: "Last Name is required" })}
-                className={styles.inputField}
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {errors.lastName && (
-                <p className={styles.error}>{errors.lastName.message}</p>
+            </CardContent>
+            <CardFooter>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                Register
+              </Button>
+              {errorMessage && (
+                <p className="text-red-500 mt-2">{errorMessage}</p>
               )}
-            </label>
-          </div>
-          <button type="submit" className={styles.button} disabled={isLoading}>
-            Register
-          </button>
-          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-        </form>
-        <div className={styles.footer}>
+            </CardFooter>
+          </form>
+        </Form>
+        <div className="p-4 text-center">
           Already have an account?{" "}
-          <Link to="/login" className={styles.link}>
+          <Link to="/login" className="text-blue-500">
             Login here
           </Link>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };
