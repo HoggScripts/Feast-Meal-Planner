@@ -27,6 +27,7 @@ const UserInfo = () => {
         Logout
       </Button>
       <Link to="/ingredientManager">Manage Ingredients</Link>
+      <Link to="/CSSPlayground">CSS TESTING</Link>
     </div>
   );
 };

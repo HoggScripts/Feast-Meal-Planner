@@ -1,3 +1,5 @@
+import React from "react";
+
 function IngredientImage({ src, alt }) {
   if (src === "https://spoonacular.com/cdn/ingredients_100x100/no.jpg") {
     return (

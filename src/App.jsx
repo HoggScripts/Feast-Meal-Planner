@@ -13,6 +13,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import ConfirmResetPassword from "./features/auth/components/ConfirmResetPassword";
 import IngredientPageLayout from "./features/ingredient/ingredient-layout/components/IngredientPageLayout";
 import Layout from "./features/misc/components/Layout";
+import CSSPlayground from "./features/CSSTESTING/CSSPlayground";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
                 path="/ingredientManager"
                 element={<IngredientPageLayout />}
               />
+              <Route path="/CSSPlayground" element={<CSSPlayground />} />
             </Route>
           </Route>
 

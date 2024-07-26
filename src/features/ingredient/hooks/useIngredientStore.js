@@ -19,18 +19,28 @@ const useIngredientStore = create(
         estimatedCost: null,
         possibleUnits: [],
       },
+      selectedCurrency: "USD", // default currency
+      originalCosts: {}, // store original costs in USD
+
+      setSelectedCurrency: (currency) => set({ selectedCurrency: currency }),
+
       setSearchResults: (results) => set({ searchResults: results }),
+
       updateCurrentIngredient: (update) =>
         set((state) => ({
           currentIngredient: { ...state.currentIngredient, ...update },
         })),
+
       addIngredient: (ingredient) =>
         set((state) => {
           const newIngredients = [...state.ingredients, ingredient];
-          console.log("New ingredient added:", ingredient);
-          console.log("Updated list of ingredients:", newIngredients);
-          return { ingredients: newIngredients };
+          const originalCosts = {
+            ...state.originalCosts,
+            [ingredient.id]: ingredient.estimatedCost,
+          };
+          return { ingredients: newIngredients, originalCosts };
         }),
+
       clearCurrentIngredient: () =>
         set({
           currentIngredient: {
@@ -47,19 +57,40 @@ const useIngredientStore = create(
             possibleUnits: [],
           },
         }),
+
       removeIngredient: (id) =>
-        set((state) => ({
-          ingredients: state.ingredients.filter(
+        set((state) => {
+          const ingredients = state.ingredients.filter(
             (ingredient) => ingredient.id !== id
-          ),
-        })),
-      clearIngredients: () => set({ ingredients: [] }),
-      getTotalCost: () => {
-        const { ingredients } = get();
-        return ingredients.reduce(
-          (total, ingredient) => total + (ingredient.estimatedCost || 0),
-          0
+          );
+          const { [id]: _, ...originalCosts } = state.originalCosts;
+          return { ingredients, originalCosts };
+        }),
+
+      clearIngredients: () => set({ ingredients: [], originalCosts: {} }),
+
+      convertCurrency: async (targetCurrency) => {
+        const { ingredients, originalCosts } = get();
+        const updatedIngredients = await Promise.all(
+          ingredients.map(async (ingredient) => {
+            const originalCost = originalCosts[ingredient.id];
+            if (!originalCost) return ingredient;
+
+            if (targetCurrency === "USD") {
+              return { ...ingredient, estimatedCost: originalCost };
+            }
+
+            const res = await fetch(
+              `https://api.frankfurter.app/latest?amount=${originalCost}&from=USD&to=${targetCurrency}`
+            );
+            const data = await res.json();
+            const convertedCost = data.rates[targetCurrency];
+
+            return { ...ingredient, estimatedCost: convertedCost };
+          })
         );
+
+        set({ ingredients: updatedIngredients });
       },
     }),
     {

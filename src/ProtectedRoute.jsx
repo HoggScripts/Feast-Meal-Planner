@@ -1,5 +1,3 @@
-// ProtectedRoute.js
-
 import { Navigate, Outlet } from "react-router-dom";
 import useTokenStore from "./features/auth/hooks/useTokenStore";
 

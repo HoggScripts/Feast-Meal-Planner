@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "@/index.css";
+import TestComponent from "./TestComponent";
 
 const Login = () => {
   const {
@@ -131,6 +132,7 @@ const Login = () => {
           </Link>
         </div>
       </Card>
+      <TestComponent />
     </div>
   );
 };

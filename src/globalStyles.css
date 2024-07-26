@@ -15,7 +15,6 @@
   --font-family: "Poppins", sans-serif;
 }
 
-/* Ensure the background covers the full height and prevent scrolling */
 html,
 body {
   height: 100%;

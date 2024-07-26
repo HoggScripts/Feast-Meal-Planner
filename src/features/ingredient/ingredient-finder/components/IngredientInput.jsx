@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React from "react";
+import { Button, Input } from "@nextui-org/react";
 
 function IngredientInput({ input, setInput, handleSearch }) {
   const handleKeyPress = (e) => {

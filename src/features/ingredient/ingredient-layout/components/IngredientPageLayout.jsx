@@ -2,7 +2,11 @@ import IngredientSearch from "../../ingredient-finder/components/IngredientSearc
 import IngredientTable from "../../ingredient-table/components/IngredientTable";
 import TabbedCharts from "../../ingredient-charts/components/TabbedCharts";
 import RecipeInstructionsForm from "@/features/recipe/recipe-instructions/components/RecipeInstructionsForm";
-import TotalCostCard from "../../ingredient-charts/components/TotalCostCard";
+
+import CurrencyConverter from "@/features/misc/components/CurrencyConverter";
+import CookingTimeInput from "@/features/misc/components/CookingTimeInput";
+import TotalCostCard from "@/features/misc/components/TotalCostCard";
+import RecipeTagManager from "@/features/recipe/recipe-instructions/components/RecipeTagManager";
 
 const IngredientPageLayout = () => {
   return (
@@ -20,7 +24,9 @@ const IngredientPageLayout = () => {
         <RecipeInstructionsForm />
       </div>
       <div className="col-span-1">
-        <TotalCostCard />
+        <CurrencyConverter />
+        <CookingTimeInput />
+        <RecipeTagManager />
       </div>
     </div>
   );

@@ -1,11 +1,14 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "./sidebar";
+
 import Breadcrumbs from "./breadcrumbs";
+import NavBar from "./NavBar";
 
 const Layout = () => {
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
+    <div className="">
+      <div className="flex flex-row">
+        <NavBar></NavBar>
+      </div>
       <div className="flex-1 p-4 ml-14">
         <div className="mb-4">
           <Breadcrumbs />

@@ -1,11 +1,12 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { useIngredientSearch } from "../../hooks/useIngredientSearch";
+import React from "react";
+import { Spacer } from "@nextui-org/react";
 import IngredientInput from "./IngredientInput";
 import IngredientCard from "./IngredientCard";
+import { useIngredientSearch } from "../../hooks/useIngredientSearch";
 import { useSearchInput } from "../../hooks/useSearchInput";
 import { useSelectIngredient } from "../../hooks/useSelectIngredient";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 
 function IngredientSearch() {
   const {
@@ -39,13 +40,16 @@ function IngredientSearch() {
       {searchLoading && <div>Loading...</div>}
       {searchError && <div>Error: {searchError.message}</div>}
       <div className="flex flex-wrap justify-center gap-4">
-        {searchResults?.map((ingredient) => (
-          <IngredientCard
-            key={ingredient.id}
-            ingredient={ingredient}
-            onSelect={() => handleSelect(ingredient)}
-          />
+        {searchResults?.map((ingredient, index) => (
+          <React.Fragment key={ingredient.id}>
+            <IngredientCard
+              ingredient={ingredient}
+              onSelect={() => handleSelect(ingredient)}
+            />
+            {index < searchResults.length - 1 && <Spacer x={4} />}
+          </React.Fragment>
         ))}
+        <Separator className="my-2" />
       </div>
     </div>
   );

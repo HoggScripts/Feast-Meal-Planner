@@ -1,12 +1,11 @@
+import React from "react";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
 import useIngredientStore from "../../hooks/useIngredientStore";
 
 function UnitSelect() {
@@ -17,23 +16,16 @@ function UnitSelect() {
   };
 
   return (
-    <div className="w-full">
-      <Select value={currentIngredient.unit} onValueChange={handleUnitChange}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a unit" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Units</SelectLabel>
-            {currentIngredient.possibleUnits?.map((unit) => (
-              <SelectItem key={unit} value={unit}>
-                {unit}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
+    <Dropdown>
+      <DropdownTrigger>
+        <Button>{currentIngredient.unit || "Select a unit"}</Button>
+      </DropdownTrigger>
+      <DropdownMenu onAction={handleUnitChange}>
+        {currentIngredient.possibleUnits?.map((unit) => (
+          <DropdownItem key={unit}>{unit}</DropdownItem>
+        ))}
+      </DropdownMenu>
+    </Dropdown>
   );
 }
 

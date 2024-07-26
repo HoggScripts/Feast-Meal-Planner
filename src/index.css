@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --custom-navbar-color: 
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
     --card: 0 0% 100%;
@@ -58,15 +59,14 @@
     --chart-5: 340 75% 55%;
   }
 
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }
+
   .btn {
     @apply bg-primary text-primary-foreground;
   }
+
   .card {
     @apply bg-card text-card-foreground;
     width: 18rem; /* Increase card width */
@@ -74,27 +74,35 @@
     @apply p-4 m-2 rounded-lg shadow-md;
     @apply flex flex-col justify-between;
   }
+
   .popover {
     @apply bg-popover text-popover-foreground;
   }
+
   .secondary {
     @apply bg-secondary text-secondary-foreground;
   }
+
   .muted {
     @apply bg-muted text-muted-foreground;
   }
+
   .accent {
     @apply bg-accent text-accent-foreground;
   }
+
   .destructive {
     @apply bg-destructive text-destructive-foreground;
   }
+
   .container {
     @apply p-4 m-4 bg-card text-card-foreground border border-border rounded-lg shadow-md;
   }
+
   .card img {
     @apply border border-gray-200 rounded-md p-1;
   }
+
   .card:hover {
     @apply bg-primary-foreground text-primary;
   }

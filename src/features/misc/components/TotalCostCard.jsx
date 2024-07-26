@@ -1,8 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import useIngredientStore from "@/features/ingredient/hooks/useIngredientStore";
 import { DollarSign } from "lucide-react";
-import useIngredientStore from "../../hooks/useIngredientStore";
 
-const TotalCostCard = () => {
+const currencySymbols = {
+  USD: "$",
+  CAD: "$",
+  EUR: "€",
+  GBP: "£",
+};
+
+const TotalCostCard = ({ currency }) => {
   const { ingredients } = useIngredientStore();
 
   const totalCost = ingredients.reduce((acc, ingredient) => {
@@ -16,7 +23,10 @@ const TotalCostCard = () => {
         <DollarSign className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">${totalCost.toFixed(2)}</div>
+        <div className="text-2xl font-bold">
+          {currencySymbols[currency] || "$"}
+          {totalCost.toFixed(2)}
+        </div>
       </CardContent>
     </Card>
   );
