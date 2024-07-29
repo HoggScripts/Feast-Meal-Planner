@@ -20,6 +20,12 @@ module.exports = {
     },
     extend: {
       colors: {
+        "submission-blue": "#4A90E2",
+        "burly-wood": "#E7CBA9",
+        "destructive-red": "#D9534F",
+        "ecru-white": "#F5F3E7",
+        "vanilla-ice": "#F5E2E4",
+        "greyish-black": "#333333",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -88,6 +94,12 @@ module.exports = {
             },
           },
           colors: {
+            "pale-leaf": "#CCD4BF",
+            "burly-wood": "#E7CBA9",
+            zinnwaldite: "#EEBAB2",
+            "ecru-white": "#F5F3E7",
+            "vanilla-ice": "#F5E2E4",
+            "greyish-black": "#333333",
             background: "hsl(var(--background))",
             foreground: "hsl(var(--foreground))",
             primary: {
@@ -132,6 +144,12 @@ module.exports = {
             },
           },
           colors: {
+            "pale-leaf": "#CCD4BF",
+            "burly-wood": "#E7CBA9",
+            zinnwaldite: "#EEBAB2",
+            "ecru-white": "#F5F3E7",
+            "vanilla-ice": "#F5E2E4",
+            "greyish-black": "#333333",
             background: "hsl(var(--background))",
             foreground: "hsl(var(--foreground))",
             primary: {

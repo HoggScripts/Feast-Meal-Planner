@@ -18,3 +18,8 @@ export const getIngredientDetails = async (id, amount, unit) => {
   });
   return response.data;
 };
+
+export const fetchJoke = async () => {
+  const response = await api.get(`/ingredients/joke`);
+  return response.data.text;
+};

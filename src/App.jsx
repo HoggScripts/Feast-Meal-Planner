@@ -5,15 +5,16 @@ import {
   Navigate,
 } from "react-router-dom";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import Login from "./features/auth/components/Login";
-import Register from "./features/auth/components/Register";
-import RequestResetPassword from "./features/auth/components/RequestResetPassword";
+import Login from "./features/auth/Login";
+import Register from "./features/auth/Register";
+import RequestResetPassword from "./features/auth/RequestResetPassword";
 import UserInfo from "./UserInfo";
 import ProtectedRoute from "./ProtectedRoute";
-import ConfirmResetPassword from "./features/auth/components/ConfirmResetPassword";
-import IngredientPageLayout from "./features/ingredient/ingredient-layout/components/IngredientPageLayout";
-import Layout from "./features/misc/components/Layout";
-import CSSPlayground from "./features/CSSTESTING/CSSPlayground";
+import ConfirmResetPassword from "./features/auth/ConfirmResetPassword";
+
+import Layout from "./features/layouts/Layout";
+
+import RecipeMakerPage from "./features/recipe-maker/RecipeMakerPage";
 
 const App = () => {
   return (
@@ -35,12 +36,8 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route path="/user-info" element={<UserInfo />} />
-              <Route
-                path="/ingredientManager"
-                element={<IngredientPageLayout />}
-              />
-              <Route path="/CSSPlayground" element={<CSSPlayground />} />
             </Route>
+            <Route path="/recipe-maker-layout" element={<RecipeMakerPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/login" />} />

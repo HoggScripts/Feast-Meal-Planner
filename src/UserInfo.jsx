@@ -2,10 +2,10 @@
 import { Link } from "react-router-dom";
 import { Button } from "./components/ui/button";
 import {
-  useFetchUserInfo,
   useFetchProtectedData,
+  useFetchUserInfo,
   useLogout,
-} from "./features/auth/hooks/useUserActions";
+} from "./hooks/useUserActions";
 
 const UserInfo = () => {
   const { data, error, isLoading } = useFetchUserInfo();
@@ -28,6 +28,7 @@ const UserInfo = () => {
       </Button>
       <Link to="/ingredientManager">Manage Ingredients</Link>
       <Link to="/CSSPlayground">CSS TESTING</Link>
+      <Link to="/recipe-maker-layout">version 2</Link>
     </div>
   );
 };

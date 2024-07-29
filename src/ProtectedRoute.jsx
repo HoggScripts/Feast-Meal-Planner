@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import useTokenStore from "./features/auth/hooks/useTokenStore";
+import useTokenStore from "./hooks/useTokenStore";
 
 const ProtectedRoute = () => {
   const { token } = useTokenStore();

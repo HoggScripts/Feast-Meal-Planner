@@ -7,9 +7,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import { setupInterceptors, ejectInterceptors } from "./apiInterceptors"; // Import interceptors
-import useTokenStore from "./features/auth/hooks/useTokenStore"; // Import token store
+
 import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
+import useTokenStore from "./hooks/useTokenStore";
 
 const AppWithInterceptors = () => {
   const { token, setToken } = useTokenStore(); // Access token and setToken function
