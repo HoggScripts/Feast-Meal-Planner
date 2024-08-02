@@ -1,10 +1,10 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useTokenStore from "./useTokenStore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
+  confirmResetPassword,
   fetchProtectedData,
   fetchUserInfo,
   loginUser,
@@ -122,15 +122,4 @@ export const useConfirmResetPassword = () => {
       toast.error(error.response?.data?.message || "Failed to reset password.");
     },
   });
-};
-
-export const useRedirectAuthenticatedUser = (redirectPath = "/user-info") => {
-  const { token } = useTokenStore();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      navigate(redirectPath);
-    }
-  }, [token, navigate, redirectPath]);
 };

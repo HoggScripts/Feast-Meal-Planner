@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { IoIosMail } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import { useForm } from "react-hook-form";
@@ -16,10 +15,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "@/index.css";
-import TestComponent from "./TestComponent";
-import { useLogin, useRedirectAuthenticatedUser } from "@/hooks/useUserActions";
+import { useLogin } from "@/hooks/useUserActions";
+import useTokenStore from "@/hooks/useTokenStore";
 
 const Login = () => {
+  const { token } = useTokenStore();
   const {
     register,
     handleSubmit,
@@ -29,14 +29,18 @@ const Login = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
-  useRedirectAuthenticatedUser("/user-info");
+  useEffect(() => {
+    if (token) {
+      navigate("/landing-page");
+    }
+  }, [token, navigate]);
 
   const onSubmit = (data) => {
     setErrorMessage("");
 
     login(data, {
       onSuccess: () => {
-        navigate("/user-info");
+        navigate("/landing-page");
       },
       onError: (error) => {
         const backendErrors = error.response?.data?.errors;
@@ -130,7 +134,6 @@ const Login = () => {
           </Link>
         </div>
       </Card>
-      <TestComponent />
     </div>
   );
 };

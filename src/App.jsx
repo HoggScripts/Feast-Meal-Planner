@@ -8,13 +8,13 @@ import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
 import RequestResetPassword from "./features/auth/RequestResetPassword";
-import UserInfo from "./UserInfo";
+
 import ProtectedRoute from "./ProtectedRoute";
 import ConfirmResetPassword from "./features/auth/ConfirmResetPassword";
 
-import Layout from "./features/layouts/Layout";
-
-import RecipeMakerPage from "./features/recipe-maker/RecipeMakerPage";
+import RecipeMakerPage from "./features/pages/CreateRecipesPage";
+import LandingPage from "./features/pages/LandingPage";
+import AppLayout from "./features/pages/AppLayout";
 
 const App = () => {
   return (
@@ -34,10 +34,10 @@ const App = () => {
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
-            <Route element={<Layout />}>
-              <Route path="/user-info" element={<UserInfo />} />
+            <Route element={<AppLayout />}>
+              <Route path="/landing-page" element={<LandingPage />} />
+              <Route path="/create-recipes" element={<RecipeMakerPage />} />
             </Route>
-            <Route path="/recipe-maker-layout" element={<RecipeMakerPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/login" />} />

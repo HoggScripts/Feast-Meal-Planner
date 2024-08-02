@@ -22,8 +22,8 @@ const useRecipeStore = create(
           original: 0,
           converted: 0,
         },
-        selectedCurrency: "USD",
       },
+      selectedCurrency: "USD",
       originalCosts: {},
 
       setRecipeInfo: (info) =>
@@ -81,14 +81,19 @@ const useRecipeStore = create(
               original: 0,
               converted: 0,
             },
-            selectedCurrency: "USD",
           },
+          selectedCurrency: "USD",
           originalCosts: {},
         }),
 
       setInstructions: (instructions) =>
         set((state) => ({
           recipe: { ...state.recipe, instructions },
+        })),
+
+      setSelectedCurrency: (currency) =>
+        set((state) => ({
+          selectedCurrency: currency,
         })),
 
       convertCurrency: async (targetCurrency) => {
@@ -116,8 +121,8 @@ const useRecipeStore = create(
           recipe: {
             ...recipe,
             ingredients: updatedIngredients,
-            selectedCurrency: targetCurrency,
           },
+          selectedCurrency: targetCurrency,
         });
       },
     }),

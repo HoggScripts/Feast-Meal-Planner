@@ -14,10 +14,12 @@ const Breadcrumbs = () => {
 
   return (
     <Breadcrumb>
-      <BreadcrumbList>
+      <BreadcrumbList className="flex space-x-2 text-gray-600">
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link to="/">Home</Link>
+            <Link to="/" className="hover:underline">
+              Home
+            </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         {pathnames.map((value, index) => {
@@ -30,7 +32,9 @@ const Breadcrumbs = () => {
               ) : (
                 <>
                   <BreadcrumbLink asChild>
-                    <Link to={to}>{value}</Link>
+                    <Link to={to} className="hover:underline">
+                      {value}
+                    </Link>
                   </BreadcrumbLink>
                   <BreadcrumbSeparator />
                 </>

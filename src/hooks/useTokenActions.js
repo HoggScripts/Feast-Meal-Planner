@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useTokenStore from "./useTokenStore";
-import { refreshToken as refreshAuthToken } from "../../../lib/tokenApi"; // Import the refreshToken function
+import { refreshToken as refreshAuthToken } from "../lib/tokenApi";
 
 const useTokenActions = () => {
   const { token, setToken } = useTokenStore();
