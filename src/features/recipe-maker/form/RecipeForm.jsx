@@ -33,9 +33,7 @@ const formSchema = z.object({
       message: "Cook time must be at least 1 minute.",
     })
   ),
-  instructions: z.array(
-    z.string().min(1, { message: "Step cannot be blank." })
-  ),
+  instructions: z.array(z.string()),
   ingredients: z.array(
     z.object({
       id: z.string(),
@@ -158,6 +156,9 @@ export function RecipeForm() {
   };
 
   const handleStepChange = (index, event) => {
+    {
+      steps[index - 1] === "";
+    }
     const newSteps = [...steps];
     newSteps[index] = event.target.value;
     setSteps(newSteps);
@@ -211,6 +212,7 @@ export function RecipeForm() {
           handleRemoveStep={handleRemoveStep}
           handleAddStep={handleAddStep}
         />
+
         <IngredientSearch />
         <div className="flex space-x-2">
           <Button

@@ -11,6 +11,9 @@ const IngredientSearch = () => {
   const [selectedIngredient, setSelectedIngredient] = useState(null);
 
   const { searchResults, searchError, handleSearch } = useIngredientLookup();
+
+  const [errorMessage, setErrorMessage] = useState("");
+
   const { recipe, removeIngredient } = useRecipeStore((state) => ({
     recipe: state.recipe,
     removeIngredient: state.removeIngredient,
@@ -18,10 +21,21 @@ const IngredientSearch = () => {
 
   const handleIngredientSearchChange = (e) => {
     setIngredientSearch(e.target.value);
+    if (e.target.value === "") {
+      setErrorMessage("Search field is empty");
+    } else {
+      setErrorMessage("");
+    }
   };
 
   const handleIngredientSearchClick = async () => {
+    if (ingredientSearch.trim() === "") {
+      setErrorMessage("Search field cannot be empty.");
+      return;
+    }
+
     console.log("Search button clicked with query:", ingredientSearch);
+    setErrorMessage(""); // Clear any existing error messages before starting a new search
     await handleSearch(ingredientSearch);
     setIngredientSearch("");
   };
@@ -45,6 +59,12 @@ const IngredientSearch = () => {
       console.log("Mapped ingredients:", mappedIngredients);
     }
   }, [searchResults]);
+
+  useEffect(() => {
+    if (searchError) {
+      setErrorMessage(searchError.message);
+    }
+  }, [searchError]);
 
   return (
     <>
@@ -88,7 +108,9 @@ const IngredientSearch = () => {
           <FaSearch className="mr-2" /> Search
         </Button>
       </div>
-      {searchError && <div>Error: {searchError.message}</div>}
+
+      {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
+
       {ingredients.length > 0 && (
         <div className="mt-4">
           {ingredients.map((ingredient) => (
