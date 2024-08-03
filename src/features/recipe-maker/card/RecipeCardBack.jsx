@@ -1,4 +1,5 @@
 import CardTabs from "./CardTabs";
+import NutritionTable from "./NutritionTable";
 
 function RecipeCardBack() {
   return (
@@ -12,7 +13,7 @@ function RecipeCardBack() {
           />
         </div>
         <div className="m-2">
-          <CardTabs />
+          <NutritionTable />
         </div>
       </div>
     </div>

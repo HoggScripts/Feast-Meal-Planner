@@ -15,6 +15,7 @@ import ConfirmResetPassword from "./features/auth/ConfirmResetPassword";
 import RecipeMakerPage from "./features/pages/CreateRecipesPage";
 import LandingPage from "./features/pages/LandingPage";
 import AppLayout from "./features/pages/AppLayout";
+import ViewRecipesPage from "./features/pages/ViewRecipesPage";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
             <Route element={<AppLayout />}>
               <Route path="/landing-page" element={<LandingPage />} />
               <Route path="/create-recipes" element={<RecipeMakerPage />} />
+              <Route path="/view-recipes" element={<ViewRecipesPage />} />
             </Route>
           </Route>
 

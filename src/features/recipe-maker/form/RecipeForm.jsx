@@ -129,6 +129,7 @@ export function RecipeForm() {
 
       // Call the mutation function to create the recipe
       createRecipeMutation.mutate(mappedValues);
+      handleClear();
     } catch (error) {
       toast.error("Failed to save recipe. Please try again.");
       console.error("Failed to save recipe", error);

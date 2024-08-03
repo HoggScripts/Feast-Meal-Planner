@@ -17,9 +17,10 @@ export const setupInterceptors = ({ token, setToken, isRefreshing }) => {
     async (error) => {
       const originalRequest = error.config;
       if (
-        error.response?.status === 401 &&
-        !originalRequest._retry &&
-        !isRefreshing
+        error.response?.status === 401 ||
+        (error.response?.status === 400 &&
+          !originalRequest._retry &&
+          !isRefreshing)
       ) {
         originalRequest._retry = true;
         console.log("Response error 401, attempting token refresh...");
@@ -37,7 +38,7 @@ export const setupInterceptors = ({ token, setToken, isRefreshing }) => {
           console.log("Token refresh failed during response handling.");
           setToken(null);
           isRefreshing = false;
-          toast.error("Session expired. Please log in again.");
+
           const navigate = useNavigate();
           navigate("/login");
         }
