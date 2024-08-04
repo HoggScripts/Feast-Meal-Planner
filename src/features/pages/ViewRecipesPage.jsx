@@ -1,4 +1,5 @@
 import { useFetchRecipes } from "@/hooks/useRecipeActions";
+import RecipeCard from "../recipes/detailed-card/RecipeCard";
 
 function ViewRecipesPage() {
   const { data: recipes, error, isLoading } = useFetchRecipes();
@@ -14,12 +15,14 @@ function ViewRecipesPage() {
   }
 
   return (
-    <div className="grid grid-cols-12 min-h-screen">
-      <ul className="col-span-12">
+    <div className="grid grid-cols-12 min-h-screen p-4">
+      <div className="col-span-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {recipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.recipeName}</li>
+          <div className="max-w-xs w-full" key={recipe.id}>
+            <RecipeCard isLoadedRecipe={true} recipe={recipe} key={recipe.id} />
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

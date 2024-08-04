@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import useRecipeStore from "@/hooks/useRecipeStore";
 import RecipeCardFront from "./RecipeCardFront";
 import RecipeCardBack from "./RecipeCardBack";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
-function RecipeCard({ recipe }) {
+function RecipeCard({ isLoadedRecipe, recipe: propRecipe }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const { recipe: storeRecipe } = useRecipeStore((state) => ({
+    recipe: state.recipe,
+  }));
+
+  const recipe = isLoadedRecipe ? propRecipe : storeRecipe;
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);

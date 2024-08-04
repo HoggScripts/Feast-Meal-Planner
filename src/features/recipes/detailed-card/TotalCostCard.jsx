@@ -1,5 +1,4 @@
 import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
-import useRecipeStore from "@/hooks/useRecipeStore";
 
 const currencySymbols = {
   USD: "$",
@@ -8,11 +7,7 @@ const currencySymbols = {
   GBP: "£",
 };
 
-const TotalCostCard = ({ currency }) => {
-  const { recipe } = useRecipeStore((state) => ({
-    recipe: state.recipe,
-  }));
-
+const TotalCostCard = ({ recipe, currency = "USD" }) => {
   const totalCost = recipe.ingredients.reduce((acc, ingredient) => {
     return acc + (ingredient.estimatedCost || 0);
   }, 0);
@@ -24,7 +19,7 @@ const TotalCostCard = ({ currency }) => {
       </CardHeader>
       <Divider />
       <CardBody>
-        <p className="text-2xl font-bol">
+        <p className="text-2xl font-bold">
           {currencySymbols[currency] || "$"}
           {totalCost.toFixed(2)}
         </p>

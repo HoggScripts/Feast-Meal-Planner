@@ -1,21 +1,39 @@
-import useRecipeStore from "@/hooks/useRecipeStore";
-import CurrencyConverter from "./CurrencyConverter";
+import React from "react";
+import TotalCostCard from "./TotalCostCard";
+import { MdCookie, MdDinnerDining, MdLunchDining } from "react-icons/md";
+import { GiCupcake, GiRawEgg } from "react-icons/gi";
+import { FaPepperHot } from "react-icons/fa";
 
-function RecipeCardFront() {
-  const recipe = useRecipeStore((state) => state.recipe);
+// Map meal type to corresponding icon
+const mealTypeIcons = {
+  Breakfast: <GiRawEgg size={24} />,
+  Lunch: <MdLunchDining size={24} />,
+  Dinner: <MdDinnerDining size={24} />,
+  Snack: <MdCookie size={24} />,
+  Dessert: <GiCupcake size={24} />,
+};
 
-  // Function to determine the image source
+function RecipeCardFront({ recipe }) {
+  if (!recipe) {
+    return <div>Recipe data is not available.</div>;
+  }
+
   const getImageSrc = () => {
     if (recipe.image instanceof File) {
-      // If recipe.image is a File object, create an object URL
       return URL.createObjectURL(recipe.image);
     } else if (typeof recipe.image === "string") {
-      // If recipe.image is a string (URL), use it directly
       return recipe.image;
     } else {
-      // Fallback to a default image
       return "stockFoodImage.jpg";
     }
+  };
+
+  const renderSpicinessIcons = (spicinessLevel) => {
+    const icons = [];
+    for (let i = 0; i < spicinessLevel; i++) {
+      icons.push(<FaPepperHot key={i} color="red" size={24} />);
+    }
+    return icons;
   };
 
   return (
@@ -29,13 +47,22 @@ function RecipeCardFront() {
           />
         </div>
         <div className="p-4">
-          <h2 className="text-4xl font-bold mb-4">{recipe.recipeName}</h2>
-          <div className="flex justify-start gap-4 border-b border-gray-300 p-4">
+          <h2 className="text-4xl font-bold mb-4">
+            {recipe.recipeName || "No Recipe Name"}
+          </h2>
+          <div className="flex items-center text-lg font-medium mb-4">
+            {mealTypeIcons[recipe.mealType] || null}
+            <span className="ml-2">{recipe.mealType}</span>
+            <span className="flex items-center ml-4">
+              {renderSpicinessIcons(recipe.spicinessLevel || 0)}{" "}
+            </span>
+          </div>
+          <div className="flex justify-start gap-4 border-b border-gray-300 ">
             <p>
-              <strong>Servings:</strong> {recipe.servings}
+              <strong>Servings:</strong> {recipe.servings || "N/A"}
             </p>
             <p>
-              <strong>Cook Time:</strong> {recipe.cookTime} minutes
+              <strong>Cook Time:</strong> {recipe.cookTime || "N/A"} minutes
             </p>
           </div>
           <div className="flex mt-4">
@@ -50,10 +77,7 @@ function RecipeCardFront() {
                   ))}
                 </ol>
               ) : (
-                <p>
-                  No instructions provided. Are you a cooking wizard? Just wing
-                  it and let the magic happen!
-                </p>
+                <p>No instructions provided.</p>
               )}
             </div>
             <div className="w-2/5 pl-4 border-l border-gray-300">
@@ -62,19 +86,14 @@ function RecipeCardFront() {
                 <ul className="list-disc pl-5">
                   {recipe.ingredients.map((ingredient, index) => (
                     <li key={index} className="mb-2">
-                      <div className="flex items-center">
-                        <span>{`${ingredient.amount} ${ingredient.unit} ${ingredient.name}`}</span>
-                      </div>
+                      {`${ingredient.amount} ${ingredient.unit} ${ingredient.name}`}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p>
-                  No ingredients added yet. Add some ingredients to make your
-                  recipe complete!
-                </p>
+                <p>No ingredients added yet.</p>
               )}
-              {recipe.ingredients.length > 0 && <CurrencyConverter />}
+              <TotalCostCard recipe={recipe} />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
-import CardTabs from "./CardTabs";
+import React from "react";
 import NutritionTable from "./NutritionTable";
 
-function RecipeCardBack() {
+function RecipeCardBack({ recipe }) {
   return (
     <div className="flex justify-center items-start h-full text-greyish-black">
       <div className="relative w-full max-w-2xl bg-white border border-gray-300 rounded-lg shadow-lg">
@@ -13,7 +13,7 @@ function RecipeCardBack() {
           />
         </div>
         <div className="m-2">
-          <NutritionTable />
+          <NutritionTable recipe={recipe} />
         </div>
       </div>
     </div>

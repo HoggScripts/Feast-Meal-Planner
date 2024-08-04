@@ -7,6 +7,8 @@ const useRecipeStore = create(
       recipe: {
         id: null,
         recipeName: "",
+        mealType: "", // New property for meal type
+        spicinessLevel: 0, // New property for spiciness
         image: null,
         servings: 1,
         cookTime: 1,
@@ -31,6 +33,11 @@ const useRecipeStore = create(
           recipe: { ...state.recipe, ...info },
         })),
 
+      setSpicinessLevel: (level) =>
+        set((state) => ({
+          recipe: { ...state.recipe, spicinessLevel: level },
+        })),
+
       addIngredient: (ingredient) =>
         set((state) => {
           const newIngredients = [...state.recipe.ingredients, ingredient];
@@ -50,7 +57,6 @@ const useRecipeStore = create(
             (ingredient) => ingredient.id !== id
           );
 
-          // Using filter to create a new object without the id
           const originalCosts = Object.keys(state.originalCosts)
             .filter((key) => key !== id.toString())
             .reduce((result, current) => {
@@ -66,6 +72,8 @@ const useRecipeStore = create(
           recipe: {
             id: null,
             recipeName: "",
+            mealType: "", // Reset mealType when clearing the recipe
+            spicinessLevel: 0, // Reset spiciness when clearing
             image: null,
             servings: 1,
             cookTime: 1,

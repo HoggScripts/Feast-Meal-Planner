@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,16 +10,17 @@ import RecipeSteps from "./RecipeSteps";
 import IngredientSearch from "./IngredientSearch";
 import { Button } from "@nextui-org/react";
 import { IoIosNuclear } from "react-icons/io";
+import { toast } from "react-toastify";
+import { TypeSelect } from "./TypeSelect";
+import SpicinessRating from "./SpicinessRating"; // Import the SpicinessRating component
 import { useCreateRecipe } from "@/hooks/useRecipeActions";
-import { toast } from "react-toastify"; // Assuming you're using react-toastify for notifications
-import useTokenActions from "@/hooks/useTokenActions";
-import useTokenStore from "@/hooks/useTokenStore";
 
 // Define your form schema using Zod
 const formSchema = z.object({
   recipeName: z.string().min(2, {
     message: "Recipe name must be at least 2 characters.",
   }),
+  mealType: z.string().optional(),
   image: z.any(),
   servings: z.preprocess(
     (val) => Number(val),
@@ -48,49 +49,70 @@ const formSchema = z.object({
       estimatedCost: z.number().optional(),
     })
   ),
+  spicinessLevel: z.number().min(0).max(3).optional(), // Rename to match DTO
 });
 
 export function RecipeForm() {
-  const { recipe, setRecipeInfo, clearRecipe } = useRecipeStore((state) => ({
-    recipe: state.recipe,
-    setRecipeInfo: state.setRecipeInfo,
-    clearRecipe: state.clearRecipe,
-  }));
+  // Access the recipe store
+  const { recipe, setRecipeInfo, clearRecipe, setSpicinessLevel } =
+    useRecipeStore((state) => ({
+      recipe: state.recipe,
+      setRecipeInfo: state.setRecipeInfo,
+      clearRecipe: state.clearRecipe,
+      setSpicinessLevel: state.setSpicinessLevel, // Make sure this method is called
+    }));
 
+  // Create mutation for recipe creation
+  const createRecipeMutation = useCreateRecipe();
+
+  // Initialize react-hook-form
   const { control, handleSubmit, reset, setValue } = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { ...recipe, ingredients: recipe.ingredients || [] },
+    defaultValues: {
+      ...recipe,
+      ingredients: recipe.ingredients || [],
+      mealType: "",
+      spicinessLevel: recipe.spicinessLevel || 0, // Updated name
+    },
   });
 
+  // Local state for selected meal type and spiciness level
+  const [selectedMealType, setSelectedMealType] = useState(
+    recipe.mealType || ""
+  );
+  const [spicinessLevel, setLocalSpicinessLevel] = useState(
+    recipe.spicinessLevel || 0
+  );
+
+  // Reference for file input
   const fileInputRef = useRef(null);
+
+  // State for instructions and ingredients
   const [steps, setSteps] = useState(
     recipe.instructions.length ? recipe.instructions : [""]
   );
   const [ingredients, setIngredients] = useState(recipe.ingredients || []);
 
+  // Set form values on initial load and when dependencies change
   useEffect(() => {
     setValue("instructions", steps);
     setValue("ingredients", ingredients);
-  }, [steps, ingredients, setValue]);
+    setValue("spicinessLevel", spicinessLevel); // Updated name
+  }, [steps, ingredients, spicinessLevel, setValue]);
 
-  // Cleanup object URL if necessary
+  // Set the selected meal type from the recipe
   useEffect(() => {
-    return () => {
-      if (recipe.image instanceof File) {
-        URL.revokeObjectURL(recipe.image);
-      }
-    };
-  }, [recipe.image]);
+    setSelectedMealType(recipe.mealType || "");
+  }, [recipe.mealType]);
 
-  // Use the mutation hook from useCreateRecipe
-  const createRecipeMutation = useCreateRecipe();
-
+  // Handle form submission
   const onSubmit = async (values) => {
     try {
-      setRecipeInfo(values);
-      let imageBase64 = null;
+      setRecipeInfo({ ...values, spicinessLevel }); // Update recipe info in the store
+      setSpicinessLevel(spicinessLevel); // Update spiciness level in the store
 
-      // Check if the image is a File object and convert it to a Base64 string
+      // Handle image upload
+      let imageBase64 = null;
       if (values.image instanceof File) {
         imageBase64 = await new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -99,16 +121,16 @@ export function RecipeForm() {
           reader.readAsDataURL(values.image);
         });
       }
-
-      // Set imageBase64 to null if it's an empty object or an empty string
       if (!imageBase64 || imageBase64 === "{}") {
         imageBase64 = null;
       }
 
-      // Map frontend values to backend DTO structure
+      // Prepare values for API submission
       const mappedValues = {
-        recipeName: values.recipeName,
-        image: imageBase64, // Ensure Image is either a Base64 string or null
+        ...values,
+        mealType: selectedMealType,
+        spicinessLevel,
+        image: imageBase64,
         ingredients: recipe.ingredients.map((ingredient) => ({
           id: ingredient.id,
           name: ingredient.name,
@@ -120,14 +142,11 @@ export function RecipeForm() {
           carbohydrates: ingredient.carbohydrates || null,
           estimatedCost: ingredient.estimatedCost || null,
         })),
-        steps: values.instructions,
-        servings: values.servings,
-        cookTime: values.cookTime,
       };
 
-      console.log("Mapped Values:", mappedValues); // Log the outgoing object
+      console.log("Mapped Values:", mappedValues);
 
-      // Call the mutation function to create the recipe
+      // Call the mutation to create the recipe
       createRecipeMutation.mutate(mappedValues);
       handleClear();
     } catch (error) {
@@ -136,18 +155,23 @@ export function RecipeForm() {
     }
   };
 
+  // Clear/reset form fields
   const handleClear = () => {
     if (recipe.image instanceof File) {
       URL.revokeObjectURL(recipe.image);
     }
     reset({
       recipeName: "",
+      mealType: "",
+      spicinessLevel: 0, // Reset spiciness level
       image: null,
       servings: 1,
       cookTime: 1,
       instructions: [""],
       ingredients: [],
     });
+    setSelectedMealType("");
+    setLocalSpicinessLevel(0); // Reset spiciness selection
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -156,28 +180,29 @@ export function RecipeForm() {
     setIngredients([]);
   };
 
+  // Handle step change in form
   const handleStepChange = (index, event) => {
-    {
-      steps[index - 1] === "";
-    }
     const newSteps = [...steps];
     newSteps[index] = event.target.value;
     setSteps(newSteps);
     setRecipeInfo({ ...recipe, instructions: newSteps });
   };
 
+  // Add a new step in the form
   const handleAddStep = () => {
     const newSteps = [...steps, ""];
     setSteps(newSteps);
     setRecipeInfo({ ...recipe, instructions: newSteps });
   };
 
+  // Remove a step from the form
   const handleRemoveStep = (index) => {
     const newSteps = steps.filter((_, stepIndex) => stepIndex !== index);
     setSteps(newSteps);
     setRecipeInfo({ ...recipe, instructions: newSteps });
   };
 
+  // Render the form
   return (
     <div className="w-full p-4">
       <div className="border-b border-gray-300 p-4 flex items-center justify-between">
@@ -191,6 +216,20 @@ export function RecipeForm() {
         </Button>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
+        <TypeSelect
+          selectedMealType={selectedMealType}
+          onChange={(value) => {
+            setSelectedMealType(value);
+            setRecipeInfo({ mealType: value });
+          }}
+        />
+        <SpicinessRating
+          initialRating={spicinessLevel} // Updated name
+          onRatingChange={(rating) => {
+            setLocalSpicinessLevel(rating); // Update local state
+            setSpicinessLevel(rating); // Update store state
+          }}
+        />
         <RecipeImageInput
           control={control}
           setRecipeInfo={setRecipeInfo}
@@ -213,7 +252,6 @@ export function RecipeForm() {
           handleRemoveStep={handleRemoveStep}
           handleAddStep={handleAddStep}
         />
-
         <IngredientSearch />
         <div className="flex space-x-2">
           <Button

@@ -6,10 +6,11 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/react";
-import useRecipeStore from "@/hooks/useRecipeStore";
 
-function NutritionTable() {
-  const recipe = useRecipeStore((state) => state.recipe);
+function NutritionTable({ recipe }) {
+  if (!recipe || !recipe.ingredients) {
+    return <div>Nutrition data is not available.</div>;
+  }
 
   const totalNutrients = recipe.ingredients.reduce(
     (totals, ingredient) => {
