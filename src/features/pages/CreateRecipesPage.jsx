@@ -4,12 +4,15 @@ import RecipeCard from "../recipes/detailed-card/RecipeCard";
 
 function CreateRecipesPage() {
   return (
-    <div className="grid grid-cols-12 min-h-screen bg-closewhite p-4">
-      <div className="col-span-5 p-4 bg-ecruWhite h-screen overflow-y-auto">
+    <div className="grid grid-cols-12 min-h-screen">
+      <div className="col-span-5 flex items-center justify-center bg-white">
         <RecipeForm />
       </div>
-      <div className="col-span-7 flex justify-center items-start m-10 bg-closewhite h-screen">
-        <RecipeCard />
+
+      <div className="col-span-7 flex items-start bg-white h-full w-full">
+        <div className="mt-32 w-full flex justify-center">
+          <RecipeCard />
+        </div>
       </div>
     </div>
   );

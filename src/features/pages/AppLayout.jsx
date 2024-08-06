@@ -5,10 +5,10 @@ const AppLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <NavigationBar />
-      <div className="flex flex-col flex-grow">
-        <div className="flex-grow ">
-          <Outlet />
-        </div>
+      <div className="flex-grow mt-20">
+        {" "}
+        {/* Adds a top margin to offset the fixed nav */}
+        <Outlet />
       </div>
     </div>
   );

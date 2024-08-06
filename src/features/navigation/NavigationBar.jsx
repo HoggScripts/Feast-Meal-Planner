@@ -1,15 +1,13 @@
 import { useLogout } from "@/hooks/useUserActions";
 import { Button } from "@nextui-org/react";
-import { FaEye, FaHome } from "react-icons/fa";
-import { MdMenuBook } from "react-icons/md";
 import { Link, useLocation } from "react-router-dom";
 
 const NavigationBar = () => {
   const location = useLocation();
   const links = [
-    { to: "/landing-page", label: "Home", icon: <FaHome /> },
-    { to: "/create-recipes", label: "Create Recipes", icon: <MdMenuBook /> },
-    { to: "/view-recipes", label: "View Recipes", icon: <FaEye /> },
+    { to: "/landing-page", label: "Home" },
+    { to: "/create-recipes", label: "Create Recipes" },
+    { to: "/view-recipes", label: "View Recipes" },
     { to: "/plan-meals", label: "Plan Meals" },
     { to: "/user-profile", label: "My Profile" },
   ];
@@ -21,29 +19,42 @@ const NavigationBar = () => {
   };
 
   return (
-    <nav className="bg-closewhite text-white py-4 shadow-md">
-      <div className=" bg-closewhite mx-auto flex flex-col items-center">
-        <img src="logo002.png" alt="Logo" className="mb-2 h-16" />
-        <div className="flex space-x-6">
+    <nav className="bg-white text-white fixed top-0 left-0 w-full z-50">
+      <div className=" mx-auto flex items-center justify-between px-10  py-4 ">
+        {/* Logo on the left */}
+        <div className="flex items-center">
+          <img src="Logo.png" alt="Logo" className="h-12 w-auto" />
+        </div>
+
+        {/* Links in the middle */}
+        <div className="flex space-x-8 text-lg">
           {links.map((link) => (
             <Link
               key={link.to}
               to={link.to}
-              className={`hover:text-black ${
+              className={`hover:text-blueprimary ${
                 location.pathname === link.to
-                  ? "font-bold text-black"
-                  : "text-gray-400 "
+                  ? "font-bold text-blueprimary"
+                  : "text-slate-600"
               }`}
             >
-              <div className="flex flex-row items-center">
-                {link.icon}
-                {link.label}
-              </div>
+              {link.label}
             </Link>
           ))}
-          <Button onClick={handleLogout}>Logout</Button>
+        </div>
+
+        {/* Logout button on the right */}
+        <div>
+          <Button
+            onClick={handleLogout}
+            className="bg-blueprimary text-bold text-white hover:bg-bluesecondary"
+          >
+            Logout
+          </Button>
         </div>
       </div>
+      <div className="border-b border-1 border-bluesecondary"></div>{" "}
+      {/* Thin bottom border */}
     </nav>
   );
 };

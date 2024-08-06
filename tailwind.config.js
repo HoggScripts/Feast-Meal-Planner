@@ -27,6 +27,8 @@ module.exports = {
         greenish: "#adf7b6",
         blackish: "#333333",
         closewhite: "#FAFAFA",
+        blueprimary: "#51B2D4",
+        bluesecondary: "#7FC8E0",
       },
       borderRadius: {
         lg: "var(--radius)",

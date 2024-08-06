@@ -28,8 +28,8 @@ export function TypeSelect({ selectedMealType, onChange }) {
             value={meal.label}
             aria-label={`Select ${meal.label}`}
             className="p-6 border rounded-lg transition-all 
-                     hover:bg-blue-200 hover:shadow-md 
-                     data-[state=on]:bg-blue-300 data-[state=on]:shadow-lg
+                     hover:bg-gray-100 hover:shadow-md 
+                     data-[state=on]:bg-gray-200 data-[state=on]:shadow-lg
                      flex flex-col items-center justify-center overflow-hidden
                      min-w-[80px] min-h-[80px]"
           >

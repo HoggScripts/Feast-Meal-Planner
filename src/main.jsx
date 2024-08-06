@@ -12,6 +12,9 @@ import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
 import useTokenStore from "./hooks/useTokenStore";
 
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 const AppWithInterceptors = () => {
   const { token, setToken } = useTokenStore(); // Access token and setToken function
   const isRefreshing = false;
@@ -32,7 +35,9 @@ const AppWithInterceptors = () => {
     <NextUIProvider>
       <main className="light text-foreground bg-background">
         <QueryClientProvider client={queryClient}>
-          <App />
+          <DndProvider backend={HTML5Backend}>
+            <App />
+          </DndProvider>
           <ToastContainer />
         </QueryClientProvider>
       </main>

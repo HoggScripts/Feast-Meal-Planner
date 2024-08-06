@@ -11,29 +11,36 @@ import {
 import useRecipeStore from "@/hooks/useRecipeStore";
 import TotalCostCard from "./TotalCostCard";
 
-function CurrencyConverter() {
-  const { setSelectedCurrency, convertCurrency, selectedCurrency } =
-    useRecipeStore((state) => ({
-      setSelectedCurrency: state.setSelectedCurrency,
-      convertCurrency: state.convertCurrency,
-      selectedCurrency: state.selectedCurrency,
-    }));
+function CurrencyConverter({ recipe: propRecipe }) {
+  const {
+    setSelectedCurrency,
+    convertCurrency,
+    selectedCurrency,
+    recipe: stateRecipe,
+  } = useRecipeStore((state) => ({
+    setSelectedCurrency: state.setSelectedCurrency,
+    convertCurrency: state.convertCurrency,
+    selectedCurrency: state.selectedCurrency,
+    recipe: state.recipe,
+  }));
+
+  const recipe = propRecipe || stateRecipe; // Use propRecipe if passed, otherwise fall back to stateRecipe
 
   useEffect(() => {
     const defaultCurrency = "USD";
     setSelectedCurrency(defaultCurrency);
-    convertCurrency(defaultCurrency);
-  }, [setSelectedCurrency, convertCurrency]);
+    convertCurrency(defaultCurrency, recipe); // Include recipe for conversion
+  }, [setSelectedCurrency, convertCurrency, recipe]);
 
   const handleCurrencyChange = async (value) => {
     setSelectedCurrency(value);
-    await convertCurrency(value);
+    await convertCurrency(value, recipe); // Pass the recipe for conversion
   };
 
   return (
     <div className="mt-4">
       <div className="mb-2">
-        <TotalCostCard currency={selectedCurrency} />
+        <TotalCostCard recipe={recipe} currency={selectedCurrency} />
       </div>
       <div>
         <Select value={selectedCurrency} onValueChange={handleCurrencyChange}>

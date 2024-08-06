@@ -12,8 +12,8 @@ const RecipeSteps = ({
 
   const handleAddStepClick = () => {
     if (steps.length === 0 || steps[steps.length - 1].trim() !== "") {
-      setErrorMessage(""); // Clear any existing error message
-      handleAddStep(); // Proceed to add a step
+      setErrorMessage("");
+      handleAddStep();
     } else {
       setErrorMessage(
         "Please fill in the previous step before adding a new one."
@@ -22,7 +22,7 @@ const RecipeSteps = ({
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <h3 className="text-xl font-semibold">Steps</h3>
       {steps.map((step, index) => (
         <div key={index} className="flex items-center space-x-2">
@@ -31,22 +31,22 @@ const RecipeSteps = ({
             value={step}
             onChange={(e) => handleStepChange(index, e)}
             placeholder={`Step ${index + 1}`}
-            className="flex-1 p-2 border rounded"
+            className="flex-1 p-2 border rounded hover:border-submission-blue transition duration-200"
           />
           <Button
             type="button"
             onClick={() => handleRemoveStep(index)}
-            className="bg-destructive-red text-white"
+            className="bg-red-500 text-white"
           >
             <FaTrash />
           </Button>
         </div>
       ))}
-      {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+      {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
       <Button
         type="button"
         onClick={handleAddStepClick}
-        className="w-full bg-submission-blue text-white p-2 rounded"
+        className="w-full bg-blue-500 text-white p-2 rounded"
       >
         Add Step
       </Button>

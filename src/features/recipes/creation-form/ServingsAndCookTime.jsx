@@ -1,5 +1,5 @@
 import { Controller } from "react-hook-form";
-import { PiBowlFood, PiCookingPot } from "react-icons/pi";
+import { PiBowlFood, PiClock, PiCookingPot } from "react-icons/pi";
 
 const ServingsAndCookTime = ({ control, setRecipeInfo, recipe }) => (
   <div className="flex gap-2">
@@ -36,7 +36,7 @@ const ServingsAndCookTime = ({ control, setRecipeInfo, recipe }) => (
         <div className="flex-1">
           <label className="block mb-1">Cook Time (minutes)</label>
           <div className="relative">
-            <PiCookingPot className="absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-400" />
+            <PiClock className="absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-400" />
             <input
               type="number"
               placeholder="Enter cook time in minutes..."

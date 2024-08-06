@@ -35,7 +35,7 @@ const IngredientSearch = () => {
     }
 
     console.log("Search button clicked with query:", ingredientSearch);
-    setErrorMessage(""); // Clear any existing error messages before starting a new search
+    setErrorMessage("");
     await handleSearch(ingredientSearch);
     setIngredientSearch("");
   };
@@ -103,7 +103,7 @@ const IngredientSearch = () => {
         <Button
           type="button"
           onClick={handleIngredientSearchClick}
-          className="bg-submission-blue text-white flex items-center justify-center"
+          className="bg-blue-500 text-white flex items-center justify-center"
         >
           <FaSearch className="mr-2" /> Search
         </Button>

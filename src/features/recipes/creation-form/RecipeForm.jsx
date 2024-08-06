@@ -12,10 +12,9 @@ import { Button } from "@nextui-org/react";
 import { IoIosNuclear } from "react-icons/io";
 import { toast } from "react-toastify";
 import { TypeSelect } from "./TypeSelect";
-import SpicinessRating from "./SpicinessRating"; // Import the SpicinessRating component
+import SpicinessRating from "./SpicinessRating";
 import { useCreateRecipe } from "@/hooks/useRecipeActions";
 
-// Define your form schema using Zod
 const formSchema = z.object({
   recipeName: z.string().min(2, {
     message: "Recipe name must be at least 2 characters.",
@@ -49,34 +48,30 @@ const formSchema = z.object({
       estimatedCost: z.number().optional(),
     })
   ),
-  spicinessLevel: z.number().min(0).max(3).optional(), // Rename to match DTO
+  spicinessLevel: z.number().min(0).max(3).optional(),
 });
 
 export function RecipeForm() {
-  // Access the recipe store
   const { recipe, setRecipeInfo, clearRecipe, setSpicinessLevel } =
     useRecipeStore((state) => ({
       recipe: state.recipe,
       setRecipeInfo: state.setRecipeInfo,
       clearRecipe: state.clearRecipe,
-      setSpicinessLevel: state.setSpicinessLevel, // Make sure this method is called
+      setSpicinessLevel: state.setSpicinessLevel,
     }));
 
-  // Create mutation for recipe creation
   const createRecipeMutation = useCreateRecipe();
 
-  // Initialize react-hook-form
   const { control, handleSubmit, reset, setValue } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...recipe,
       ingredients: recipe.ingredients || [],
       mealType: "",
-      spicinessLevel: recipe.spicinessLevel || 0, // Updated name
+      spicinessLevel: recipe.spicinessLevel || 0,
     },
   });
 
-  // Local state for selected meal type and spiciness level
   const [selectedMealType, setSelectedMealType] = useState(
     recipe.mealType || ""
   );
@@ -84,34 +79,28 @@ export function RecipeForm() {
     recipe.spicinessLevel || 0
   );
 
-  // Reference for file input
   const fileInputRef = useRef(null);
 
-  // State for instructions and ingredients
   const [steps, setSteps] = useState(
     recipe.instructions.length ? recipe.instructions : [""]
   );
   const [ingredients, setIngredients] = useState(recipe.ingredients || []);
 
-  // Set form values on initial load and when dependencies change
   useEffect(() => {
     setValue("instructions", steps);
     setValue("ingredients", ingredients);
-    setValue("spicinessLevel", spicinessLevel); // Updated name
+    setValue("spicinessLevel", spicinessLevel);
   }, [steps, ingredients, spicinessLevel, setValue]);
 
-  // Set the selected meal type from the recipe
   useEffect(() => {
     setSelectedMealType(recipe.mealType || "");
   }, [recipe.mealType]);
 
-  // Handle form submission
   const onSubmit = async (values) => {
     try {
-      setRecipeInfo({ ...values, spicinessLevel }); // Update recipe info in the store
-      setSpicinessLevel(spicinessLevel); // Update spiciness level in the store
+      setRecipeInfo({ ...values, spicinessLevel });
+      setSpicinessLevel(spicinessLevel);
 
-      // Handle image upload
       let imageBase64 = null;
       if (values.image instanceof File) {
         imageBase64 = await new Promise((resolve, reject) => {
@@ -125,7 +114,6 @@ export function RecipeForm() {
         imageBase64 = null;
       }
 
-      // Prepare values for API submission
       const mappedValues = {
         ...values,
         mealType: selectedMealType,
@@ -146,7 +134,6 @@ export function RecipeForm() {
 
       console.log("Mapped Values:", mappedValues);
 
-      // Call the mutation to create the recipe
       createRecipeMutation.mutate(mappedValues);
       handleClear();
     } catch (error) {
@@ -155,7 +142,6 @@ export function RecipeForm() {
     }
   };
 
-  // Clear/reset form fields
   const handleClear = () => {
     if (recipe.image instanceof File) {
       URL.revokeObjectURL(recipe.image);
@@ -163,7 +149,7 @@ export function RecipeForm() {
     reset({
       recipeName: "",
       mealType: "",
-      spicinessLevel: 0, // Reset spiciness level
+      spicinessLevel: 0,
       image: null,
       servings: 1,
       cookTime: 1,
@@ -171,7 +157,7 @@ export function RecipeForm() {
       ingredients: [],
     });
     setSelectedMealType("");
-    setLocalSpicinessLevel(0); // Reset spiciness selection
+    setLocalSpicinessLevel(0);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -180,7 +166,6 @@ export function RecipeForm() {
     setIngredients([]);
   };
 
-  // Handle step change in form
   const handleStepChange = (index, event) => {
     const newSteps = [...steps];
     newSteps[index] = event.target.value;
@@ -188,34 +173,31 @@ export function RecipeForm() {
     setRecipeInfo({ ...recipe, instructions: newSteps });
   };
 
-  // Add a new step in the form
   const handleAddStep = () => {
     const newSteps = [...steps, ""];
     setSteps(newSteps);
     setRecipeInfo({ ...recipe, instructions: newSteps });
   };
 
-  // Remove a step from the form
   const handleRemoveStep = (index) => {
     const newSteps = steps.filter((_, stepIndex) => stepIndex !== index);
     setSteps(newSteps);
     setRecipeInfo({ ...recipe, instructions: newSteps });
   };
 
-  // Render the form
   return (
-    <div className="w-full p-4">
-      <div className="border-b border-gray-300 p-4 flex items-center justify-between">
-        <h1 className="font-bold text-xl flex-grow">Recipe Builder</h1>
+    <div className="w-full p-10">
+      <div className="p-4 flex items-center justify-between border-b border-gray-200 mb-4">
+        <h1 className="font-extrabold text-2xl flex-grow">Recipe Builder</h1>
         <Button
           type="button"
           onClick={handleClear}
-          className="text-white flex items-center bg-destructive-red"
+          className="text-black bg-white flex items-center border-1 border-slate-600 text-lg shadow-md hover:bg-slate-100"
         >
-          <IoIosNuclear className="mr-2 text-white" /> Clear
+          <IoIosNuclear className="mr-2 text-black" /> Clear
         </Button>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <TypeSelect
           selectedMealType={selectedMealType}
           onChange={(value) => {
@@ -224,10 +206,10 @@ export function RecipeForm() {
           }}
         />
         <SpicinessRating
-          initialRating={spicinessLevel} // Updated name
+          initialRating={spicinessLevel}
           onRatingChange={(rating) => {
-            setLocalSpicinessLevel(rating); // Update local state
-            setSpicinessLevel(rating); // Update store state
+            setLocalSpicinessLevel(rating);
+            setSpicinessLevel(rating);
           }}
         />
         <RecipeImageInput
@@ -253,10 +235,10 @@ export function RecipeForm() {
           handleAddStep={handleAddStep}
         />
         <IngredientSearch />
-        <div className="flex space-x-2">
+        <div className="flex justify-end">
           <Button
             type="submit"
-            className="w-full bg-submission-blue text-white p-2 rounded"
+            className="w-full bg-blue-500 text-white p-2 rounded"
           >
             Submit
           </Button>

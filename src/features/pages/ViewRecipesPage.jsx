@@ -1,10 +1,9 @@
 import { useFetchRecipes } from "@/hooks/useRecipeActions";
-import RecipeCard from "../recipes/detailed-card/RecipeCard";
+
+import DragDropCard from "../recipes/draggable-card/DragDropCard";
 
 function ViewRecipesPage() {
   const { data: recipes, error, isLoading } = useFetchRecipes();
-
-  console.log(recipes);
 
   if (isLoading) {
     return <div>Loading recipes...</div>;
@@ -19,7 +18,7 @@ function ViewRecipesPage() {
       <div className="col-span-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {recipes.map((recipe) => (
           <div className="max-w-xs w-full" key={recipe.id}>
-            <RecipeCard isLoadedRecipe={true} recipe={recipe} key={recipe.id} />
+            <DragDropCard recipe={recipe} />
           </div>
         ))}
       </div>
