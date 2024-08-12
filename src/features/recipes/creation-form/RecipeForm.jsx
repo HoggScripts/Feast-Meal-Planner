@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -238,7 +238,7 @@ export function RecipeForm() {
         <div className="flex justify-end">
           <Button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded"
+            className="w-full bg-blueprimary text-white shadow-md p-4 rounded border-1 border-blueprimar text-lg hover:bg-bluesecondary"
           >
             Submit
           </Button>

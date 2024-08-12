@@ -1,4 +1,3 @@
-import React from "react";
 import { RecipeForm } from "../recipes/creation-form/RecipeForm";
 import RecipeCard from "../recipes/detailed-card/RecipeCard";
 

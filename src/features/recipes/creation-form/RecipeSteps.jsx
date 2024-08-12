@@ -22,10 +22,10 @@ const RecipeSteps = ({
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-xl font-semibold">Steps</h3>
+    <div className="">
+      <h3 className="text-md mb-1">Steps</h3>
       {steps.map((step, index) => (
-        <div key={index} className="flex items-center space-x-2">
+        <div key={index} className="flex items-center space-x-2 mb-4">
           <input
             type="text"
             value={step}
@@ -46,7 +46,7 @@ const RecipeSteps = ({
       <Button
         type="button"
         onClick={handleAddStepClick}
-        className="w-full bg-blue-500 text-white p-2 rounded"
+        className="w-full bg-white text-black  text-md shadow-md p-2 rounded border-1 border-slate-600 hover:bg-slate-100 "
       >
         Add Step
       </Button>

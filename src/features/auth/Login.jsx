@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoIosMail } from "react-icons/io";
 import { FaLock } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "@/index.css";
 import { useLogin } from "@/hooks/useUserActions";
 import useTokenStore from "@/hooks/useTokenStore";
 
-const Login = () => {
+const Login = ({ onRegisterClick, onForgotPasswordClick, setIsLoginOpen }) => {
   const { token } = useTokenStore();
   const {
     register,
@@ -40,6 +32,7 @@ const Login = () => {
 
     login(data, {
       onSuccess: () => {
+        setIsLoginOpen(false);
         navigate("/landing-page");
       },
       onError: (error) => {
@@ -59,81 +52,85 @@ const Login = () => {
   };
 
   return (
-    <div className="container mx-auto px-4">
-      <Card className="max-w-sm mx-auto mt-10">
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account.
-          </CardDescription>
-        </CardHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="identifier">Username or Email</Label>
-              <div className="relative">
-                <IoIosMail className="absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-400" />
-                <Input
-                  id="identifier"
-                  type="text"
-                  placeholder="user@example.com"
-                  {...register("identifier", {
-                    required: "Identifier is required",
-                  })}
-                  className="pl-10"
-                />
-              </div>
-              {errors.identifier && (
-                <p className="text-red-500">{errors.identifier.message}</p>
-              )}
+    <div className="p-4">
+      <div className="mb-4 text-center">
+        <h2 className="text-2xl font-bold">Login</h2>
+        <p>Enter your email below to login to your account.</p>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="identifier">Username or Email</Label>
+            <div className="relative">
+              <IoIosMail className="absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-400" />
+              <Input
+                id="identifier"
+                type="text"
+                placeholder="user@example.com"
+                {...register("identifier", {
+                  required: "Identifier is required",
+                })}
+                className="pl-10"
+              />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <FaLock className="absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-400" />
-                <Input
-                  id="password"
-                  type="password"
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
-                  className="pl-10"
-                />
-              </div>
-              {errors.password && (
-                <p className="text-red-500">{errors.password.message}</p>
-              )}
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  {...register("rememberMe")}
-                  className="mr-2"
-                />
-                <Label htmlFor="rememberMe">Remember me</Label>
-              </div>
-              <Link to="/request-reset-password" className="text-blue-500">
-                Forgot Password?
-              </Link>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Loading..." : "Sign in"}
-            </Button>
-            {errorMessage && (
-              <p className="text-red-500 text-center mt-4">{errorMessage}</p>
+            {errors.identifier && (
+              <p className="text-red-500">{errors.identifier.message}</p>
             )}
-          </CardFooter>
-        </form>
-        <div className="text-center mt-4">
-          Don&apos;t have an account?{" "}
-          <Link to="/register" className="text-blue-500">
-            Register
-          </Link>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <FaLock className="absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-400" />
+              <Input
+                id="password"
+                type="password"
+                {...register("password", {
+                  required: "Password is required",
+                })}
+                className="pl-10"
+              />
+            </div>
+            {errors.password && (
+              <p className="text-red-500">{errors.password.message}</p>
+            )}
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                {...register("rememberMe")}
+                className="mr-2"
+              />
+              <Label htmlFor="rememberMe">Remember me</Label>
+            </div>
+            <button
+              type="button"
+              onClick={onForgotPasswordClick}
+              className="text-blue-500"
+            >
+              Forgot Password?
+            </button>
+          </div>
         </div>
-      </Card>
+        <div className="mt-4">
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Loading..." : "Sign in"}
+          </Button>
+          {errorMessage && (
+            <p className="text-red-500 text-center mt-4">{errorMessage}</p>
+          )}
+        </div>
+      </form>
+      <div className="text-center mt-4">
+        Don&apos;t have an account?{" "}
+        <button
+          type="button"
+          onClick={onRegisterClick}
+          className="text-blue-500"
+        >
+          Register
+        </button>
+      </div>
     </div>
   );
 };

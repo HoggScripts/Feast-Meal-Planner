@@ -1,5 +1,5 @@
 import { Controller } from "react-hook-form";
-import { PiBowlFood, PiClock, PiCookingPot } from "react-icons/pi";
+import { PiBowlFood, PiClock } from "react-icons/pi";
 
 const ServingsAndCookTime = ({ control, setRecipeInfo, recipe }) => (
   <div className="flex gap-2">

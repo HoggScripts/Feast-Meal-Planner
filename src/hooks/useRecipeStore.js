@@ -136,7 +136,7 @@ const useRecipeStore = create(
     }),
     {
       name: "recipe-storage",
-      getStorage: () => localStorage,
+      storage: localStorage, // Updated from getStorage to storage
     }
   )
 );

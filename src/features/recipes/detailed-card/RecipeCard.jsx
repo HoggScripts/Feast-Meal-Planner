@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useRecipeStore from "@/hooks/useRecipeStore";
 import RecipeCardFront from "./RecipeCardFront";
 import RecipeCardBack from "./RecipeCardBack";

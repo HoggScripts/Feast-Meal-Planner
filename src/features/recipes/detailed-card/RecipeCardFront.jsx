@@ -1,4 +1,3 @@
-import React from "react";
 import TotalCostCard from "./TotalCostCard";
 import { MdCookie, MdDinnerDining, MdLunchDining } from "react-icons/md";
 import { GiCupcake, GiRawEgg } from "react-icons/gi";

@@ -59,13 +59,12 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const clearToken = useTokenStore((state) => state.clearToken);
-  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
       clearToken();
-      navigate("/login");
+
       toast.success("Logout successful!");
       console.log("Logout successful, token cleared");
     },

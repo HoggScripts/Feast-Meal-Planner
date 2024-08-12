@@ -134,4 +134,9 @@
   .flipped {
     transform: rotateY(180deg);
   }
+
+  input::placeholder {
+    font-size: 16px; /* Set your desired font size */
+    color: #888; /* Optional: Set a uniform placeholder color */
+  }
 }

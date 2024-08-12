@@ -68,7 +68,6 @@ const IngredientSearch = () => {
 
   return (
     <>
-      <h3 className="text-xl font-semibold">Ingredients</h3>
       {recipe.ingredients.length > 0 && (
         <div className="flex gap-3 items-center mt-4 flex-wrap">
           {recipe.ingredients.map((ingredient) => (
@@ -103,7 +102,7 @@ const IngredientSearch = () => {
         <Button
           type="button"
           onClick={handleIngredientSearchClick}
-          className="bg-blue-500 text-white flex items-center justify-center"
+          className="bg-white shadow-md text-black text-md flex items-center justify-center border-1 border-slate-600 hover:bg-slate-100"
         >
           <FaSearch className="mr-2" /> Search
         </Button>

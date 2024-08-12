@@ -1,4 +1,3 @@
-import React from "react";
 import NutritionTable from "./NutritionTable";
 
 function RecipeCardBack({ recipe }) {

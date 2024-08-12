@@ -1,10 +1,19 @@
 import { Navigate, Outlet } from "react-router-dom";
 import useTokenStore from "./hooks/useTokenStore";
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ setIsLoginOpen }) => {
   const { token } = useTokenStore();
 
-  return token ? <Outlet /> : <Navigate to="/login" />;
+  if (!token) {
+    // Open the login dialog
+    setIsLoginOpen(true);
+
+    // Redirect to the landing page or another page
+    return <Navigate to="/landing-page" replace />;
+  }
+
+  // If authenticated, allow access to the route
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

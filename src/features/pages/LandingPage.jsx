@@ -1,5 +1,3 @@
-import React from "react";
-
 const LandingPage = () => {
   return (
     <div
@@ -8,21 +6,64 @@ const LandingPage = () => {
         backgroundImage: "url('/landingPage.jpeg')",
       }}
     >
-      <div className="w-full bg-white bg-opacity-80 p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Section 1</h2>
-            <p>Content for the first section goes here.</p>
+      <style>
+        {`
+          @keyframes slideInLeft {
+            0% {
+              transform: translateX(-100%);
+              opacity: 0;
+            }
+            100% {
+              transform: translateX(0);
+              opacity: 1;
+            }
+          }
+
+          .animate-slideInLeft {
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0; /* Ensure element is initially hidden */
+          }
+
+          .delay-1s {
+            animation-delay: 1.0s;
+          }
+
+          .delay-2s {
+            animation-delay: 2.0s;
+          }
+
+          .delay-3s {
+            animation-delay: 3.0s;
+          }
+
+          .move-up {
+            position: relative;
+            top: -100px; /* Move the element up by 15px */
+          }
+        `}
+      </style>
+      <div className="w-full p-6">
+        <div className="grid grid-cols-2 gap-6 mx-auto">
+          {/* Left Half with Three Vertical Sections */}
+          <div className="flex flex-col space-y-6">
+            <div className="animate-slideInLeft">
+              <img src="land1.png" alt="welcome to feast" />
+            </div>
+            <div className="flex ml-10 align-top">
+              <span className="text-5xl font-bold animate-slideInLeft delay-1s text-green-500 move-up mr-4">
+                EAT.
+              </span>
+              <span className="text-5xl font-bold animate-slideInLeft delay-2s text-green-500 move-up mr-4">
+                PLAN.
+              </span>
+              <span className="text-5xl font-bold animate-slideInLeft delay-3s text-green-500 move-up">
+                REPEAT.
+              </span>
+            </div>
           </div>
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Section 2</h2>
-            <p>Content for the second section goes here.</p>
-          </div>
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Section 3</h2>
-            <p>Content for the third section goes here.</p>
-          </div>
-          {/* Add more sections as needed */}
+
+          {/* Right Half (can be left empty or used for other content) */}
+          <div>{/* Optional: Add content here or leave it empty */}</div>
         </div>
       </div>
     </div>
