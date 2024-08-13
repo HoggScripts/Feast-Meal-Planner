@@ -1,9 +1,41 @@
+import useTokenStore from "@/hooks/useTokenStore";
+import api from "../api"; // Import your Axios instance
+
+export const checkGoogleLinkStatus = async () => {
+  try {
+    const response = await api.get("/oauth/google-link-status", {
+      withCredentials: true, // Ensure cookies are included
+    });
+
+    return response.data.isLinked;
+  } catch (error) {
+    console.error("Error checking Google link status:", error);
+    throw error;
+  }
+};
+
 // OAuth authorize method
 export const authorizeGoogleCalendar = () => {
   try {
-    const oauthUrl = "http://localhost:5271/api/oauth/authorize"; // Correct backend URL
+    const currentUrl = window.location.href; // Capture the current page URL
+
+    // Get the JWT from Zustand store or from session/local storage
+    const token = useTokenStore.getState().token;
+
+    if (!token) {
+      console.error("JWT not found. User might not be authenticated.");
+      return;
+    }
+
+    // Pass the current URL and JWT to the backend
+    const oauthUrl = `http://localhost:5271/api/oauth/authorize?redirectUrl=${encodeURIComponent(
+      currentUrl
+    )}&jwt=${encodeURIComponent(token)}`;
+
     console.log("Initiating OAuth flow: Redirecting to:", oauthUrl);
-    window.location.href = oauthUrl; // Redirect to the backend authorize endpoint
+
+    // Redirect to the backend authorize endpoint
+    window.location.href = oauthUrl;
   } catch (error) {
     console.error("Error initiating OAuth flow:", error);
   }
@@ -12,27 +44,16 @@ export const authorizeGoogleCalendar = () => {
 // OAuth callback handling
 export const handleOAuthCallback = async (code) => {
   try {
-    const callbackUrl = `http://localhost:5271/api/oauth/callback?code=${code}`; // Correct backend URL for callback
+    const callbackUrl = `/oauth/callback?code=${code}`; // Use relative URL since baseURL is set in the Axios instance
     console.log("Handling OAuth callback with URL:", callbackUrl);
-    const response = await fetch(callbackUrl, {
-      method: "GET",
-      credentials: "include",
+
+    const response = await api.get(callbackUrl, {
+      withCredentials: true, // Ensure cookies are included
     });
 
-    if (!response.ok) {
-      console.error(
-        "OAuth callback failed with status:",
-        response.status,
-        "Response text:",
-        await response.text()
-      );
-      throw new Error(`OAuth callback failed with status: ${response.status}`);
-    }
+    console.log("OAuth callback response received:", response.data);
 
-    const data = await response.json();
-    console.log("OAuth callback response received:", data);
-
-    return data;
+    return response.data;
   } catch (error) {
     console.error("Error during OAuth callback:", error);
     throw error;

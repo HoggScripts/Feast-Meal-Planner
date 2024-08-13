@@ -1,5 +1,4 @@
 import api from "./api";
-
 import { refreshToken as refreshAuthToken } from "./lib/tokenApi";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +13,11 @@ export const setupInterceptors = ({
   const authInterceptor = api.interceptors.request.use((config) => {
     if (token && !config._retry) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log(`Interceptor used. Sending JWT ${token} to the backend.`);
+    } else {
+      console.log(
+        "Interceptor used but no token available or request is a retry."
+      );
     }
     return config;
   });
