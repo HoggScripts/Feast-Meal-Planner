@@ -1,12 +1,14 @@
-import { useState } from "react";
+import React from "react";
 import { addDays, format, isSameWeek, startOfDay } from "date-fns";
 import DropBox from "./DropBox";
 import ShoppingList from "./ShoppingList";
 import { Button } from "@nextui-org/react";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import useMealPlanStore from "@/hooks/useMealPlanStore";
 
-const MealPlanCalendar = ({ addToShoppingList, shoppingList }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+const MealPlanCalendar = () => {
+  const { shoppingList, scheduledRecipes } = useMealPlanStore(); // Get state from Zustand
+  const [currentDate, setCurrentDate] = React.useState(new Date());
 
   const today = startOfDay(new Date());
   const startDate = startOfDay(currentDate);
@@ -46,7 +48,6 @@ const MealPlanCalendar = ({ addToShoppingList, shoppingList }) => {
 
   return (
     <div className="p-4">
-      {/* Week Navigation */}
       <div className="flex items-center mb-4">
         <Button
           type="button"
@@ -73,7 +74,7 @@ const MealPlanCalendar = ({ addToShoppingList, shoppingList }) => {
       </div>
 
       <div className="grid grid-cols-5 gap-2">
-        <div></div> {/* Empty space for alignment */}
+        <div></div>
         {mealTypes.map((mealType) => (
           <div
             key={mealType}
@@ -104,7 +105,6 @@ const MealPlanCalendar = ({ addToShoppingList, shoppingList }) => {
                   key={`${day.day}-${mealType}`}
                   mealType={mealType}
                   datetime={addDays(startDate, rowIndex)}
-                  addToShoppingList={addToShoppingList}
                 />
               ))}
             </div>

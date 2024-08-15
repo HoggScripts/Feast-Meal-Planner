@@ -7,8 +7,10 @@ const ShoppingList = ({ shoppingList }) => {
       <ul className="list-disc pl-5">
         {shoppingList.length > 0 ? (
           shoppingList.map((item, index) => (
+            // Ensure the item here is a string or a JSX element, not an object
             <li key={index} className="text-sm">
-              {item}
+              {typeof item === "string" ? item : item.name}{" "}
+              {/* Adjust according to your data structure */}
             </li>
           ))
         ) : (

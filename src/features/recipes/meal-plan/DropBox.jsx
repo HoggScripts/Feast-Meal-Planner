@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useDrop } from "react-dnd";
 import DragDropCard from "./DragDropCard";
+import useMealPlanStore from "@/hooks/useMealPlanStore";
 
-const DropBox = ({ mealType, datetime, addToShoppingList }) => {
-  const [droppedItem, setDroppedItem] = useState(null);
+const DropBox = ({ mealType, datetime }) => {
+  const { addRecipeToSchedule, removeRecipeFromSchedule, scheduledRecipes } =
+    useMealPlanStore();
+
+  // Convert datetime to a Date object if it's not already
+  const normalizedDatetime = new Date(datetime);
+
+  // Find the recipe that matches this mealType and datetime
+  const droppedItem = scheduledRecipes.find(
+    (item) =>
+      item.mealType === mealType &&
+      new Date(item.datetime).getTime() === normalizedDatetime.getTime()
+  );
 
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: "RECIPE_CARD",
     canDrop: (item) => item.mealType === mealType,
     drop: (item) => {
-      setDroppedItem(item);
-      addToShoppingList(item.ingredients || []);
-      return undefined;
+      addRecipeToSchedule(item, mealType, normalizedDatetime);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -19,12 +29,11 @@ const DropBox = ({ mealType, datetime, addToShoppingList }) => {
     }),
   }));
 
-  useEffect(() => {
-    if (datetime) {
-      // Reset drop box when date changes
-      setDroppedItem(null);
+  const handleRemove = () => {
+    if (droppedItem) {
+      removeRecipeFromSchedule(droppedItem.recipe.id, mealType, datetime);
     }
-  }, [datetime]);
+  };
 
   return (
     <div
@@ -37,7 +46,11 @@ const DropBox = ({ mealType, datetime, addToShoppingList }) => {
       style={{ width: "100%", height: "100px" }}
     >
       {droppedItem ? (
-        <DragDropCard recipe={droppedItem} />
+        <DragDropCard
+          recipe={droppedItem.recipe}
+          isInDropBox
+          onRemove={handleRemove}
+        />
       ) : (
         !canDrop &&
         isOver && <div className="text-red-500">Invalid Meal Type</div>

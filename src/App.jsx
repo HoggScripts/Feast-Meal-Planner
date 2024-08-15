@@ -12,11 +12,11 @@ import ConfirmResetPassword from "./features/auth/ConfirmResetPassword";
 import RecipeMakerPage from "./features/pages/CreateRecipesPage";
 import LandingPage from "./features/pages/LandingPage";
 import AppLayout from "./features/pages/AppLayout";
-import ViewRecipesPage from "./features/pages/PlanMealsPage";
 
 import UserProfile from "./features/pages/UserProfile";
 import { useState } from "react";
 import PlanMealsPage from "./features/pages/PlanMealsPage";
+import CookieCheck from "./CookieCheck";
 
 const App = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -24,6 +24,8 @@ const App = () => {
   return (
     <TooltipProvider>
       <Router>
+        {/* CookieCheck runs on mount, refreshing the token if necessary */}
+        <CookieCheck />
         <Routes>
           <Route
             path="/confirm-reset-password/:token/:email"

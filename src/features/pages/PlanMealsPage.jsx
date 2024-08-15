@@ -1,54 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MealPlanCalendar from "../recipes/meal-plan/MealPlanCalendar";
 import DragDropCard from "../recipes/meal-plan/DragDropCard";
+import { useFetchRecipes } from "@/hooks/useRecipeActions";
 
 function PlanMealsPage() {
-  const [shoppingList, setShoppingList] = useState([]);
+  const { data: recipes, isLoading, error } = useFetchRecipes();
+  const [userRecipes, setUserRecipes] = useState([]);
 
-  const addToShoppingList = (ingredients) => {
-    setShoppingList((prevList) => [...prevList, ...ingredients]);
-  };
+  // Set the fetched recipes into state
+  useEffect(() => {
+    if (recipes) {
+      setUserRecipes(recipes);
+    }
+  }, [recipes]);
 
-  // Mock recipes for testing
-  const mockRecipes = [
-    {
-      recipeName: "Chocolate Cake",
-      image: "https://via.placeholder.com/150", // Mock image URL
-      mealType: "Dinner", // Add meal type for drag-and-drop functionality
-      ingredients: ["Flour", "Sugar", "Cocoa Powder", "Eggs", "Butter"], // Example ingredients
-    },
-    {
-      recipeName: "Caesar Salad",
-      image: "https://via.placeholder.com/150", // Mock image URL
-      mealType: "Lunch", // Add meal type for drag-and-drop functionality
-      ingredients: [
-        "Romaine Lettuce",
-        "Croutons",
-        "Caesar Dressing",
-        "Parmesan",
-      ], // Example ingredients
-    },
-  ];
+  if (isLoading) {
+    return <div>Loading...</div>; // Loading state
+  }
+
+  if (error) {
+    return <div>Error loading recipes: {error.message}</div>; // Error state
+  }
 
   return (
     <div className="grid grid-cols-8 gap-4 p-4">
       <div className="col-span-6">
-        <MealPlanCalendar
-          addToShoppingList={addToShoppingList}
-          shoppingList={shoppingList}
-        />
+        <MealPlanCalendar />
       </div>
-      <div className="col-span-2 bg-red-500">
-        <div className="p-4 text-white">
-          <h2 className="text-lg font-bold mb-4">Recipe Search</h2>
-          {/* Render the mock recipes in a two-column layout */}
-          <div className="grid grid-cols-2 gap-4 bg-white p-2 rounded-lg">
-            {mockRecipes.map((recipe, index) => (
-              <div key={index} className="border p-2 rounded-lg">
-                <DragDropCard recipe={recipe} onRemove={() => {}} />
-              </div>
-            ))}
-          </div>
+      <div className="col-span-2 bg-red-500 p-4 text-white rounded-lg">
+        <h2 className="text-lg font-bold mb-4">Recipe Search</h2>
+        <div className="flex flex-col gap-4">
+          {userRecipes.map((recipe) => (
+            <DragDropCard key={recipe.id} recipe={recipe} />
+          ))}
         </div>
       </div>
     </div>
