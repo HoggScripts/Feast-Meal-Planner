@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "@/index.css";
 import { useLogin } from "@/hooks/useUserActions";
-import useTokenStore from "@/hooks/useTokenStore";
+import useTokenStore from "@/stores/useTokenStore";
 
 const Login = ({ onRegisterClick, onForgotPasswordClick, setIsLoginOpen }) => {
   const { token } = useTokenStore();

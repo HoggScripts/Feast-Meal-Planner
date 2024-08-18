@@ -11,7 +11,7 @@ import {
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 import RequestResetPassword from "../auth/RequestResetPassword";
-import useTokenStore from "@/hooks/useTokenStore";
+import useTokenStore from "@/stores/useTokenStore";
 import { useLogout } from "@/hooks/useUserActions";
 import LinkGoogleCalendarButton from "../auth/LinkGoogleCalendarButton";
 
@@ -37,7 +37,7 @@ const NavigationBar = ({ isLoginOpen, setIsLoginOpen }) => {
   };
 
   return (
-    <nav className="bg-white text-white fixed top-0 left-0 w-full z-50">
+    <nav className="bg-white text-white  top-0 left-0 w-full z-50">
       <div className="mx-auto flex items-center justify-between px-10 py-4">
         {/* Logo on the left */}
         <div className="flex items-center">

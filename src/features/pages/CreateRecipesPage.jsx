@@ -1,5 +1,5 @@
-import { RecipeForm } from "../recipes/creation-form/RecipeForm";
-import RecipeCard from "../recipes/detailed-card/RecipeCard";
+import { RecipeForm } from "../recipes/creating/RecipeForm";
+import RecipeCard from "../recipes/flip-card/RecipeCard";
 
 function CreateRecipesPage() {
   return (

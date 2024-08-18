@@ -34,9 +34,9 @@ export const useCreateRecipe = () => {
 
   const mutation = useMutation({
     mutationFn: createRecipe,
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Recipe created successfully!");
-      navigate(`/recipes/${data.id}`);
+      navigate(`/`);
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || "Failed to create recipe");

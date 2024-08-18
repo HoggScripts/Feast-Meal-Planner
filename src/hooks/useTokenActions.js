@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useTokenStore from "./useTokenStore";
+import useTokenStore from "@/stores/useTokenStore";
 import { refreshToken as refreshAuthToken } from "../lib/tokenApi";
 
 const useTokenActions = () => {

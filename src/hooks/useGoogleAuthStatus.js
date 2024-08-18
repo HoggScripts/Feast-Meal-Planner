@@ -6,7 +6,7 @@ export const useGoogleAuthStatus = () => {
     queryKey: ["googleAuthStatus"], // Change this to an array
     queryFn: checkGoogleLinkStatus,
 
-    retry: false, // Disable retrying on failure
+    retry: true, // Disable retrying on failure
     onSuccess: (data) => {
       console.log("Google auth status successfully fetched:", data);
     },

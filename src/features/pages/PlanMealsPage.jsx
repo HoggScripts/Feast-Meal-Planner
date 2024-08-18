@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import MealPlanCalendar from "../recipes/meal-plan/MealPlanCalendar";
-import DragDropCard from "../recipes/meal-plan/DragDropCard";
+import MealPlanCalendar from "../recipes/planning/MealPlanCalendar";
+
 import { useFetchRecipes } from "@/hooks/useRecipeActions";
+import RecipeSearch from "../recipes/planning/RecipeSearch";
 
 function PlanMealsPage() {
   const { data: recipes, isLoading, error } = useFetchRecipes();
@@ -27,12 +28,10 @@ function PlanMealsPage() {
       <div className="col-span-6">
         <MealPlanCalendar />
       </div>
-      <div className="col-span-2 bg-red-500 p-4 text-white rounded-lg">
+      <div className="col-span-2 bg-bluesecondary p-4 text-white rounded-lg mt-4">
         <h2 className="text-lg font-bold mb-4">Recipe Search</h2>
         <div className="flex flex-col gap-4">
-          {userRecipes.map((recipe) => (
-            <DragDropCard key={recipe.id} recipe={recipe} />
-          ))}
+          <RecipeSearch></RecipeSearch>
         </div>
       </div>
     </div>

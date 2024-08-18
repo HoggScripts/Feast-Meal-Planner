@@ -10,7 +10,7 @@ import { setupInterceptors, ejectInterceptors } from "./apiInterceptors"; // Imp
 
 import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
-import useTokenStore from "./hooks/useTokenStore";
+import useTokenStore from "./stores/useTokenStore";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";

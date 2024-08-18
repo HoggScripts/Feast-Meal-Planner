@@ -74,14 +74,14 @@ module.exports = {
             "vanilla-ice": "#F5E2E4",
             "greyish-black": "#333333",
             background: "#ffffff",
-            foreground: "#000000",
+            foreground: "#1E293B",
             primary: {
               DEFAULT: "#a0ced9",
-              foreground: "#ffffff",
+              foreground: "#1E293B",
             },
             secondary: {
-              DEFAULT: "#ffee93",
-              foreground: "#000000",
+              DEFAULT: "#ffffff",
+              foreground: "#1E293B",
             },
             destructive: {
               DEFAULT: "#ffc09f",
@@ -92,7 +92,7 @@ module.exports = {
               foreground: "#000000",
             },
             accent: {
-              DEFAULT: "#adf7b6",
+              DEFAULT: "#adf7",
               foreground: "#000000",
             },
             popover: {
@@ -135,7 +135,7 @@ module.exports = {
               foreground: "#000000",
             },
             accent: {
-              DEFAULT: "#adf7b6",
+              DEFAULT: "#adf7",
               foreground: "#000000",
             },
             popover: {

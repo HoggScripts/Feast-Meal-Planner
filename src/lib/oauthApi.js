@@ -1,4 +1,4 @@
-import useTokenStore from "@/hooks/useTokenStore";
+import useTokenStore from "@/stores/useTokenStore";
 import api from "../api"; // Import your Axios instance
 
 export const checkGoogleLinkStatus = async () => {
