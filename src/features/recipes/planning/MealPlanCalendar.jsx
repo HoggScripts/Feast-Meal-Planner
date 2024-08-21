@@ -1,35 +1,29 @@
 import React from "react";
-import { addDays, format, startOfDay, isSameWeek } from "date-fns";
+import { addDays, format, startOfWeek } from "date-fns";
 import DropBox from "./DropBox";
 import ShoppingList from "./ShoppingList";
 import { MdFastfood, MdLunchDining } from "react-icons/md";
 import { PiCoffeeFill } from "react-icons/pi";
-import { GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 import useMealPlanStore from "@/stores/useMealPlanStore";
-import { FaScroll } from "react-icons/fa";
+import { useFetchUserInfo } from "@/hooks/useUserActions";
 
-const MealPlanCalendar = () => {
-  const { shoppingList, scheduledRecipes } = useMealPlanStore(); // Get state from Zustand
-  const [currentDate, setCurrentDate] = React.useState(new Date());
+const MealPlanCalendar = ({ isNextWeek, toggleWeek }) => {
+  const { scheduledRecipes, shoppingList } = useMealPlanStore();
 
-  const today = startOfDay(new Date());
-  const startDate = startOfDay(currentDate);
+  console.log("shoppingList:", shoppingList); // Debugging: Log the shoppingList
 
-  const toggleWeek = () => {
-    if (isSameWeek(startDate, today, { weekStartsOn: 1 })) {
-      setCurrentDate(addDays(today, 7));
-    } else {
-      setCurrentDate(today);
-    }
-  };
+  const { data: userInfo } = useFetchUserInfo();
+  const currentDate = startOfWeek(new Date(), { weekStartsOn: 1 });
+  const startDate = isNextWeek ? addDays(currentDate, 7) : currentDate;
 
-  const isThisWeek = isSameWeek(startDate, today, { weekStartsOn: 1 });
-
-  // Define meal types with labels and icons
   const mealTypes = [
-    { label: "Breakfast", icon: <PiCoffeeFill size={24} /> },
-    { label: "Lunch", icon: <MdLunchDining size={24} /> },
-    { label: "Dinner", icon: <MdFastfood size={24} /> },
+    {
+      label: "Breakfast",
+      icon: <PiCoffeeFill size={24} />,
+      timeKey: "breakfastTime",
+    },
+    { label: "Lunch", icon: <MdLunchDining size={24} />, timeKey: "lunchTime" },
+    { label: "Dinner", icon: <MdFastfood size={24} />, timeKey: "dinnerTime" },
   ];
 
   const daysOfWeek = [...Array(7)].map((_, index) => {
@@ -58,15 +52,13 @@ const MealPlanCalendar = () => {
             onClick={toggleWeek}
             className="text-white bg-bluesecondary hover:bg-blueprimary py-2 px-10 rounded-md flex items-center justify-center transition-transform duration-200 ease-in-out hover:scale-105"
           >
-            {isThisWeek ? (
+            {isNextWeek ? (
               <>
-                <span className="mr-2">Next Week</span>
-                <GrLinkNext size={16} />
+                <span className="mr-2">This Week</span>
               </>
             ) : (
               <>
-                <GrLinkPrevious size={16} />
-                <span className="ml-2">This Week</span>
+                <span className="ml-2">Next Week</span>
               </>
             )}
           </button>
@@ -75,15 +67,22 @@ const MealPlanCalendar = () => {
         {mealTypes.map((mealType) => (
           <div
             key={mealType.label}
-            className="text-center font-bold p-2 rounded flex flex-col items-center bg-gray-200"
+            className="relative text-center font-bold p-2 rounded flex flex-col items-center bg-gray-200 group"
           >
-            {mealType.icon}
-            <span className="uppercase">{mealType.label}</span>
+            <div className="relative h-full w-full">
+              <span className="absolute inset-0 flex justify-center items-center text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                {userInfo?.[mealType.timeKey]?.slice(0, 5) || "Not set"}
+              </span>
+              <div className="absolute inset-0 flex flex-col justify-center items-center opacity-100 group-hover:opacity-0 transition-opacity duration-200">
+                {mealType.icon}
+                <span className="uppercase">{mealType.label}</span>
+              </div>
+            </div>
           </div>
         ))}
-        <div className="text-center font-bold p-2 bg-gray-300 rounded flex flex-col items-center">
-          <FaScroll size={24} />
-          <span>SHOPPING LIST</span>
+
+        <div className="text-center font-bold p-2 rounded flex flex-col items- justify-center bg-gray-200 uppercase">
+          Shopping List
         </div>
       </div>
 
@@ -105,15 +104,18 @@ const MealPlanCalendar = () => {
               {mealTypes.map((mealType) => (
                 <DropBox
                   key={`${day.day}-${mealType.label}`}
-                  mealType={mealType.label} // Pass just the label to DropBox
+                  mealType={mealType.label}
                   datetime={addDays(startDate, rowIndex)}
                 />
               ))}
             </div>
           ))}
         </div>
-        <div className="row-span-7 p-4 bg-gray-300 rounded overflow-auto">
-          <ShoppingList shoppingList={shoppingList} />
+        <div className="row-span-1 border-2 bg-white rounded overflow-auto">
+          <ShoppingList
+            shoppingList={Array.isArray(shoppingList) ? shoppingList : []}
+            isNextWeek={isNextWeek}
+          />
         </div>
       </div>
     </div>

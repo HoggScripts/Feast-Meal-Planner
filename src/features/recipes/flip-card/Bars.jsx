@@ -1,4 +1,4 @@
-import { NutritionChart } from "./NutritionChart";
+import { NutritionChart } from "../planning/graphs/HorizontalBarChart";
 import useRecipeStore from "@/stores/useRecipeStore";
 
 export function Bars() {

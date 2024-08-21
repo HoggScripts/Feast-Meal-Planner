@@ -1,19 +1,22 @@
 import React from "react";
 
-const ShoppingList = ({ shoppingList }) => {
+const ShoppingList = ({ shoppingList, isNextWeek }) => {
+  const filteredShoppingList = shoppingList.filter((item) =>
+    isNextWeek ? item.week === "nextWeek" : item.week === "currentWeek"
+  );
+
   return (
-    <div className="row-span-7 p-4 border-2 border-gray-200 rounded overflow-auto">
-      <ul className="list-disc pl-5">
-        {shoppingList.length > 0 ? (
-          shoppingList.map((item, index) => (
-            // Ensure the item here is a string or a JSX element, not an object
+    <div className="p-4 bg-white h-full flex flex-col justify-between">
+      <ul className="list-disc pl-5 flex-1 overflow-y-auto">
+        {Array.isArray(filteredShoppingList) &&
+        filteredShoppingList.length > 0 ? (
+          filteredShoppingList.map((item, index) => (
             <li key={index} className="text-sm">
-              {typeof item === "string" ? item : item.name}{" "}
-              {/* Adjust according to your data structure */}
+              {item.name}
             </li>
           ))
         ) : (
-          <p className="text-sm text-gray-600">No items yet.</p>
+          <p className="text-sm text-black">No items yet.</p>
         )}
       </ul>
     </div>

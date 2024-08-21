@@ -203,12 +203,12 @@ export function RecipeForm() {
 
   return (
     <div className="w-full p-10">
-      <div className="p-4 flex items-center justify-between border-b border-gray-200 mb-4">
+      <div className="p-4 flex items-center justify-between border-b border-slate-300 mb-4">
         <h1 className="font-extrabold text-2xl flex-grow">Recipe Builder</h1>
         <Button
           type="button"
           onClick={handleClear}
-          className="text-black bg-white flex items-center border-1 border-slate-600 text-lg shadow-md hover:bg-slate-100"
+          className="text-black bg-white flex items-center border-1 border-slate-300 text-lg shadow-md hover:bg-slate-200"
         >
           <IoIosNuclear className="mr-2 text-black" /> Clear
         </Button>

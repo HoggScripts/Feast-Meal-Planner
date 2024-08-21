@@ -36,7 +36,7 @@ const RecipeSteps = ({
           <Button
             type="button"
             onClick={() => handleRemoveStep(index)}
-            className="bg-red-500 text-white"
+            className="bg-white text-black border-1 border-slate-200 hover:bg-slate-200 shadow-md"
           >
             <FaTrash />
           </Button>
@@ -46,7 +46,7 @@ const RecipeSteps = ({
       <Button
         type="button"
         onClick={handleAddStepClick}
-        className="w-full bg-white text-black  text-md shadow-md p-2 rounded border-1 border-slate-600 hover:bg-slate-100 "
+        className="w-full bg-white text-black  text-md shadow-md p-2 rounded border-1 border-slate-600 hover:bg-slate-200 "
       >
         Add Step
       </Button>

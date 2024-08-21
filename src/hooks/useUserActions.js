@@ -11,7 +11,9 @@ import {
   logoutUser,
   registerUser,
   requestResetPassword,
+  updateMealTimes,
 } from "@/lib/userApi";
+import useMealPlanStore from "@/stores/useMealPlanStore";
 
 export const useFetchUserInfo = () => {
   return useQuery({
@@ -39,6 +41,20 @@ export const useFetchProtectedData = () => {
   return { protectedData, fetchProtectedData: mutation.mutate };
 };
 
+export const useUpdateMealTimes = () => {
+  return useMutation({
+    mutationFn: updateMealTimes,
+    onSuccess: () => {
+      toast.success("Meal times updated successfully.");
+    },
+    onError: (error) => {
+      toast.error(
+        error.response?.data?.message || "Failed to update meal times."
+      );
+    },
+  });
+};
+
 export const useLogin = () => {
   const setToken = useTokenStore((state) => state.setToken);
 
@@ -63,6 +79,7 @@ export const useLogout = () => {
   const mutation = useMutation({
     mutationFn: logoutUser,
     onSuccess: () => {
+      useMealPlanStore.getState().clearSchedule();
       clearToken();
 
       toast.success("Logout successful!");

@@ -1,5 +1,5 @@
 import useRecipeStore from "@/stores/useRecipeStore";
-import { NutritionChart } from "./NutritionChart";
+import { NutritionChart } from "../planning/graphs/HorizontalBarChart";
 
 export function Pies() {
   const recipe = useRecipeStore((state) => state.recipe);

@@ -102,7 +102,7 @@ const IngredientSearch = () => {
         <Button
           type="button"
           onClick={handleIngredientSearchClick}
-          className="bg-white shadow-md text-black text-md flex items-center justify-center border-1 border-slate-600 hover:bg-slate-100"
+          className="bg-white shadow-md text-black text-md flex items-center justify-center border-1 border-slate-200 hover:bg-slate-200"
         >
           <FaSearch className="mr-2" /> Search
         </Button>

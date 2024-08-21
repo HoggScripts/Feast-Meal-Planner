@@ -7,7 +7,7 @@ import {
   TableCell,
 } from "@nextui-org/react";
 
-function NutritionTable({ recipe }) {
+function NutritionTable({ recipe, barColor = "text-blueprimary" }) {
   if (!recipe || !recipe.ingredients) {
     return <div>Nutrition data is not available.</div>;
   }
@@ -37,26 +37,34 @@ function NutritionTable({ recipe }) {
           {recipe.ingredients.map((ingredient, index) => (
             <TableRow key={index}>
               <TableCell>{ingredient.name}</TableCell>
-              <TableCell>{ingredient.calories || "N/A"}</TableCell>
-              <TableCell>{ingredient.fat || "N/A"}</TableCell>
-              <TableCell>{ingredient.protein || "N/A"}</TableCell>
-              <TableCell>{ingredient.carbohydrates || "N/A"}</TableCell>
+              <TableCell className={barColor}>
+                {ingredient.calories || "N/A"}
+              </TableCell>
+              <TableCell className={barColor}>
+                {ingredient.fat || "N/A"}
+              </TableCell>
+              <TableCell className={barColor}>
+                {ingredient.protein || "N/A"}
+              </TableCell>
+              <TableCell className={barColor}>
+                {ingredient.carbohydrates || "N/A"}
+              </TableCell>
             </TableRow>
           ))}
           <TableRow>
             <TableCell>
               <strong>Total</strong>
             </TableCell>
-            <TableCell>
+            <TableCell className={barColor}>
               <strong>{totalNutrients.calories}</strong>
             </TableCell>
-            <TableCell>
+            <TableCell className={barColor}>
               <strong>{totalNutrients.fat}</strong>
             </TableCell>
-            <TableCell>
+            <TableCell className={barColor}>
               <strong>{totalNutrients.protein}</strong>
             </TableCell>
-            <TableCell>
+            <TableCell className={barColor}>
               <strong>{totalNutrients.carbohydrates}</strong>
             </TableCell>
           </TableRow>

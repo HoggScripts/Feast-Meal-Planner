@@ -29,6 +29,10 @@ module.exports = {
         closewhite: "#FAFAFA",
         blueprimary: "#51B2D4",
         bluesecondary: "#7FC8E0",
+        complimentOrange: "#EE8434",
+        complimentRed: "#EA526F",
+        complimentGreen: "#7EA172",
+        complimentPurple: "#7B4B94",
       },
       borderRadius: {
         lg: "var(--radius)",

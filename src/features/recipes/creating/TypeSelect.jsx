@@ -17,18 +17,18 @@ export function TypeSelect({ selectedMealType, onChange }) {
         type="single"
         value={selectedMealType}
         onValueChange={onChange}
-        className="flex justify-start space-x-4 "
+        className="flex justify-start space-x-4"
       >
         {mealTypes.map((meal) => (
           <ToggleGroupItem
             key={meal.label}
             value={meal.label}
             aria-label={`Select ${meal.label}`}
-            className="p-6 border rounded-lg transition-all 
-                     hover:bg-gray-100 hover:shadow-md 
-                     data-[state=on]:bg-gray-200 data-[state=on]:shadow-lg
+            className="p-6 rounded-lg transition-all shadow-md
+                     hover:bg-slate-200 hover:shadow-md 
+                     data-[state=on]:border-blueprimary data-[state=on]:bg-white border-2
                      flex flex-col items-center justify-center overflow-hidden
-                     min-w-[80px] min-h-[80px]"
+                     min-w-[80px] min-h-[80px] bg-white"
           >
             <div className="flex flex-col items-center text-black">
               {meal.icon}

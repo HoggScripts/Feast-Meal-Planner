@@ -9,6 +9,19 @@ export const loginUser = async ({ identifier, password, rememberMe }) => {
   return response.data;
 };
 
+export const updateMealTimes = async ({
+  breakfastTime,
+  lunchTime,
+  dinnerTime,
+}) => {
+  const response = await api.post("/users/update-meal-times", {
+    breakfastTime,
+    lunchTime,
+    dinnerTime,
+  });
+  return response.data;
+};
+
 export const registerUser = async ({
   username,
   email,
