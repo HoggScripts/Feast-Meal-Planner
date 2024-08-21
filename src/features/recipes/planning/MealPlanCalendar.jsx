@@ -10,8 +10,6 @@ import { useFetchUserInfo } from "@/hooks/useUserActions";
 const MealPlanCalendar = ({ isNextWeek, toggleWeek }) => {
   const { scheduledRecipes, shoppingList } = useMealPlanStore();
 
-  console.log("shoppingList:", shoppingList); // Debugging: Log the shoppingList
-
   const { data: userInfo } = useFetchUserInfo();
   const currentDate = startOfWeek(new Date(), { weekStartsOn: 1 });
   const startDate = isNextWeek ? addDays(currentDate, 7) : currentDate;

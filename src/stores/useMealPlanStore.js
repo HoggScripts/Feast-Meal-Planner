@@ -14,6 +14,7 @@ const useMealPlanStore = create(
             new Date(datetime) >= addDays(startOfWeek(new Date()), 7);
           const week = isNextWeek ? "nextWeek" : "currentWeek";
 
+          // Add the recipe to the scheduled recipes
           const newScheduledRecipes = [
             ...state.scheduledRecipes,
             { recipe, mealType, datetime },
@@ -23,14 +24,20 @@ const useMealPlanStore = create(
             ? state.shoppingList
             : [];
 
+          // Add ingredients to the shopping list considering the week
           const newShoppingList = [
             ...currentShoppingList,
             ...recipe.ingredients
               .filter(
                 (ingredient) =>
-                  !currentShoppingList.some((item) => item.id === ingredient.id)
+                  !currentShoppingList.some(
+                    (item) => item.id === ingredient.id && item.week === week
+                  )
               )
-              .map((ingredient) => ({ ...ingredient, week })),
+              .map((ingredient) => ({
+                ...ingredient,
+                week,
+              })),
           ];
 
           return {
@@ -53,11 +60,7 @@ const useMealPlanStore = create(
               new Date(item.datetime).getTime() !== new Date(datetime).getTime()
           );
 
-          const currentShoppingList = Array.isArray(state.shoppingList)
-            ? state.shoppingList
-            : [];
-
-          const newShoppingList = currentShoppingList.filter((ingredient) =>
+          const updatedShoppingList = state.shoppingList.filter((ingredient) =>
             newScheduledRecipes.some((item) =>
               item.recipe.ingredients.some((i) => i.id === ingredient.id)
             )
@@ -65,7 +68,7 @@ const useMealPlanStore = create(
 
           return {
             scheduledRecipes: newScheduledRecipes,
-            shoppingList: newShoppingList,
+            shoppingList: updatedShoppingList,
           };
         });
       },

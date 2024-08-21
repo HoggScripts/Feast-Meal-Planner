@@ -54,8 +54,6 @@ export function HorizontalBarChart({
 
   const totalValue = chartData.reduce((acc, curr) => acc + curr[dataKey], 0);
 
-  console.log(totalValue);
-
   const chartConfig = {
     [title.toLowerCase()]: {
       label: title,

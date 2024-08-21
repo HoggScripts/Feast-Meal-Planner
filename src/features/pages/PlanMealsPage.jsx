@@ -11,16 +11,26 @@ import CookingTimePieChart from "../recipes/planning/graphs/CookingTimePieChart"
 import { HorizontalBarChart } from "../recipes/planning/graphs/HorizontalBarChart";
 import MacronutrientsChart from "../recipes/planning/graphs/MacronutrientsChart";
 import GraphLayout from "../recipes/planning/graphs/GraphLayout";
-import { Button } from "@nextui-org/react";
 import FloatingActionButton from "../recipes/planning/FloatingActionButton";
 import { SiGooglecalendar } from "react-icons/si";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 
+import { toast, useToast } from "react-toastify";
+import { useGoogleAuthStatus } from "@/hooks/useGoogleAuthStatus";
+import useSendScheduledRecipes from "@/hooks/useSendScheduledRecipes";
+import useSendShoppingList from "@/hooks/useSendShoppingList";
+
 function PlanMealsPage() {
   const { data: recipes, isLoading, error } = useFetchRecipes();
   const { scheduledRecipes } = useMealPlanStore();
   const [isNextWeek, setIsNextWeek] = useState(false);
+
+  const sendScheduledRecipes = useSendScheduledRecipes(); // Hook for scheduling recipes
+  const sendShoppingList = useSendShoppingList(); // Hook for sending the shopping list
+
+  const { data: isGoogleLinked, isLoading: isGoogleStatusLoading } =
+    useGoogleAuthStatus();
 
   useEffect(() => {
     if (recipes) {
@@ -31,24 +41,28 @@ function PlanMealsPage() {
   const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
   const nextWeekStart = addDays(currentWeekStart, 7);
 
-  const currentWeekRecipes = scheduledRecipes.filter(({ datetime }) => {
-    const recipeDate = new Date(datetime);
-    return (
-      recipeDate >= currentWeekStart &&
-      recipeDate < addDays(currentWeekStart, 7)
-    );
-  });
-
-  const nextWeekRecipes = scheduledRecipes.filter(({ datetime }) => {
-    const recipeDate = new Date(datetime);
-    return (
-      recipeDate >= nextWeekStart && recipeDate < addDays(nextWeekStart, 7)
-    );
-  });
-
   const toggleWeek = () => setIsNextWeek((prev) => !prev);
 
-  const handleConfirm = () => {};
+  // IMPORTANT METHOD
+  const handleConfirm = async () => {
+    // if (!isGoogleLinked) {
+    //   toast.warning("Please link your Google Calendar account first.");
+    //   return;
+    // }
+
+    try {
+      console.log("sendShoppingList:", sendShoppingList);
+      console.log("sendScheduledRecipes:", sendScheduledRecipes);
+      await sendShoppingList.mutateAsync(); // Send shopping list
+      await sendScheduledRecipes.mutateAsync(); // Send scheduled recipes
+
+      toast.success("All actions completed successfully.");
+    } catch (error) {
+      console.error("Error during handleConfirm:", error);
+      toast.error("An error occurred while processing your request.");
+    }
+  };
+  // END OF IMPORTANT METHOD
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -94,8 +108,16 @@ function PlanMealsPage() {
           cravings and supporting overall metabolic health."
         graph={
           <ProteinChart
-            currentWeekRecipes={currentWeekRecipes}
-            nextWeekRecipes={nextWeekRecipes}
+            currentWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= currentWeekStart &&
+                new Date(datetime) < nextWeekStart
+            )}
+            nextWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= nextWeekStart &&
+                new Date(datetime) < addDays(nextWeekStart, 7)
+            )}
             isNextWeek={isNextWeek}
             color="#7FC8E0"
             style={chartStyle}
@@ -117,8 +139,16 @@ function PlanMealsPage() {
           and overall health."
         graph={
           <CalorieTrendChart
-            currentWeekRecipes={currentWeekRecipes}
-            nextWeekRecipes={nextWeekRecipes}
+            currentWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= currentWeekStart &&
+                new Date(datetime) < nextWeekStart
+            )}
+            nextWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= nextWeekStart &&
+                new Date(datetime) < addDays(nextWeekStart, 7)
+            )}
             isNextWeek={isNextWeek}
             style={chartStyle}
           />
@@ -137,8 +167,16 @@ function PlanMealsPage() {
           meeting your dietary goals."
         graph={
           <CookingTimePieChart
-            currentWeekRecipes={currentWeekRecipes}
-            nextWeekRecipes={nextWeekRecipes}
+            currentWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= currentWeekStart &&
+                new Date(datetime) < nextWeekStart
+            )}
+            nextWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= nextWeekStart &&
+                new Date(datetime) < addDays(nextWeekStart, 7)
+            )}
             isNextWeek={isNextWeek}
             style={chartStyle}
           />
@@ -158,8 +196,16 @@ function PlanMealsPage() {
           adapt your diet as needed to maintain a healthy lifestyle."
         graph={
           <HorizontalBarChart
-            currentWeekRecipes={currentWeekRecipes}
-            nextWeekRecipes={nextWeekRecipes}
+            currentWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= currentWeekStart &&
+                new Date(datetime) < nextWeekStart
+            )}
+            nextWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= nextWeekStart &&
+                new Date(datetime) < addDays(nextWeekStart, 7)
+            )}
             isNextWeek={isNextWeek}
             title="Calories for the Week"
             dataKey="calories"
@@ -190,8 +236,16 @@ function PlanMealsPage() {
           maintaining a healthy diet."
         graph={
           <CostComparisonCard
-            currentWeekRecipes={currentWeekRecipes}
-            nextWeekRecipes={nextWeekRecipes}
+            currentWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= currentWeekStart &&
+                new Date(datetime) < nextWeekStart
+            )}
+            nextWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= nextWeekStart &&
+                new Date(datetime) < addDays(nextWeekStart, 7)
+            )}
             isNextWeek={isNextWeek}
             style={chartStyle}
           />
@@ -210,8 +264,16 @@ function PlanMealsPage() {
           your weight effectively."
         graph={
           <MacronutrientsChart
-            currentWeekRecipes={currentWeekRecipes}
-            nextWeekRecipes={nextWeekRecipes}
+            currentWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= currentWeekStart &&
+                new Date(datetime) < nextWeekStart
+            )}
+            nextWeekRecipes={scheduledRecipes.filter(
+              ({ datetime }) =>
+                new Date(datetime) >= nextWeekStart &&
+                new Date(datetime) < addDays(nextWeekStart, 7)
+            )}
             isNextWeek={isNextWeek}
             style={chartStyle}
           />
