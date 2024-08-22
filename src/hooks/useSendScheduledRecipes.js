@@ -34,15 +34,15 @@ const useSendScheduledRecipes = () => {
             typeof recipe.datetime === "string"
               ? recipe.datetime // Use as is if already a string
               : new Date(recipe.datetime).toISOString(), // Convert to ISO string if needed
-          MealTime: recipe.mealType,
+          MealType: recipe.mealType, // Changed to MealType
         })),
         NextWeekRecipes: nextWeekRecipes.map((recipe) => ({
-          RecipeName: recipe.recipe.name,
+          RecipeName: recipe.recipe.recipeName,
           Date:
             typeof recipe.datetime === "string"
               ? recipe.datetime // Use as is if already a string
               : new Date(recipe.datetime).toISOString(), // Convert to ISO string if needed
-          MealTime: recipe.mealType,
+          MealType: recipe.mealType, // Changed to MealType
         })),
       };
 

@@ -5,7 +5,7 @@ export const scheduleRecipesOnGoogleCalendar = async (
 ) => {
   try {
     const response = await api.post(
-      "/api/googlecalendar/schedule-recipes",
+      "googlecalendar/schedule-recipes",
       scheduledRecipesRequest,
       {
         withCredentials: true, // Ensure cookies are included
