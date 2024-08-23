@@ -35,17 +35,19 @@ function CurrencyConverter({ recipe }) {
         return originalCost;
       } else {
         const res = await fetch(
-          `https://api.frankfurter.app/latest?amount=${originalCost}&from=USD&to=${currency}`
+          `https://api.frankfurter.app/latest?amount=${
+            originalCost / 100
+          }&from=USD&to=${currency}`
         );
         const data = await res.json();
-        return data.rates[currency];
+        return data.rates[currency] * 100; // Convert back to cents if needed
       }
     });
 
     const costs = await Promise.all(costPromises);
     const totalCost = costs.reduce((acc, cost) => acc + cost, 0);
 
-    setConvertedCost(totalCost.toFixed(2));
+    setConvertedCost((totalCost / 100).toFixed(2)); // Convert from cents to dollars
   };
 
   const handleCurrencyChange = async (value) => {

@@ -8,6 +8,8 @@ const currencySymbols = {
 };
 
 const TotalCostCard = ({ recipe, currency = "USD" }) => {
+  console.log("total cost", recipe.totalCost);
+
   if (!recipe || !recipe.ingredients) {
     return (
       <Card className="mt-4">
@@ -37,7 +39,7 @@ const TotalCostCard = ({ recipe, currency = "USD" }) => {
       <CardBody>
         <p className="text-2xl font-bold">
           {currencySymbols[currency] || "$"}
-          {totalCost.toFixed(2)}
+          {totalCost.toFixed(2)} {/* Convert from cents to dollars */}
         </p>
       </CardBody>
     </Card>
