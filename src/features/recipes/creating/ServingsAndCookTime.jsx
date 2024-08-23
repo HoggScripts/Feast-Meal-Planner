@@ -15,11 +15,13 @@ const ServingsAndCookTime = ({ control, setRecipeInfo, recipe }) => (
               type="number"
               placeholder="Enter servings..."
               {...field}
+              min={1}
               onChange={(e) => {
-                field.onChange(e);
+                const value = Math.max(1, Number(e.target.value));
+                field.onChange(value);
                 setRecipeInfo({
                   ...recipe,
-                  servings: Number(e.target.value),
+                  servings: value,
                 });
               }}
               className="w-full p-2 border rounded pl-10"
@@ -41,11 +43,13 @@ const ServingsAndCookTime = ({ control, setRecipeInfo, recipe }) => (
               type="number"
               placeholder="Enter cook time in minutes..."
               {...field}
+              min={1}
               onChange={(e) => {
-                field.onChange(e);
+                const value = Math.max(1, Number(e.target.value));
+                field.onChange(value);
                 setRecipeInfo({
                   ...recipe,
-                  cookTime: Number(e.target.value),
+                  cookTime: value,
                 });
               }}
               className="w-full p-2 border rounded pl-10"
