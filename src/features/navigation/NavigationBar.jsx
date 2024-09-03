@@ -20,7 +20,7 @@ const NavigationBar = ({ isLoginOpen, setIsLoginOpen }) => {
   const links = [
     { to: "/landing-page", label: "Home" },
     { to: "/create-recipes", label: "Create Recipes" },
-    { to: "/view-recipes", label: "View Recipes" },
+
     { to: "/plan-meals", label: "Plan Meals" },
     { to: "/user-profile", label: "My Profile" },
   ];

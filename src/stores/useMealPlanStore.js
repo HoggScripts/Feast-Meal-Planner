@@ -2,6 +2,15 @@ import { addDays, startOfWeek } from "date-fns";
 import { persist } from "zustand/middleware";
 import { create } from "zustand";
 
+// Fisher-Yates Shuffle Algorithm
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 const useMealPlanStore = create(
   persist(
     (set, get) => ({
@@ -78,6 +87,41 @@ const useMealPlanStore = create(
           scheduledRecipes: [],
           shoppingList: [],
         });
+      },
+
+      randomlyFillSchedule: (allRecipes) => {
+        const breakfastRecipes = shuffleArray(
+          allRecipes.filter((recipe) => recipe.mealType === "Breakfast")
+        );
+        const lunchRecipes = shuffleArray(
+          allRecipes.filter((recipe) => recipe.mealType === "Lunch")
+        );
+        const dinnerRecipes = shuffleArray(
+          allRecipes.filter((recipe) => recipe.mealType === "Dinner")
+        );
+
+        const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+        const nextWeekStart = addDays(currentWeekStart, 7);
+
+        // Function to schedule meals
+        const scheduleMeals = (mealArray, mealType, startDate) => {
+          for (let i = 0; i < 7; i++) {
+            const date = addDays(startDate, i);
+            if (mealArray.length > 0) {
+              const recipe = mealArray.pop();
+              get().addRecipeToSchedule(recipe, mealType, date);
+            }
+          }
+        };
+
+        // Schedule for current and next week
+        scheduleMeals(breakfastRecipes, "Breakfast", currentWeekStart);
+        scheduleMeals(lunchRecipes, "Lunch", currentWeekStart);
+        scheduleMeals(dinnerRecipes, "Dinner", currentWeekStart);
+
+        scheduleMeals(breakfastRecipes, "Breakfast", nextWeekStart);
+        scheduleMeals(lunchRecipes, "Lunch", nextWeekStart);
+        scheduleMeals(dinnerRecipes, "Dinner", nextWeekStart);
       },
     }),
     {

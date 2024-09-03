@@ -73,3 +73,9 @@ export const confirmResetPassword = async ({ email, token, newPassword }) => {
   });
   return response.data;
 };
+
+// New function to delete user
+export const deleteUser = async () => {
+  const response = await api.delete("/users/delete-user");
+  return response.data;
+};

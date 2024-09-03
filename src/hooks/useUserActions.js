@@ -12,6 +12,7 @@ import {
   registerUser,
   requestResetPassword,
   updateMealTimes,
+  deleteUser,
 } from "@/lib/userApi";
 import useMealPlanStore from "@/stores/useMealPlanStore";
 
@@ -22,6 +23,26 @@ export const useFetchUserInfo = () => {
     staleTime: 100,
     cacheTime: 1000,
   });
+};
+
+export const useDeleteUser = () => {
+  const navigate = useNavigate();
+  const clearToken = useTokenStore((state) => state.clearToken);
+
+  const mutation = useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      useMealPlanStore.getState().clearSchedule(); // Clear any state related to the user
+      clearToken(); // Clear the token
+      toast.success("Your account has been deleted successfully.");
+      navigate("/"); // Redirect to the homepage or another appropriate route
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to delete account.");
+    },
+  });
+
+  return mutation;
 };
 
 export const useFetchProtectedData = () => {

@@ -76,7 +76,7 @@ function PlanMealsPage() {
   const chartStyle = { height: "250px", width: "100%" };
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6">
       {scheduledRecipes.length > 0 && ( // Only render if there are scheduled recipes
         <FloatingActionButton onConfirm={handleConfirm} label="Edit">
           <SiGooglecalendar size={20} className="text-white" />
@@ -85,13 +85,12 @@ function PlanMealsPage() {
         </FloatingActionButton>
       )}
 
-      <div className="grid grid-cols-12 gap-4 bg-lightgray rounded-lg shadow-md">
+      <div className="grid grid-cols-12 gap-4 bg-lightgray rounded-lg  h-full">
         <div className="col-span-9">
           <MealPlanCalendar isNextWeek={isNextWeek} toggleWeek={toggleWeek} />
         </div>
-        <div className="col-span-3 bg-bluesecondary p-4 text-white rounded-lg">
-          <h2 className="text-lg font-bold mb-4">Recipe Search</h2>
-          <RecipeSearch />
+        <div className="col-span-3">
+          <RecipeSearch className="rounded-lg" />
         </div>
       </div>
 

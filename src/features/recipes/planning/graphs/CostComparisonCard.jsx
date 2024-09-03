@@ -38,7 +38,7 @@ const CostComparisonCard = ({
       : ((displayedWeekCost - comparisonWeekCost) / comparisonWeekCost) * 100;
 
   // Format the cost to two decimal places
-  const formattedWeekCost = `$${displayedWeekCost.toFixed(2)}`;
+  const formattedWeekCost = displayedWeekCost.toFixed(2) / 100;
 
   return (
     <Card className="shadow-md" style={{ height: "250px", width: "360px" }}>
@@ -46,7 +46,7 @@ const CostComparisonCard = ({
         <CardTitle>{isNextWeek ? "Next Week" : "This Week"}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-4xl">{formattedWeekCost}</div>
+        <div className="text-4xl">${formattedWeekCost}</div>
         <div className="text-sm text-muted-foreground mt-2">
           {isNextWeek
             ? `This is ${Math.abs(percentageDifference).toFixed(

@@ -12,13 +12,13 @@ import { FaSliders } from "react-icons/fa6";
 function RecipeSearch() {
   const { data: recipes, isLoading, error } = useFetchRecipes();
   const [userRecipes, setUserRecipes] = useState([]);
-  const [searchInput, setSearchInput] = useState(""); // State to hold the search input
-  const [costRange, setCostRange] = useState([0, 100]); // State for cost range
-  const [calorieRange, setCalorieRange] = useState([0, 3000]); // State for calorie range
-  const [proteinRange, setProteinRange] = useState([0, 100]); // State for protein range
-  const [selectedSpiceLevels, setSelectedSpiceLevels] = useState(["all"]); // Default to "Any" for spiciness
-  const [selectedCookTimes, setSelectedCookTimes] = useState(["all"]); // Default to "All" for cook times
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false); // State to toggle advanced filters
+  const [searchInput, setSearchInput] = useState("");
+  const [costRange, setCostRange] = useState([0, 1000]);
+  const [calorieRange, setCalorieRange] = useState([0, 3000]);
+  const [proteinRange, setProteinRange] = useState([0, 300]);
+  const [selectedSpiceLevels, setSelectedSpiceLevels] = useState(["all"]);
+  const [selectedCookTimes, setSelectedCookTimes] = useState(["all"]);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   useEffect(() => {
     if (recipes) {
@@ -26,16 +26,20 @@ function RecipeSearch() {
     }
   }, [recipes]);
 
+  console.log(recipes);
+
   const filterRecipes = () => {
     return userRecipes
       .filter((recipe) =>
         recipe.recipeName.toLowerCase().includes(searchInput.toLowerCase())
       )
-      .filter(
-        (recipe) =>
-          recipe.estimatedCost >= costRange[0] &&
-          recipe.estimatedCost <= costRange[1]
-      )
+      .filter((recipe) => {
+        if (typeof recipe.estimatedCost !== "number") {
+          return false;
+        }
+        const costInDollars = recipe.estimatedCost / 100;
+        return costInDollars >= costRange[0] && costInDollars <= costRange[1];
+      })
       .filter(
         (recipe) =>
           recipe.calories >= calorieRange[0] &&
@@ -46,11 +50,11 @@ function RecipeSearch() {
           recipe.protein >= proteinRange[0] && recipe.protein <= proteinRange[1]
       )
       .filter((recipe) => {
-        if (selectedSpiceLevels.includes("all")) return true; // Show all if "Any" is selected
+        if (selectedSpiceLevels.includes("all")) return true;
         return selectedSpiceLevels.includes(recipe.spicinessLevel.toString());
       })
       .filter((recipe) => {
-        if (selectedCookTimes.includes("all")) return true; // Show all if "All" is selected
+        if (selectedCookTimes.includes("all")) return true;
         if (selectedCookTimes.includes("short") && recipe.cookTime < 20)
           return true;
         if (
@@ -112,23 +116,30 @@ function RecipeSearch() {
   const filteredRecipes = filterRecipes();
 
   return (
-    <div className="p-4 bg-bluesecondary text-slate-800">
+    <div
+      className="p-4 bg-bluesecondary text-slate-800 rounded-lg mt-3"
+      style={{ width: "350px", height: "920px" }}
+    >
+      <h2 className="text-lg font-bold mb-4 text-white">Recipe Search</h2>
+
       <div className="flex items-center justify-between mb-4 bg-white rounded-lg shadow-md overflow-hidden">
         <input
           type="text"
           placeholder="Search by recipe name"
           value={searchInput}
           onChange={handleInputChange}
-          className="w-full px-4 py-2 text-lg  focus:ring-slate-300 "
+          className="w-full px-4 py-2 text-lg focus:ring-slate-300"
+          aria-label="Search by recipe name"
         />
         <button
           onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-          className="px-4 py-2 text-lg text-slate-800 focus:outline-none "
+          className="px-4 py-2 text-lg text-slate-800 focus:outline-none"
           style={{
             borderTopRightRadius: "0.5rem",
             borderBottomRightRadius: "0.5rem",
             boxShadow: "none",
           }}
+          aria-label="Toggle Advanced Filters" // Add this line
         >
           <FaSliders />
         </button>
@@ -148,6 +159,7 @@ function RecipeSearch() {
                 onChange={handleCostRangeChange}
                 formatOptions={{ style: "currency", currency: "USD" }}
                 className="mb-2"
+                aria-label="Cost Range"
               />
               <div>
                 Cost Range: ${costRange[0]} - ${costRange[1]}
@@ -166,6 +178,7 @@ function RecipeSearch() {
                 value={calorieRange}
                 onChange={handleCalorieRangeChange}
                 className="mb-2"
+                aria-label="Calorie Range"
               />
               <div>
                 Calorie Range: {calorieRange[0]} - {calorieRange[1]} kcal
@@ -184,6 +197,7 @@ function RecipeSearch() {
                 value={proteinRange}
                 onChange={handleProteinRangeChange}
                 className="mb-2"
+                aria-label="Protein Range"
               />
               <div>
                 Protein Range: {proteinRange[0]} - {proteinRange[1]}g
@@ -205,6 +219,7 @@ function RecipeSearch() {
                 }
                 onChange={handleSpiceLevelChange}
                 size="sm"
+                aria-label="Spiciness Level"
               >
                 <Checkbox value="all" className="text-slate-800">
                   Any
@@ -236,6 +251,7 @@ function RecipeSearch() {
                 }
                 onChange={handleCookTimeChange}
                 size="sm"
+                aria-label="Cook Time"
               >
                 <Checkbox value="all" className="text-slate-800">
                   All
@@ -255,17 +271,19 @@ function RecipeSearch() {
         </div>
       )}
 
-      <div>
-        {filteredRecipes.length > 0 ? (
-          filteredRecipes.map((recipe) => (
-            <div key={recipe.id} className="mb-2">
-              <DragDropCard recipe={recipe} className="text-slate-800" />
-            </div>
-          ))
-        ) : (
-          <div className="text-slate-800">No recipes found</div>
-        )}
-      </div>
+      {!showAdvancedFilters && (
+        <div className="pr-2 h-5/6 overflow-auto">
+          {filteredRecipes.length > 0 ? (
+            filteredRecipes.map((recipe) => (
+              <div key={recipe.id} className="mb-2">
+                <DragDropCard recipe={recipe} className="text-slate-800" />
+              </div>
+            ))
+          ) : (
+            <div className="text-slate-800">No recipes found</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

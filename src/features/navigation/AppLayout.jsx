@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
+import Footer from "../misc/Footer";
 
 const AppLayout = ({ isLoginOpen, setIsLoginOpen }) => {
   const location = useLocation(); // Use the useLocation hook directly here
@@ -20,6 +21,7 @@ const AppLayout = ({ isLoginOpen, setIsLoginOpen }) => {
         {/* Adds a top margin to offset the fixed nav */}
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 };

@@ -1,6 +1,23 @@
-import { useEffect, useState } from "react";
-import { useFetchUserInfo, useUpdateMealTimes } from "@/hooks/useUserActions";
+import React, { useEffect, useState } from "react";
+import {
+  useFetchUserInfo,
+  useUpdateMealTimes,
+  useDeleteUser,
+  useLogout,
+} from "@/hooks/useUserActions";
 import { Card, Input, Button, Divider } from "@nextui-org/react";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 
 const UserProfile = () => {
   const { data: userInfo, isLoading, isError } = useFetchUserInfo();
@@ -12,6 +29,9 @@ const UserProfile = () => {
   });
 
   const updateMealTimesMutation = useUpdateMealTimes();
+  const deleteUserMutation = useDeleteUser();
+  const logoutUser = useLogout();
+  const navigate = useNavigate(); // Initialize useNavigate for redirection
 
   useEffect(() => {
     if (userInfo) {
@@ -40,6 +60,18 @@ const UserProfile = () => {
 
   const handleUpdateMealTimes = () => {
     updateMealTimesMutation.mutate(mealTimes);
+  };
+
+  const handleDeleteUser = () => {
+    deleteUserMutation.mutate(null, {
+      onSuccess: () => {
+        logoutUser.mutate(null, {
+          onSuccess: () => {
+            navigate("/"); // Redirect to a goodbye or home page after logout
+          },
+        });
+      },
+    });
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -89,6 +121,30 @@ const UserProfile = () => {
         >
           Save Changes
         </Button>
+
+        {/* Delete Account Button with Confirmation Dialog */}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button color="error" className="w-full mt-6">
+              Delete Account
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Account</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete your account? This action cannot
+                be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDeleteUser}>
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </Card>
     </div>
   );

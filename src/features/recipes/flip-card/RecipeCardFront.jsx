@@ -1,5 +1,4 @@
 import { MdFastfood, MdLunchDining } from "react-icons/md";
-
 import { PiCoffeeFill } from "react-icons/pi";
 import { FaPepperHot } from "react-icons/fa";
 import { PiBowlFood, PiClock } from "react-icons/pi";
@@ -34,6 +33,9 @@ function RecipeCardFront({ recipe }) {
     }
     return icons;
   };
+
+  // Use recipe.steps if available, otherwise fallback to recipe.instructions
+  const steps = recipe.steps || recipe.instructions || [];
 
   return (
     <div className="flex justify-center items-start h-full text-greyish-black">
@@ -73,9 +75,9 @@ function RecipeCardFront({ recipe }) {
           <div className="flex">
             <div className="w-3/5 pr-6">
               <h3 className="text-2xl font-semibold mb-2">Instructions</h3>
-              {recipe.instructions && recipe.instructions.length > 0 ? (
+              {steps.length > 0 ? (
                 <ol className="list-decimal pl-5 space-y-2">
-                  {recipe.instructions.map((step, index) => (
+                  {steps.map((step, index) => (
                     <li key={index} className="mb-2">
                       {step}
                     </li>

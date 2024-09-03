@@ -109,6 +109,8 @@ export function RecipeForm() {
 
   const onSubmit = async (values) => {
     try {
+      console.log("Form Values:", values);
+
       if (!values.mealType) {
         toast.error("Please select a meal type.");
         return;
@@ -150,7 +152,7 @@ export function RecipeForm() {
 
       console.log("Mapped Values:", mappedValues);
 
-      createRecipeMutation.mutate(mappedValues);
+      await createRecipeMutation.mutateAsync(mappedValues);
       handleClear();
     } catch (error) {
       toast.error("Failed to save recipe. Please try again.");
