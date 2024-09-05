@@ -20,7 +20,7 @@ const MealPlanCalendar = ({ isNextWeek, toggleWeek }) => {
   } = useMealPlanStore();
 
   const { data: userInfo } = useFetchUserInfo();
-  const { data: allRecipes } = useFetchRecipes(); // Fetch all recipes
+  const { data: allRecipes } = useFetchRecipes();
   const currentDate = startOfWeek(new Date(), { weekStartsOn: 1 });
   const startDate = isNextWeek ? addDays(currentDate, 7) : currentDate;
 
@@ -52,13 +52,13 @@ const MealPlanCalendar = ({ isNextWeek, toggleWeek }) => {
       day: format(dayDate, "EEEE"),
       date: format(dayDate, "MMM do"),
       color: [
-        "bg-[#A1D3E8]", // Lightest Blue for Monday
-        "bg-[#99D0E6]", // Slightly lighter blue for Tuesday
-        "bg-[#8FCBE4]", // Medium-light blue for Wednesday
-        "bg-[#85C7E2]", // Medium blue for Thursday
-        "bg-[#7FC8E0]", // Default blue for Friday
-        "bg-[#79C1DE]", // Slightly darker blue for Saturday
-        "bg-[#73BADC]", // Darkest blue for Sunday
+        "bg-[#A1D3E8]",
+        "bg-[#99D0E6]",
+        "bg-[#8FCBE4]",
+        "bg-[#85C7E2]",
+        "bg-[#7FC8E0]",
+        "bg-[#79C1DE]",
+        "bg-[#73BADC]",
       ][index % 7],
     };
   });

@@ -18,7 +18,6 @@ export const useFetchRecipes = () => {
   });
 };
 
-// Hook to fetch a single recipe by id
 export const useFetchRecipe = (id) => {
   return useQuery({
     queryKey: ["recipe", id],
@@ -28,7 +27,6 @@ export const useFetchRecipe = (id) => {
   });
 };
 
-// Hook to create a recipe
 export const useCreateRecipe = () => {
   const navigate = useNavigate();
 
@@ -46,7 +44,6 @@ export const useCreateRecipe = () => {
   return mutation;
 };
 
-// Hook to update a recipe
 export const useUpdateRecipe = () => {
   const mutation = useMutation({
     mutationFn: updateRecipe,
@@ -61,7 +58,6 @@ export const useUpdateRecipe = () => {
   return mutation;
 };
 
-// Hook to delete a recipe
 export const useDeleteRecipe = () => {
   const navigate = useNavigate();
 

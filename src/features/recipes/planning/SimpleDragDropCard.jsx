@@ -27,12 +27,11 @@ const SimpleDragDropCard = ({ recipe, onRemove }) => {
       className="bg-slate-800 rounded-lg flex flex-col justify-between relative w-full h-full"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        boxShadow: "none", // No shadow when inside the dropbox
-        overflow: "hidden", // Ensure the image and content stay within bounds
+        boxShadow: "none",
+        overflow: "hidden",
       }}
     >
       <div className="relative flex-grow h-2/3">
-        {/* Image with specific height to match dropbox */}
         <div className="w-full h-full overflow-hidden">
           <img
             src={recipe.image || "stockFoodImage.jpg"}
@@ -45,8 +44,6 @@ const SimpleDragDropCard = ({ recipe, onRemove }) => {
           />
         </div>
 
-        {/* Deletion X button positioned on the top right of the image */}
-
         <button
           onClick={onRemove}
           className="absolute top-2 right-2 text-white hover:text-red-700 p-1 rounded-full bg-black bg-opacity-25 hover:bg-opacity-90 z-10"
@@ -55,21 +52,18 @@ const SimpleDragDropCard = ({ recipe, onRemove }) => {
         </button>
       </div>
 
-      {/* Content area for the recipe name and the link to the recipe page */}
       <div className="relative flex items-center justify-between px-4 py-2 bg-slate-800 h-1/3">
-        {/* Left section: Recipe title */}
         <div className="flex items-center">
           <span
             className="font-semibold text-white text-xs"
             style={{
-              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)", // Add text shadow for better readability
+              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.8)",
             }}
           >
             {recipe.recipeName}
           </span>
         </div>
 
-        {/* Right section: Link to recipe page */}
         <div className="flex items-center gap-2">
           <button
             onClick={handleNavigateToRecipe}

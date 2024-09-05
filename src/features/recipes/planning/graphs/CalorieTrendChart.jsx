@@ -30,15 +30,15 @@ export default function CalorieTrendChart({
     addDays(startOfDisplayedWeek, index)
   );
 
-  // Prepare calorie data for the chart
+
   const calorieData = weekDays.map((dayDate) => {
-    // Filter recipes that match the current dayDate
+    
     const filteredRecipes = recipes.filter(({ datetime }) => {
       const recipeDate = new Date(datetime);
       return isSameDay(recipeDate, dayDate);
     });
 
-    // Sum up the calories for all recipes on this day
+  
     const dailyCalorieTotal = filteredRecipes.reduce(
       (total, { recipe }) => total + (recipe.calories || 0),
       0

@@ -31,17 +31,14 @@ export function HorizontalBarChart({
 }) {
   const recipes = isNextWeek ? nextWeekRecipes : currentWeekRecipes;
 
-  // Determine the start of the current or next week
   const startOfDisplayedWeek = isNextWeek
     ? addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 7)
     : startOfWeek(new Date(), { weekStartsOn: 1 });
 
-  // Generate chart data for each day of the week
   const chartData = [...Array(7)].map((_, index) => {
     const dayDate = addDays(startOfDisplayedWeek, index);
     const dayName = format(dayDate, "EEE");
 
-    // Filter recipes for the current day and calculate the total for the dataKey
     const dayTotal = recipes
       .filter(({ datetime }) => isSameDay(new Date(datetime), dayDate))
       .reduce((total, { recipe }) => total + (recipe[dataKey] || 0), 0);

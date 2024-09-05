@@ -6,7 +6,7 @@ import queryClient from "./lib/queryClient";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
-import { setupInterceptors, ejectInterceptors } from "./apiInterceptors"; // Import interceptors
+import { setupInterceptors, ejectInterceptors } from "./apiInterceptors";
 
 import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
@@ -16,7 +16,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 const AppWithInterceptors = () => {
-  const { token, setToken } = useTokenStore(); // Access token and setToken function
+  const { token, setToken } = useTokenStore();
   const isRefreshing = false;
 
   useEffect(() => {

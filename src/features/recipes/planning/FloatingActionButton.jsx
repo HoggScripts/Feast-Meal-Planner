@@ -26,7 +26,7 @@ const FloatingActionButton = ({
           aria-label={label || "add"}
           size={size}
           style={{
-            backgroundColor: "#00f995", // Hardcoded background color
+            backgroundColor: "#00f995",
             position: "fixed",
             bottom: 20,
             right: 20,
@@ -37,14 +37,13 @@ const FloatingActionButton = ({
             width: 80,
             height: 80,
             padding: "5px",
-            color: "#FFFFFF", // Hardcoded icon color
-            animation: "bounce 2s infinite", // Add the bounce animation
+            color: "#FFFFFF",
+            animation: "bounce 2s infinite",
             ...style,
           }}
         >
           {children}
 
-          {/* Inline keyframes for bounce animation */}
           <style>
             {`
               @keyframes bounce {

@@ -14,9 +14,9 @@ export default function MacronutrientsChart({
   const recipes = isNextWeek ? nextWeekRecipes : currentWeekRecipes;
 
   const chartColors = {
-    fat: "#7FC8E0", // Use bluesecondary for fat
-    carbs: "#7FC8E0", // Use bluesecondary for carbs
-    protein: "#7FC8E0", // Use bluesecondary for protein
+    fat: "#7FC8E0",
+    carbs: "#7FC8E0",
+    protein: "#7FC8E0",
     ...colors,
   };
 
@@ -54,7 +54,6 @@ export default function MacronutrientsChart({
   return (
     <Card className="shadow-md" style={{ height: "250px", width: "360px" }}>
       {" "}
-      {/* Use w-full to take up full width */}
       <CardContent className="flex gap-4 p-4 pb-2">
         <ChartContainer
           config={{
@@ -71,7 +70,7 @@ export default function MacronutrientsChart({
               color: chartColors.protein,
             },
           }}
-          className="h-[140px] w-full" // Ensure it takes up the full width
+          className="h-[140px] w-full"
         >
           <BarChart
             margin={{

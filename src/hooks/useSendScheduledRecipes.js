@@ -26,30 +26,32 @@ const useSendScheduledRecipes = () => {
         );
       });
 
+      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      console.log("User TimeZone:", userTimeZone);
+
       const payload = {
-        TimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Get user's timezone
+        TimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         ThisWeekRecipes: currentWeekRecipes.map((recipe) => ({
           RecipeName: recipe.recipe.recipeName,
           Date:
             typeof recipe.datetime === "string"
-              ? recipe.datetime // Use as is if already a string
-              : new Date(recipe.datetime).toISOString(), // Convert to ISO string if needed
-          MealType: recipe.mealType, // Changed to MealType
+              ? recipe.datetime
+              : new Date(recipe.datetime).toISOString(),
+          MealType: recipe.mealType,
         })),
         NextWeekRecipes: nextWeekRecipes.map((recipe) => ({
           RecipeName: recipe.recipe.recipeName,
           Date:
             typeof recipe.datetime === "string"
-              ? recipe.datetime // Use as is if already a string
-              : new Date(recipe.datetime).toISOString(), // Convert to ISO string if needed
-          MealType: recipe.mealType, // Changed to MealType
+              ? recipe.datetime
+              : new Date(recipe.datetime).toISOString(),
+          MealType: recipe.mealType,
         })),
       };
 
-      // Log the payload before sending
       console.log("Scheduled Recipes Payload:", payload);
 
-      // Use the scheduleRecipesOnGoogleCalendar function from the Google Calendar API
       const response = await scheduleRecipesOnGoogleCalendar(payload);
       return response;
     },

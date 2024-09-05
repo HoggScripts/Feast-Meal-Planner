@@ -1,4 +1,4 @@
-import api from "../api"; // Import your Axios instance
+import api from "../api";
 
 export const sendShoppingListEmail = async (shoppingListRequest) => {
   try {
@@ -6,7 +6,7 @@ export const sendShoppingListEmail = async (shoppingListRequest) => {
       "/email/send-shopping-list",
       shoppingListRequest,
       {
-        withCredentials: true, // Ensure cookies are included
+        withCredentials: true,
       }
     );
 

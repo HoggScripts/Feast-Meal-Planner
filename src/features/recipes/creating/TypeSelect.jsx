@@ -2,7 +2,6 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { MdFastfood, MdLunchDining } from "react-icons/md";
 import { PiCoffeeFill } from "react-icons/pi";
 
-// Define the meal types with labels and icons
 const mealTypes = [
   { label: "Breakfast", icon: <PiCoffeeFill size={32} color="black" /> },
   { label: "Lunch", icon: <MdLunchDining size={32} color="black" /> },

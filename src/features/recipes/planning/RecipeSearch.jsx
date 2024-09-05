@@ -139,7 +139,7 @@ function RecipeSearch() {
             borderBottomRightRadius: "0.5rem",
             boxShadow: "none",
           }}
-          aria-label="Toggle Advanced Filters" // Add this line
+          aria-label="Toggle Advanced Filters"
         >
           <FaSliders />
         </button>

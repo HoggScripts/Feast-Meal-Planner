@@ -20,7 +20,7 @@ body {
   height: 100%;
   margin: 0;
 
-  font-family: var(--font-family); /* Ensure this is applied */
+  font-family: var(--font-family);
 }
 
 /* Other global styles */

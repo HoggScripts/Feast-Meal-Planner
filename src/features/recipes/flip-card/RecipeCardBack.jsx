@@ -10,12 +10,12 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "@/components/ui/alert-dialog"; // Import these from your UI library
+} from "@/components/ui/alert-dialog";
 import { useDeleteRecipe } from "@/hooks/useRecipeActions";
 
 function RecipeCardBack({ recipe, isPropRecipe }) {
   const getImageSrc = () => {
-    return "/stockNutritionImage.jpeg"; // Always use the default image
+    return "/stockNutritionImage.jpeg";
   };
 
   const deleteMutation = useDeleteRecipe();

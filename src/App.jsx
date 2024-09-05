@@ -25,7 +25,6 @@ const App = () => {
   return (
     <TooltipProvider>
       <Router>
-        {/* CookieCheck runs on mount, refreshing the token if necessary */}
         <CookieCheck />
         <Routes>
           <Route

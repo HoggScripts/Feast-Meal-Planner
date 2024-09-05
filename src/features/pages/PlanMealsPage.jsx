@@ -26,15 +26,15 @@ function PlanMealsPage() {
   const { scheduledRecipes } = useMealPlanStore();
   const [isNextWeek, setIsNextWeek] = useState(false);
 
-  const sendScheduledRecipes = useSendScheduledRecipes(); // Hook for scheduling recipes
-  const sendShoppingList = useSendShoppingList(); // Hook for sending the shopping list
+  const sendScheduledRecipes = useSendScheduledRecipes(); 
+  const sendShoppingList = useSendShoppingList(); 
 
   const { data: isGoogleLinked, isLoading: isGoogleStatusLoading } =
     useGoogleAuthStatus();
 
   useEffect(() => {
     if (recipes) {
-      // Optionally process the recipes if needed
+
     }
   }, [recipes]);
 
@@ -45,16 +45,13 @@ function PlanMealsPage() {
 
   // IMPORTANT METHOD
   const handleConfirm = async () => {
-    // if (!isGoogleLinked) {
-    //   toast.warning("Please link your Google Calendar account first.");
-    //   return;
-    // }
+
 
     try {
       console.log("sendShoppingList:", sendShoppingList);
       console.log("sendScheduledRecipes:", sendScheduledRecipes);
-      await sendShoppingList.mutateAsync(); // Send shopping list
-      await sendScheduledRecipes.mutateAsync(); // Send scheduled recipes
+      await sendShoppingList.mutateAsync(); 
+      await sendScheduledRecipes.mutateAsync(); 
 
       toast.success("All actions completed successfully.");
     } catch (error) {
@@ -72,12 +69,12 @@ function PlanMealsPage() {
     return <div>Error loading recipes: {error.message}</div>;
   }
 
-  // Define a common style for charts
+  
   const chartStyle = { height: "250px", width: "100%" };
 
   return (
     <div className="space-y-6">
-      {scheduledRecipes.length > 0 && ( // Only render if there are scheduled recipes
+      {scheduledRecipes.length > 0 && ( 
         <FloatingActionButton onConfirm={handleConfirm} label="Edit">
           <SiGooglecalendar size={20} className="text-white" />
           <FaPlus size={8} className="text-white" />
@@ -94,7 +91,7 @@ function PlanMealsPage() {
         </div>
       </div>
 
-      {/* Protein Section */}
+    
       <GraphLayout
         blurbHeader="Why Protein is Important"
         blurb="Protein is essential for muscle repair, hormone production, and
@@ -124,7 +121,7 @@ function PlanMealsPage() {
         }
       />
 
-      {/* Calorie Trend Section */}
+    
       <GraphLayout
         blurbHeader="Calorie Trends for the Week"
         blurb="Tracking your calorie intake is a fundamental aspect of managing
@@ -154,7 +151,7 @@ function PlanMealsPage() {
         }
       />
 
-      {/* Cooking Time Distribution Section */}
+  
       <GraphLayout
         blurbHeader="Why Cooking Time Matters"
         blurb="Time is a valuable resource, and planning meals according to cooking
@@ -182,7 +179,7 @@ function PlanMealsPage() {
         }
       />
 
-      {/* Calories for the Week Section */}
+  
       <GraphLayout
         blurbHeader="Calories for the Week"
         blurb="Monitoring total calorie intake for the week gives you a broader
@@ -224,7 +221,7 @@ function PlanMealsPage() {
         }
       />
 
-      {/* Cost Comparison Section */}
+ 
       <GraphLayout
         blurbHeader="Cost Comparison"
         blurb="Comparing the cost of your meals from this week to next week helps
@@ -251,7 +248,7 @@ function PlanMealsPage() {
         }
       />
 
-      {/* Macronutrients Section */}
+ 
       <GraphLayout
         blurbHeader="Macronutrients Overview"
         blurb="Understanding the breakdown of macronutrients—fat, carbohydrates,

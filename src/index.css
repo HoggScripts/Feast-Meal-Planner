@@ -69,8 +69,8 @@
 
   .card {
     @apply bg-card text-card-foreground;
-    width: 18rem; /* Increase card width */
-    height: auto; /* Set height to auto for flexibility */
+    width: 18rem; 
+    height: auto; 
     @apply p-4 m-2 rounded-lg shadow-md;
     @apply flex flex-col justify-between;
   }
@@ -136,13 +136,13 @@
   }
 
   input::placeholder {
-    font-size: 16px; /* Set your desired font size */
-    color: #888; /* Optional: Set a uniform placeholder color */
+    font-size: 16px; 
+    color: #888; 
   }
 
   input:focus {
     outline: none;
-    box-shadow: none; /* Removes any focus ring */
+    box-shadow: none; 
   }
   
 }

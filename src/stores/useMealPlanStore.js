@@ -2,7 +2,7 @@ import { addDays, startOfWeek } from "date-fns";
 import { persist } from "zustand/middleware";
 import { create } from "zustand";
 
-// Fisher-Yates Shuffle Algorithm
+// Shuffle Algorithm
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -23,7 +23,6 @@ const useMealPlanStore = create(
             new Date(datetime) >= addDays(startOfWeek(new Date()), 7);
           const week = isNextWeek ? "nextWeek" : "currentWeek";
 
-          // Add the recipe to the scheduled recipes
           const newScheduledRecipes = [
             ...state.scheduledRecipes,
             { recipe, mealType, datetime },
@@ -103,7 +102,6 @@ const useMealPlanStore = create(
         const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
         const nextWeekStart = addDays(currentWeekStart, 7);
 
-        // Function to schedule meals
         const scheduleMeals = (mealArray, mealType, startDate) => {
           for (let i = 0; i < 7; i++) {
             const date = addDays(startDate, i);
@@ -114,7 +112,6 @@ const useMealPlanStore = create(
           }
         };
 
-        // Schedule for current and next week
         scheduleMeals(breakfastRecipes, "Breakfast", currentWeekStart);
         scheduleMeals(lunchRecipes, "Lunch", currentWeekStart);
         scheduleMeals(dinnerRecipes, "Dinner", currentWeekStart);

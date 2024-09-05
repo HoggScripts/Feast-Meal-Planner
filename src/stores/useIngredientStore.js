@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// Middleware to log state changes
 const logStateChange = (config) => (set, get, api) =>
   config(
     (args) => {
@@ -31,8 +30,8 @@ const useIngredientStore = create(
           estimatedCost: null,
           possibleUnits: [],
         },
-        selectedCurrency: "USD", // default currency
-        originalCosts: {}, // store original costs in USD
+        selectedCurrency: "USD", // default to this
+        originalCosts: {},
 
         setSelectedCurrency: (currency) => set({ selectedCurrency: currency }),
 
@@ -106,8 +105,8 @@ const useIngredientStore = create(
         },
       }),
       {
-        name: "ingredient-storage", // unique name for the storage
-        getStorage: () => localStorage, // specify the storage to use
+        name: "ingredient-storage", // storage name note: MUST BE UNIQUE
+        getStorage: () => localStorage,
       }
     )
   )

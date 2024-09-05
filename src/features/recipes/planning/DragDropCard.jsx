@@ -32,7 +32,6 @@ const DragDropCard = ({ recipe }) => {
     navigate(`/recipes/${recipe.id}`, { state: { recipe } });
   };
 
-  // Default to a generic food icon if mealType is missing or invalid
   const mealTypeIcon = React.cloneElement(
     mealTypeIcons[recipe.mealType] || <MdFastfood />,
     {
@@ -133,7 +132,7 @@ const DragDropCard = ({ recipe }) => {
                   <div className="text-sm text-gray-600 flex items-center gap-2 mb-2">
                     <MdAttachMoney size={14} className="text-green-500" />
                     <span>
-                      Estimated Cost: {recipe.estimatedCost || "N/A"}$
+                      Estimated Cost: {recipe.estimatedCost / 100 || "N/A"}$
                     </span>
                   </div>
                   <div className="text-sm text-gray-600 flex items-center gap-2 mb-2">

@@ -32,10 +32,10 @@ export const useDeleteUser = () => {
   const mutation = useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
-      useMealPlanStore.getState().clearSchedule(); // Clear any state related to the user
-      clearToken(); // Clear the token
+      useMealPlanStore.getState().clearSchedule();
+      clearToken();
       toast.success("Your account has been deleted successfully.");
-      navigate("/"); // Redirect to the homepage or another appropriate route
+      navigate("/");
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || "Failed to delete account.");

@@ -17,7 +17,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const { data: userInfo, isLoading, isError } = useFetchUserInfo();
@@ -31,7 +31,7 @@ const UserProfile = () => {
   const updateMealTimesMutation = useUpdateMealTimes();
   const deleteUserMutation = useDeleteUser();
   const logoutUser = useLogout();
-  const navigate = useNavigate(); // Initialize useNavigate for redirection
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userInfo) {
@@ -49,7 +49,7 @@ const UserProfile = () => {
     if (!value.includes(":")) {
       value += ":00";
     } else if (value.split(":").length === 2) {
-      value += ":00"; // Add seconds if they are missing
+      value += ":00";
     }
 
     setMealTimes({
@@ -67,7 +67,7 @@ const UserProfile = () => {
       onSuccess: () => {
         logoutUser.mutate(null, {
           onSuccess: () => {
-            navigate("/"); // Redirect to a goodbye or home page after logout
+            navigate("/"); // BYE
           },
         });
       },
@@ -122,7 +122,6 @@ const UserProfile = () => {
           Save Changes
         </Button>
 
-        {/* Delete Account Button with Confirmation Dialog */}
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button color="error" className="w-full mt-6">

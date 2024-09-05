@@ -33,18 +33,16 @@ const NavigationBar = ({ isLoginOpen, setIsLoginOpen }) => {
   const logout = useLogout();
 
   const handleLogout = () => {
-    logout.mutate(); // Trigger the logout mutation
+    logout.mutate();
   };
 
   return (
     <nav className="bg-white text-white  top-0 left-0 w-full z-50">
       <div className="mx-auto flex items-center justify-between px-10 py-4">
-        {/* Logo on the left */}
         <div className="flex items-center">
           <img src="Logo.png" alt="Logo" className="h-12 w-auto" />
         </div>
 
-        {/* Links in the middle */}
         <div className="flex space-x-8 text-lg">
           {links.map((link) => (
             <Link
@@ -61,7 +59,6 @@ const NavigationBar = ({ isLoginOpen, setIsLoginOpen }) => {
           ))}
         </div>
 
-        {/* Login/Logout button and Google Calendar link on the right */}
         <div className="flex items-center space-x-4">
           {token ? (
             <>
@@ -85,8 +82,6 @@ const NavigationBar = ({ isLoginOpen, setIsLoginOpen }) => {
         </div>
       </div>
       <div className="border-b border-1 border-bluesecondary"></div>{" "}
-      {/* Thin bottom border */}
-      {/* Login Dialog */}
       <Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
         <DialogContent>
           <DialogHeader>
@@ -108,7 +103,6 @@ const NavigationBar = ({ isLoginOpen, setIsLoginOpen }) => {
           />
         </DialogContent>
       </Dialog>
-      {/* Register Dialog */}
       <Dialog open={isRegisterOpen} onOpenChange={setIsRegisterOpen}>
         <DialogContent>
           <DialogHeader>
@@ -120,7 +114,6 @@ const NavigationBar = ({ isLoginOpen, setIsLoginOpen }) => {
           <Register />
         </DialogContent>
       </Dialog>
-      {/* Reset Password Dialog */}
       <Dialog open={isResetPasswordOpen} onOpenChange={setIsResetPasswordOpen}>
         <DialogContent>
           <DialogHeader>

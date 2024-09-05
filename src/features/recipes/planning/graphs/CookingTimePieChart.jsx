@@ -26,19 +26,18 @@ const CookingTimePieChart = ({
 }) => {
   const recipes = isNextWeek ? nextWeekRecipes : currentWeekRecipes;
 
-  // Prepare data for the pie chart
+  
   const cookingTimeData = recipes.map(({ recipe }) => ({
-    name: recipe.recipeName || "Unnamed Recipe", // Use the recipe name or a fallback
-    minutes: recipe.cookTime || 0, // Use the cookingTime property
+    name: recipe.recipeName || "Unnamed Recipe",
+    minutes: recipe.cookTime || 0, 
   }));
 
-  // Calculate the total cooking time
+ 
   const totalTime = cookingTimeData.reduce(
     (total, recipe) => total + recipe.minutes,
     0
   );
 
-  // Define the colors for the pie chart segments
   const COLORS = ["#51B2D4", "#7FC8E0"];
 
   return (

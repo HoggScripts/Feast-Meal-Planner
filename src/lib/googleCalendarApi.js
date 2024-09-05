@@ -1,4 +1,4 @@
-import api from "../api"; // Import your Axios instance
+import api from "../api";
 
 export const scheduleRecipesOnGoogleCalendar = async (
   scheduledRecipesRequest
@@ -8,7 +8,7 @@ export const scheduleRecipesOnGoogleCalendar = async (
       "googlecalendar/schedule-recipes",
       scheduledRecipesRequest,
       {
-        withCredentials: true, // Ensure cookies are included
+        withCredentials: true,
       }
     );
 

@@ -1,3 +1,1 @@
-module.exports = (on, config) => {
-  // configure plugins here
-};
+module.exports = (on, config) => {};

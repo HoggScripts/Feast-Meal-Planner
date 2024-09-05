@@ -5,7 +5,6 @@ import RecipeCard from "../recipes/flip-card/RecipeCard";
 function RecipeCardPage() {
   const { state } = useLocation();
 
-  // Log the received recipe data for debugging purposes
   console.log("RecipeCardPage - State recipe:", state?.recipe);
 
   return (

@@ -4,7 +4,6 @@ import { FaPepperHot } from "react-icons/fa";
 import { PiBowlFood, PiClock } from "react-icons/pi";
 import CurrencyConverter from "./CurrencyConverter";
 
-// Map meal type to corresponding icon
 const mealTypeIcons = {
   Breakfast: <PiCoffeeFill size={24} />,
   Lunch: <MdLunchDining size={24} />,
@@ -22,7 +21,7 @@ function RecipeCardFront({ recipe }) {
     } else if (typeof recipe.image === "string" && recipe.image.trim() !== "") {
       return recipe.image;
     } else {
-      return "/stockFoodImage.jpg"; // Ensure the correct path to the image
+      return "/stockFoodImage.jpg";
     }
   };
 
@@ -34,7 +33,6 @@ function RecipeCardFront({ recipe }) {
     return icons;
   };
 
-  // Use recipe.steps if available, otherwise fallback to recipe.instructions
   const steps = recipe.steps || recipe.instructions || [];
 
   return (

@@ -22,7 +22,7 @@ function CurrencyConverter({ recipe }) {
   useEffect(() => {
     const defaultCurrency = "USD";
     setSelectedCurrency(defaultCurrency);
-    calculateTotalCost(defaultCurrency, recipe); // Calculate the initial cost
+    calculateTotalCost(defaultCurrency, recipe);
   }, [setSelectedCurrency, recipe]);
 
   const calculateTotalCost = async (currency, recipe) => {
@@ -40,7 +40,7 @@ function CurrencyConverter({ recipe }) {
           }&from=USD&to=${currency}`
         );
         const data = await res.json();
-        return data.rates[currency] * 100; // Convert back to cents if needed
+        return data.rates[currency] * 100;
       }
     });
 
@@ -52,7 +52,7 @@ function CurrencyConverter({ recipe }) {
 
   const handleCurrencyChange = async (value) => {
     setSelectedCurrency(value);
-    await calculateTotalCost(value, recipe); // Calculate cost on currency change
+    await calculateTotalCost(value, recipe);
   };
 
   const currencySymbols = {

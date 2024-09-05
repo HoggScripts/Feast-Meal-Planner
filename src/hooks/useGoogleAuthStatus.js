@@ -3,10 +3,10 @@ import { checkGoogleLinkStatus } from "@/lib/oauthApi";
 
 export const useGoogleAuthStatus = () => {
   return useQuery({
-    queryKey: ["googleAuthStatus"], // Change this to an array
+    queryKey: ["googleAuthStatus"],
     queryFn: checkGoogleLinkStatus,
 
-    retry: true, // Disable retrying on failure
+    retry: true,
     onSuccess: (data) => {
       console.log("Google auth status successfully fetched:", data);
     },

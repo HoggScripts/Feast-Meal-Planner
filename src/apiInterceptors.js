@@ -38,8 +38,8 @@ export const setupInterceptors = ({
           setToken(null);
           isRefreshing = false;
 
-          const navigate = useNavigate(); // This is problematic since it should be used in a React component
-          navigate("/"); // Navigate to the login page
+          const navigate = useNavigate(); 
+          navigate("/"); 
 
           return Promise.reject(error);
         }
@@ -63,8 +63,8 @@ export const setupInterceptors = ({
           isRefreshing = false;
           retryCount = 0;
 
-          const navigate = useNavigate(); // Problematic here as well
-          navigate("/"); // Navigate to the login page
+          const navigate = useNavigate(); // can use this here?
+          navigate("/"); 
 
           return Promise.reject(refreshError);
         }

@@ -12,7 +12,6 @@ import VideoBlock from "../misc/VideoBlock";
 const LandingPage = () => {
   return (
     <>
-      {/* First Section - White Background */}
       <div
         className="min-h-screen flex items-center justify-center"
         style={{
@@ -80,7 +79,6 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Second Section - Blue Primary Background */}
       <div className="bg-blueprimary py-16 text-white">
         <div className="grid grid-cols-2 gap-16 px-16">
           <div className="flex flex-col justify-center space-y-8">
@@ -137,7 +135,6 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Third Section - Blue Secondary Background */}
       <div className="bg-bluesecondary py-16 text-white">
         <div className="grid grid-cols-2 gap-16 px-16">
           <div className="flex items-center justify-center">
@@ -165,7 +162,6 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Final Section - Darker Blue Background */}
       <div className="bg-[#2B7A8E] py-16 text-white">
         <div className="grid grid-cols-2 gap-16 px-16">
           <div className="flex flex-col justify-center space-y-8">

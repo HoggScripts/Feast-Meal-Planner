@@ -10,14 +10,14 @@ const useTokenActions = () => {
     setIsRefreshing(true);
     try {
       console.log("Attempting to refresh token...");
-      const newToken = await refreshAuthToken(); // Use the imported refreshToken function
-      setToken(newToken); // Set the new access token
+      const newToken = await refreshAuthToken();
+      setToken(newToken);
       console.log("Token refreshed successfully:", newToken);
       setIsRefreshing(false);
       return true;
     } catch (error) {
       console.log("Failed to refresh token:", error);
-      setToken(null); // Clear token on refresh failure
+      setToken(null);
       setIsRefreshing(false);
       return false;
     }

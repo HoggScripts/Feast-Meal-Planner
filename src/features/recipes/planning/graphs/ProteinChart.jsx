@@ -19,32 +19,27 @@ export default function ProteinChart({
 }) {
   const recipes = isNextWeek ? nextWeekRecipes : currentWeekRecipes;
 
-  // Calculate the start of the correct week (current or next)
   const startOfDisplayedWeek = isNextWeek
     ? addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 7)
     : startOfWeek(new Date(), { weekStartsOn: 1 });
 
-  // Generate the dates for the days of the week
   const weekDays = [...Array(7)].map((_, index) =>
     addDays(startOfDisplayedWeek, index)
   );
 
   const proteinData = weekDays.map((dayDate) => {
-    // Filter recipes that match the current dayDate
     const filteredRecipes = recipes.filter(({ datetime }) => {
-      // Convert the UTC datetime to a local date object
       const recipeDate = new Date(datetime);
       return isSameDay(recipeDate, dayDate);
     });
 
-    // Sum up the protein for all recipes on this day
     const dailyProteinTotal = filteredRecipes.reduce(
       (total, { recipe }) => total + (recipe.protein || 0),
       0
     );
 
     return {
-      date: format(dayDate, "EEE"), // Format date as "Mon", "Tue", etc.
+      date: format(dayDate, "EEE"),
       protein: dailyProteinTotal,
     };
   });

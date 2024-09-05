@@ -15,7 +15,6 @@ import { TypeSelect } from "./TypeSelect";
 import SpicinessRating from "./SpicinessRating";
 import { useCreateRecipe } from "@/hooks/useRecipeActions";
 
-// Define the validation schema with Zod
 const formSchema = z.object({
   recipeName: z
     .string()
@@ -36,7 +35,7 @@ const formSchema = z.object({
       message: "Cook time must be at least 1 minute.",
     })
   ),
-  mealType: z.string().min(1, { message: "Please select a meal type." }), // Ensure mealType is required
+  mealType: z.string().min(1, { message: "Please select a meal type." }),
   instructions: z.array(z.string()),
   ingredients: z.array(
     z.object({
@@ -77,7 +76,7 @@ export function RecipeForm() {
     defaultValues: {
       ...recipe,
       ingredients: recipe.ingredients || [],
-      mealType: "", // Default to an empty string to enforce selection
+      mealType: "",
       spicinessLevel: recipe.spicinessLevel || 0,
     },
   });
@@ -100,7 +99,7 @@ export function RecipeForm() {
     setValue("instructions", steps);
     setValue("ingredients", ingredients);
     setValue("spicinessLevel", spicinessLevel);
-    setValue("mealType", selectedMealType); // Ensure mealType is updated in form state
+    setValue("mealType", selectedMealType);
   }, [steps, ingredients, spicinessLevel, selectedMealType, setValue]);
 
   useEffect(() => {
@@ -220,7 +219,7 @@ export function RecipeForm() {
           selectedMealType={selectedMealType}
           onChange={(value) => {
             setSelectedMealType(value);
-            setValue("mealType", value); // Ensure this updates the form state
+            setValue("mealType", value);
             setRecipeInfo({ mealType: value });
           }}
         />

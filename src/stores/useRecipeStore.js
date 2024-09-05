@@ -7,8 +7,8 @@ const useRecipeStore = create(
       recipe: {
         id: null,
         recipeName: "",
-        mealType: "", // New property for meal type
-        spicinessLevel: 0, // New property for spiciness
+        mealType: "",
+        spicinessLevel: 0,
         image: null,
         servings: 1,
         cookTime: 1,
@@ -72,8 +72,8 @@ const useRecipeStore = create(
           recipe: {
             id: null,
             recipeName: "",
-            mealType: "", // Reset mealType when clearing the recipe
-            spicinessLevel: 0, // Reset spiciness when clearing
+            mealType: "",
+            spicinessLevel: 0,
             image: null,
             servings: 1,
             cookTime: 1,
@@ -136,7 +136,7 @@ const useRecipeStore = create(
     }),
     {
       name: "recipe-storage",
-      storage: localStorage, // Updated from getStorage to storage
+      storage: localStorage,
     }
   )
 );

@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress"; // Import the Progress component from shadcn
+import { Progress } from "@/components/ui/progress";
 
 const calculateTotalCost = (recipes) => {
   return recipes.reduce(
@@ -17,11 +17,9 @@ const CostComparisonCard = ({
   const currentWeekCost = calculateTotalCost(currentWeekRecipes);
   const nextWeekCost = calculateTotalCost(nextWeekRecipes);
 
-  // Display the appropriate cost based on the isNextWeek boolean
   const displayedWeekCost = isNextWeek ? nextWeekCost : currentWeekCost;
   const comparisonWeekCost = isNextWeek ? currentWeekCost : nextWeekCost;
 
-  // Simplify the logic to determine "more" or "less"
   let comparisonText;
   if (displayedWeekCost > comparisonWeekCost) {
     comparisonText = "more than";
@@ -31,13 +29,11 @@ const CostComparisonCard = ({
     comparisonText = "the same as";
   }
 
-  // Calculate the percentage difference
   const percentageDifference =
     comparisonWeekCost === 0
       ? 0
       : ((displayedWeekCost - comparisonWeekCost) / comparisonWeekCost) * 100;
 
-  // Format the cost to two decimal places
   const formattedWeekCost = displayedWeekCost.toFixed(2) / 100;
 
   return (

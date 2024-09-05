@@ -19,7 +19,7 @@ export const useIngredientDetails = () => {
     if (shouldRefetch && params.id) {
       console.log("Refetching with params:", params);
       refetch().then(() => {
-        setShouldRefetch(false); // Reset the flag after refetching
+        setShouldRefetch(false); 
       });
     }
   }, [shouldRefetch, params, refetch]);
@@ -31,11 +31,11 @@ export const useIngredientDetails = () => {
     }
     console.log("Setting params for ingredient details:", newParams);
     setParams(newParams);
-    setShouldRefetch(true); // Set the flag to trigger useEffect
+    setShouldRefetch(true); 
   };
 
   return {
-    details: data, // Ensure this is correctly assigned
+    details: data, 
     detailsLoading: isLoading,
     detailsError: error,
     fetchIngredientDetails,

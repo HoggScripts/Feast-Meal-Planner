@@ -4,7 +4,6 @@ import { FaPepperHot } from "react-icons/fa";
 const SpicinessRating = ({ initialRating = 0, onRatingChange }) => {
   const [rating, setRating] = React.useState(initialRating);
 
-  // Update the rating when the initialRating prop changes
   useEffect(() => {
     setRating(initialRating);
   }, [initialRating]);
@@ -18,7 +17,6 @@ const SpicinessRating = ({ initialRating = 0, onRatingChange }) => {
   };
 
   const handleClick = (index) => {
-    // Toggle rating to 0 if clicking the same rating
     const newRating = index === initialRating ? 0 : index;
     setRating(newRating);
     if (onRatingChange) {

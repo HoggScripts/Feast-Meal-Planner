@@ -3,20 +3,20 @@ import useTokenActions from "../../hooks/useTokenActions";
 
 const CookieCheck = () => {
   const { refreshToken } = useTokenActions();
-  const [hasCheckedToken, setHasCheckedToken] = useState(false); // State to track if we've attempted to refresh the token
+  const [hasCheckedToken, setHasCheckedToken] = useState(false);
 
   useEffect(() => {
     if (!hasCheckedToken) {
       const attemptTokenRefresh = async () => {
         await refreshToken();
-        setHasCheckedToken(true); // Mark that we've checked the token
+        setHasCheckedToken(true);
       };
 
       attemptTokenRefresh();
     }
   }, [hasCheckedToken, refreshToken]);
 
-  return null; // No need to render anything
+  return null;
 };
 
 export default CookieCheck;

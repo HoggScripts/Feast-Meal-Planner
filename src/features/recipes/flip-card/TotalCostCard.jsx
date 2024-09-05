@@ -39,7 +39,7 @@ const TotalCostCard = ({ recipe, currency = "USD" }) => {
       <CardBody>
         <p className="text-2xl font-bold">
           {currencySymbols[currency] || "$"}
-          {totalCost.toFixed(2)} {/* Convert from cents to dollars */}
+          {totalCost.toFixed(2)}
         </p>
       </CardBody>
     </Card>

@@ -3,7 +3,7 @@ import NavigationBar from "./NavigationBar";
 import Footer from "../misc/Footer";
 
 const AppLayout = ({ isLoginOpen, setIsLoginOpen }) => {
-  const location = useLocation(); // Use the useLocation hook directly here
+  const location = useLocation();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -18,7 +18,6 @@ const AppLayout = ({ isLoginOpen, setIsLoginOpen }) => {
         />
       </div>
       <div className="flex-grow mt-2">
-        {/* Adds a top margin to offset the fixed nav */}
         <Outlet />
       </div>
       <Footer />

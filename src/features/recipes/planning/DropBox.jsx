@@ -1,17 +1,15 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 import DragDropCard from "./DragDropCard";
-import SimpleDragDropCard from "./SimpleDragDropCard"; // Import the SimpleDragDropCard
+import SimpleDragDropCard from "./SimpleDragDropCard";
 import useMealPlanStore from "@/stores/useMealPlanStore";
 
 const DropBox = ({ mealType, datetime }) => {
   const { addRecipeToSchedule, removeRecipeFromSchedule, scheduledRecipes } =
     useMealPlanStore();
 
-  // Convert datetime to a Date object if it's not already
   const normalizedDatetime = new Date(datetime);
 
-  // Find the recipe that matches this mealType and datetime
   const droppedItem = scheduledRecipes.find(
     (item) =>
       item.mealType === mealType &&
@@ -44,7 +42,7 @@ const DropBox = ({ mealType, datetime }) => {
       } bg-white rounded flex items-center justify-center ${
         !canDrop && isOver ? "bg-red-100" : ""
       }`}
-      style={{ width: "100%", height: "100px" }} // Ensure this height matches the height of your SimpleDragDropCard for consistency
+      style={{ width: "100%", height: "100px" }}
     >
       {droppedItem ? (
         <SimpleDragDropCard
