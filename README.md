@@ -18,17 +18,17 @@ Add, edit, and manage your recipes, including detailed ingredients and instructi
 
 ![Recipe Management](src/assets/recipecreation.gif)
 
-#### 3. Shopping List Generation:
+#### 3. Shopping List Generation and Google Calendar Integration:
 
-Automatically generate shopping lists based on scheduled meals.
+Automatically generate shopping lists based on scheduled meals. Seamlessly schedule your meals on Google Calendar with calculated start and end times.
 
 ![Shopping List](src/assets/shoppinglist.gif)
 
-#### 4. Google Calendar Integration:
+#### 4. View Weekly Nutritional Information in Graphs:
 
-Seamlessly schedule your meals on Google Calendar with calculated start and end times.
+Track your weekly nutritional intake with dynamic visualizations, helping you stay informed about your diet's nutrient distribution.
 
-![Google Calendar Integration](src/assets/graphs.gif)
+![Weekly Nutritional Graphs](src/assets/graphs.gif)
 
 #### 5. Currency Conversion:
 
